@@ -31,7 +31,6 @@ import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../routes";
-import transactions from "../data/transactions";
 import axios from "axios";
 import { SendSharp } from "@mui/icons-material";
 const token = JSON.parse(localStorage.getItem("token"));

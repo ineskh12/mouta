@@ -23,7 +23,6 @@ import {
 } from "@themesberg/react-bootstrap";
 
 import { CounterWidget } from "../../components/Widgets";
-import { trafficShares, totalOrders } from "../../data/charts";
 import { useHistory, useParams } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";

@@ -60,7 +60,6 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      
       {value === index && (
         <Box sx={{ p: 3 }}>
           <Typography>{children}</Typography>
@@ -163,6 +162,9 @@ function App() {
   const handleClose3 = () => setShowDefault3(false);
   const [imageDisplay, setImageDisplay] = useState("");
 
+  const [showDefault4, setShowDefault4] = useState(false);
+  const handleClose4 = () => setShowDefault4(false);
+  const [videoDisplay, setVideoDisplay] = useState("");
   useEffect(() => {
     const call = async () => {
       const response = await axios.get(
@@ -179,7 +181,8 @@ function App() {
             ext.slice(-3) === "png" ||
             ext.slice(-3) === "jpg" ||
             ext.slice(-4) === "jpeg" ||
-            ext.slice(-3) === "gif"
+            ext.slice(-3) === "gif" ||
+            ext.slice(-3) === "mp4"
         )
       );
       setmultis(
@@ -269,6 +272,11 @@ function App() {
     setShowDefault3(true);
   }
 
+  function displayVideo(video) {
+    setVideoDisplay(video);
+    setShowDefault4(true);
+  }
+
   return (
     <div className="app">
       <Modal
@@ -278,6 +286,21 @@ function App() {
         onHide={handleClose3}
       >
         <img src={imageDisplay} alt="userImage"></img>
+      </Modal>
+
+      <Modal
+        as={Modal.Dialog}
+        className="d-flex justify-content-center"
+        show={showDefault4}
+        onHide={handleClose4}
+      >
+        <ReactPlayer
+          url={videoDisplay}
+          controls={true}
+          playing={true}
+          width="100%"
+          height="100%"
+        />
       </Modal>
 
       <Modal
@@ -522,13 +545,11 @@ function App() {
                   >
                     <div hidden={!parcours.etat} className="container p-0">
                       <div className="row">
-                          <div className="col-lg-3" >
+                        <div className="col-lg-3">
                           <Sticky>
-
                             <div
-                          
                               className="iq-card p-2 "
-                              style={{ minHeight: "200px", }}
+                              style={{ minHeight: "200px" }}
                             >
                               <div className="iq-card-header d-flex justify-content-between">
                                 <div className="iq-header-title">
@@ -613,9 +634,9 @@ function App() {
                                 <div className="card-footer"></div>
                               </div>
                             </div>
-                            </Sticky>
-                         </div>
-                     
+                          </Sticky>
+                        </div>
+
                         <div className="col-lg-6">
                           <div className="iq-card p-0">
                             <div className="iq-card-body">
@@ -623,39 +644,41 @@ function App() {
                                 <h4
                                   style={{ color: "#525252" }}
                                   className="card-title"
-                                > 
-                                  Images 
-                                </h4> 
+                                >
+                                  Images
+                                </h4>
                               </div>
 
                               <Carousel cols={5} rows={1} loop>
                                 {photos?.map((img, i) => (
+                                  <Carousel.Item key={i}>
+                                    {img.split(".").pop() === "mp4" ? (
+                                      <ReactPlayer
+                                      style={{borderRadius:"0"}}
+                                        url={img}
+                                        controls={true}
+                                        playing={false}
+                                        width="100%"
+                                        height="100%"
+                                        muted={true}
+                                        onClick={() => {
+                                          displayVideo(img);
+                                        }}
+                                      />
+                                    ) : (
+                                      <div
+                                        style={{
+                                          backgroundImage: `url(${img})`,
+                                          backgroundRepeat: "no-repeat",
+                                        }}
+                                        className="story"
+                                        onClick={() => {
+                                          displayImage(img);
+                                        }}
+                                      ></div>
+                                    )}
 
-                                  
-                                  <Carousel.Item  key={i}>
-                                    { }
-                             {img.split('.').pop() === "mp4" ? (
-                             
-                               <ReactPlayer
-                                url={img}
-                                pip={true}
-                                controls={true}
-                                playing={true}
-                              /> ) : (
-                                <div
-                                style={{
-                                  backgroundImage: `url(${img})`,
-                                  backgroundRepeat: "no-repeat",
-                                }}
-                                className="story"
-                                onClick={() => {
-                                  displayImage(img);
-                                }}
-                              ></div>
-                              )}
-         
-        
-                           {/* 
+                                    {/* 
                                      <div
                                       style={{
                                         backgroundImage: `url(${img})`,
@@ -707,26 +730,23 @@ function App() {
                                               {" "}
                                               {comment?.sender[0]}{" "}
                                             </Avatar>
-                                                  
+
                                             <Grid item xs={4}>
-                                            <span className="postUsername">
-                                               {comment?.sender}  
-                                            </span> <br/>
-                                            <span className="postDate" >
-                                            &ensp;  {moment(
-                                                comment?.timestamp
-                                              ).format(
-                                                'LLLL'
-                                                /* "DD/MM/YYYY" + ", " + "HH:mm" */
-                                              )}  
-                                            </span>
-                                                 
-                                               </Grid>
-                                            
-                                         
-                                          
+                                              <span className="postUsername">
+                                                {comment?.sender}
+                                              </span>{" "}
+                                              <br />
+                                              <span className="postDate">
+                                                &ensp;{" "}
+                                                {moment(
+                                                  comment?.timestamp
+                                                ).locale("fr").format(
+                                                  "LLLL"
+                                                  /* "DD/MM/YYYY" + ", " + "HH:mm" */
+                                                )}
+                                              </span>
+                                            </Grid>
                                           </div>
-                                          
                                         </div>
 
                                         <div className="postCenter">
@@ -763,223 +783,48 @@ function App() {
                               )}
                             </div>
                           </div>
-                          <div className="iq-card align-items-center justify-content-center">
-                            <div
-                              className="iq-card-body"
-                              style={{ minHeight: "200px" }}
-                            >
-                              <Box sx={{ width: "100%" }}>
-                                <Box
-                                  sx={{
-                                    borderBottom: 1,
-                                    borderColor: "divider",
-                                  }}
-                                >
-                                  <Tabs
-                                    value={value}
-                                    onChange={handleChange}
-                                    allowScrollButtonsMobile
-                                    variant="scrollable"
-                                    aria-label="scrollable force tabs example"
-                                  >
-                                    <Tab
-                                      wrapped
-                                      label="Photos "
-                                      {...a11yProps(0)}
-                                    />
-                                    <Tab
-                                      wrapped
-                                      label="Albums"
-                                      {...a11yProps(1)}
-                                    />
-                                    <Button
-                                      variant="primary"
-                                      onClick={(e) => handleshow("photo")}
-                                      size="sm"
-                                      className="mr-3 p-2"
-                                      style={{
-                                        borderRadius: "0",
-                                        marginLeft: "auto",
-                                        height: "40px",
-                                        width: "150px",
-                                      }}
-                                    >
-                                      <span className="mr-2">
-                                        <Btn />
-                                      </span>
-                                      Afficher plus
-                                    </Button>
-                                  </Tabs>
-                                </Box>
-                                <TabPanel value={value} index={0}>
-                                  <div className="friend-list-tab mt-2">
-                                    <div className="tab-content">
-                                      <div
-                                        className="tab-pane fade active show"
-                                        id="photosofyou"
-                                        role="tabpanel"
-                                      >
-                                        <div className="iq-card-body p-0">
-                                          <div className="row g-0">
-                                            {photos
-                                              ?.slice(0, 12)
-                                              ?.map((img) => (
-                                                <div className="col-sm-2 col-xs-2 m-2">
-                                                  <div className="user-images position-relative overflow-hidden">
-                                                    <a>
-                                                      <ModalImage
-                                                        hideDownload
-                                                        small={img}
-                                                        large={img}
-                                                        className="img-fluid rounded"
-                                                        alt=""
-                                                      />
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              ))}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </TabPanel>
-                                <TabPanel value={value} index={1}>
-                                  {" "}
-                                  <div className="row">
-                                    {!showAlbum ? (
-                                      prof?.albums
-                                        ?.slice(0, 4)
-                                        ?.map((album) => (
-                                          <Card
-                                            className="ml-2 mr-2"
-                                            onClick={(e) =>
-                                              handleAlbum(album._id)
-                                            }
-                                            style={{ padding: 0 }}
-                                            sx={{ maxWidth: 280 }}
-                                          >
-                                            <CardActionArea>
-                                              <CardMedia
-                                                component="img"
-                                                height="140"
-                                                width={"300px"}
-                                                image={
-                                                  "http://skiesbook.com:3000/uploads/" +
-                                                  album?.images[0]
-                                                }
-                                                alt="album photo"
-                                              />
-                                              <CardContent>
-                                                <Typography
-                                                  className="d-flex justify-content-center"
-                                                  gutterBottom
-                                                  variant="h5"
-                                                  component="div"
-                                                >
-                                                  {album.name}
-                                                </Typography>
-                                              </CardContent>
-                                            </CardActionArea>
-                                          </Card>
-                                        ))
-                                    ) : (
-                                      <>
-                                        <div className="d-flex align-items-center m-2">
-                                          <Button
-                                            variant="primary"
-                                            size="xs"
-                                            className="mr-3"
-                                            style={{
-                                              borderRadius: "0",
-                                            }}
-                                            onClick={(e) => setShowAlbum(false)}
-                                          >
-                                            <FontAwesomeIcon
-                                              icon={faArrowLeft}
-                                              className="me-2"
-                                            />
-                                            Retour
-                                          </Button>
-                                          <h4>
-                                            {
-                                              prof?.albums?.find(
-                                                (x) => x._id === albumId
-                                              )?.name
-                                            }
-                                          </h4>
-                                        </div>
-                                        <div className="row g-0">
-                                          {prof?.albums
-                                            ?.find((x) => x._id === albumId)
-                                            ?.images?.map((img) => (
-                                              <div className="col-sm-2 col-xs-2 m-2">
-                                                <div className="user-images position-relative overflow-hidden">
-                                                  <a>
-                                                    <ModalImage
-                                                      hideDownload
-                                                      small={
-                                                        "http://skiesbook.com:3000/uploads/" +
-                                                        img
-                                                      }
-                                                      large={
-                                                        "http://skiesbook.com:3000/uploads/" +
-                                                        img
-                                                      }
-                                                      className="img-fluid rounded"
-                                                      alt="Responsive image"
-                                                    />
-                                                  </a>
-                                                </div>
-                                              </div>
-                                            ))}
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                </TabPanel>
-                              </Box>
-                              <div className="card-footer"></div>
-                            </div>
-                          </div>
+                          
                         </div>
-                      
-                        <div className="col-lg-3"    >
+
+                        <div className="col-lg-3">
                           <Sticky>
-                          <div
-                            className="iq-card p-2"
-                            style={{ minHeight: "400px" }}
-                          >
-                            <div className="iq-card-body">
-                              <div className="iq-header-title">
-                                <h4
-                                  style={{ color: "#525252" }}
-                                  className="card-title"
-                                >
-                                  Parcours 
-                                </h4>
-                              </div>
-                              <div className="scroll-area-x">
-                                <div className="timeline-list timeline-list--primary" >
-                                  {prof?.timeline?.map((timeline) => (
-                                    <div className="timeline-item">
-                                      <div className="timeline-item--content" style={{marginBottom:'40px'}}>
-                                        <div className="timeline-item--icon" />
-                                        <h4 className="timeline-item--label">
-                                          {moment(timeline.date).format(
-                                            "YYYY-MM-DD"
-                                          )}
-                                        </h4>
-                                        <small className="mt-2 d-block">
-                                          {timeline.message}
-                                        </small>
+                            <div
+                              className="iq-card p-2"
+                              style={{ minHeight: "400px" }}
+                            >
+                              <div className="iq-card-body">
+                                <div className="iq-header-title">
+                                  <h4
+                                    style={{ color: "#525252" }}
+                                    className="card-title"
+                                  >
+                                    Parcours
+                                  </h4>
+                                </div>
+                                <div className="scroll-area-x">
+                                  <div className="timeline-list timeline-list--primary">
+                                    {prof?.timeline?.map((timeline) => (
+                                      <div className="timeline-item">
+                                        <div
+                                          className="timeline-item--content"
+                                          style={{ marginBottom: "40px" }}
+                                        >
+                                          <div className="timeline-item--icon" />
+                                          <h4 className="timeline-item--label">
+                                            {moment(timeline.date).format(
+                                              "YYYY-MM-DD"
+                                            )}
+                                          </h4>
+                                          <small className="mt-2 d-block">
+                                            {timeline.message}
+                                          </small>
+                                        </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
                           </Sticky>
                         </div>
                       </div>
@@ -1708,7 +1553,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                Parcours 
+                                Parcours
                               </h4>
                             </div>
                             <div className="scroll-area-x">

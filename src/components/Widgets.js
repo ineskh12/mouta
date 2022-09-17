@@ -9,7 +9,6 @@ import { CircleChart, BarChart, SalesValueChart, SalesValueChartphone } from "./
 import Profile1 from "../assets/img/team/profile-picture-1.jpg";
 import ProfileCover from "../assets/img/profile-cover.jpg";
 
-import teamMembers from "../data/teamMembers";
 
 
 export const ProfileCardWidget = () => {
@@ -201,9 +200,7 @@ export const TeamMembersWidget = () => {
         <Button variant="secondary" size="sm">See all</Button>
       </Card.Header>
       <Card.Body>
-        <ListGroup className="list-group-flush list my--3">
-          {teamMembers.map(tm => <TeamMember key={`team-member-${tm.id}`} {...tm} />)}
-        </ListGroup>
+      
       </Card.Body>
     </Card>
   );
