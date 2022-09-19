@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 //import Profile from "./profiles/Profile/Profile";
 import {
   BrowserRouter as Router,
@@ -43,7 +43,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import PhotoIcon from "@mui/icons-material/Photo";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import ReactPlayer from "react-player";
-import { Col, Row, Form, Button, Modal } from "@themesberg/react-bootstrap";
+import {
+  Col,
+  Row,
+  Form,
+  Button,
+  Modal,
+  Image,
+} from "@themesberg/react-bootstrap";
 import Swal from "sweetalert2";
 import ChatIcon from "@mui/icons-material/Chat";
 import Carousel from "better-react-carousel";
@@ -271,7 +278,6 @@ function App() {
     setImageDisplay(image);
     setShowDefault3(true);
   }
-
   function displayVideo(video) {
     setVideoDisplay(video);
     setShowDefault4(true);
@@ -285,7 +291,7 @@ function App() {
         show={showDefault3}
         onHide={handleClose3}
       >
-        <img src={imageDisplay} alt="userImage"></img>
+        <Image thumbnail src={imageDisplay} alt="userImage"></Image>
       </Modal>
 
       <Modal
@@ -649,22 +655,21 @@ function App() {
                                 </h4>
                               </div>
 
-                              <Carousel cols={5} rows={1} loop>
+                              <Carousel height={"500px"} cols={4} rows={1} loop>
                                 {photos?.map((img, i) => (
                                   <Carousel.Item key={i}>
                                     {img.split(".").pop() === "mp4" ? (
-                                      <ReactPlayer
-                                      style={{borderRadius:"0"}}
-                                        url={img}
-                                        controls={true}
-                                        playing={false}
-                                        width="100%"
-                                        height="100%"
-                                        muted={true}
-                                        onClick={() => {
-                                          displayVideo(img);
-                                        }}
-                                      />
+                                      <>
+                                        <div className="okbb"></div>
+                                        <video
+                                        style={{borderRadius:"10px"}}
+                                          className="story "
+                                          src={img}
+                                          onClick={() => {
+                                            displayVideo(img);
+                                          }}
+                                        ></video>
+                                      </>
                                     ) : (
                                       <div
                                         style={{
@@ -738,12 +743,12 @@ function App() {
                                               <br />
                                               <span className="postDate">
                                                 &ensp;{" "}
-                                                {moment(
-                                                  comment?.timestamp
-                                                ).locale("fr").format(
-                                                  "LLLL"
-                                                  /* "DD/MM/YYYY" + ", " + "HH:mm" */
-                                                )}
+                                                {moment(comment?.timestamp)
+                                                  .locale("fr")
+                                                  .format(
+                                                    "LLLL"
+                                                    /* "DD/MM/YYYY" + ", " + "HH:mm" */
+                                                  )}
                                               </span>
                                             </Grid>
                                           </div>
@@ -783,7 +788,6 @@ function App() {
                               )}
                             </div>
                           </div>
-                          
                         </div>
 
                         <div className="col-lg-3">
@@ -1203,6 +1207,7 @@ function App() {
               </div>
             </div>
           </div>
+      
         </>
       ) : (
         <>

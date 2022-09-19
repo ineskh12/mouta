@@ -11,14 +11,8 @@ import GitHubButton from 'react-github-btn';
 import { Link } from 'react-router-dom';
 import { Routes } from "../routes";
 
-export default (props) => {
+export default function footer (props) {
   const currentYear = moment().get("year");
-  const showSettings = props.showSettings;
-
-  const toggleSettings = (toggle) => {
-    props.toggleSettings(toggle);
-  }
-
   return (
     <div>
     {/*  {showSettings ? (
@@ -74,20 +68,9 @@ export default (props) => {
             <ul className="list-inline list-group-flush list-group-borderless text-center text-xl-right mb-0">
               <li className="list-inline-item px-0 px-sm-2">
                 <Card.Link href="http://skiesbook.com:3000" target="_blank">
-                  About
+                  Terms and Conditions
                 </Card.Link>
-              </li>
-              <li className="list-inline-item px-0 px-sm-2">
-                <Card.Link href="http://skiesbook.com:3000" target="_blank">
-                  Themes
-                </Card.Link>
-              </li>
-            
-              <li className="list-inline-item px-0 px-sm-2">
-                <Card.Link href="http://skiesbook.com:3000" target="_blank">
-                  Contact
-                </Card.Link>
-              </li>
+             </li>
             </ul>
           </Col>
         </Row>
