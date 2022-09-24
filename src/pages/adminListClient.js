@@ -11,6 +11,8 @@ import {
   faPlus,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import Pagination from './pagination';
+import './pagination.css'
 import {
   Col,
   Row,
@@ -18,7 +20,7 @@ import {
   Image,
   Nav,
   Dropdown,
-  Pagination,
+ 
   Button,
   ButtonGroup,
   InputGroup,
@@ -59,6 +61,8 @@ import Swal from "sweetalert2";
 
 const GetClient = () => {
   const token = JSON.parse(localStorage.getItem("token"));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(3);
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
 
@@ -168,7 +172,12 @@ const GetClient = () => {
       allowOutsideClick: () => !Swal.isLoading(),
     });
   }
-
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+  //console.log(currentPosts);
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber)
   return (
     <>
       {/*     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -455,19 +464,16 @@ const GetClient = () => {
         </Card.Body>
         <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
           <Nav>
-            <Pagination className="mb-2 mb-lg-0">
-              <Pagination.Prev>Précédent</Pagination.Prev>
-              <Pagination.Item active>1</Pagination.Item>
-              <Pagination.Item>2</Pagination.Item>
-              <Pagination.Item>3</Pagination.Item>
-              <Pagination.Item>4</Pagination.Item>
-              <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>Suivant</Pagination.Next>
-            </Pagination>
+          
+          <Pagination
+         className="pagination"
+        postsPerPage={postsPerPage}
+        totalPosts={data.length}
+        paginate={paginate}
+      />
           </Nav>
-          <small className="fw-bold">
-            Affichage de <b>{2}</b> sur <b>25</b> entrées
-          </small>
+     
+     
         </Card.Footer>
       </Card>
     </>
@@ -685,7 +691,8 @@ const GetClient = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((row) => (
+            
+            {currentPosts?.map((row) => (
               <Rows key={row.name} row={row} />
             ))}
           </TableBody>

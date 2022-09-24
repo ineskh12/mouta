@@ -304,8 +304,8 @@ function App() {
           url={videoDisplay}
           controls={true}
           playing={true}
-          width="100%"
-          height="100%"
+          width="50%"
+          height="50%"
         />
       </Modal>
 
@@ -660,14 +660,14 @@ function App() {
                                   <Carousel.Item key={i}>
                                     {img.split(".").pop() === "mp4" ? (
                                       <>
-                                        <div className="okbb"></div>
+                                        <div className="okbb"   onClick={() => {
+                                            displayVideo(img);
+                                          }}></div>
                                         <video
                                         style={{borderRadius:"10px"}}
                                           className="story "
                                           src={img}
-                                          onClick={() => {
-                                            displayVideo(img);
-                                          }}
+                                         
                                         ></video>
                                       </>
                                     ) : (
@@ -737,12 +737,15 @@ function App() {
                                             </Avatar>
 
                                             <Grid item xs={4}>
-                                              <span className="postUsername">
+                                              <div style={{marginBottom: '-10px',}}>
+                                              <span className="postUsername" style={{marginLeft: '5px',}}>
                                                 {comment?.sender}
                                               </span>{" "}
-                                              <br />
-                                              <span className="postDate">
-                                                &ensp;{" "}
+                                              </div>
+                                             
+                                       
+                                              <span className="postDate" style={{marginLeft: '5px'}}>
+                                        
                                                 {moment(comment?.timestamp)
                                                   .locale("fr")
                                                   .format(
