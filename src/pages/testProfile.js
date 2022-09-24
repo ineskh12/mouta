@@ -40,8 +40,9 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import CssBaseline from "@mui/material/CssBaseline";
-import PhotoIcon from "@mui/icons-material/Photo";
+import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 import ReactPlayer from "react-player";
 import {
   Col,
@@ -52,9 +53,9 @@ import {
   Image,
 } from "@themesberg/react-bootstrap";
 import Swal from "sweetalert2";
-import ChatIcon from "@mui/icons-material/Chat";
 import Carousel from "better-react-carousel";
 import Sticky from "react-sticky-el";
+import Carrousa from "./story/caroussa";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,6 +93,25 @@ function a11yProps(index) {
 function App() {
   const [value, setValue] = React.useState(0);
   const [value1, setValue1] = React.useState(0);
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 4
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 3
+    }
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -105,7 +125,7 @@ function App() {
   const [parente, setparente] = useState({ etat: false, style: "nav-link" });
   const [hommage, sethommage] = useState({ etat: false, style: "nav-link" });
 
-  const [photos, setphotos] = useState(null);
+  const [photos, setphotos] = useState([]);
   const [prof, setprof] = useState(null);
   const [multi, setmultis] = useState(null);
   const [albumId, setAlbumId] = useState("");
@@ -282,7 +302,6 @@ function App() {
     setVideoDisplay(video);
     setShowDefault4(true);
   }
-
   return (
     <div className="app">
       <Modal
@@ -300,6 +319,7 @@ function App() {
         show={showDefault4}
         onHide={handleClose4}
       >
+<<<<<<< HEAD
         <ReactPlayer
           url={videoDisplay}
           controls={true}
@@ -307,6 +327,17 @@ function App() {
           width="50%"
           height="50%"
         />
+=======
+        <div style={{ maxHeight: "850px" }}>
+          <ReactPlayer
+            url={videoDisplay}
+            controls={true}
+            playing={true}
+            width="100%"
+            height="100%"
+          />
+        </div>
+>>>>>>> 2b279113929978a289675375fac6a9bff7dda8b0
       </Modal>
 
       <Modal
@@ -664,7 +695,7 @@ function App() {
                                             displayVideo(img);
                                           }}></div>
                                         <video
-                                        style={{borderRadius:"10px"}}
+                                          style={{ borderRadius: "10px" }}
                                           className="story "
                                           src={img}
                                          
@@ -722,6 +753,26 @@ function App() {
                                 >
                                   Hommages
                                 </h4>
+                                <div className="iq-card-header-toolbar d-flex align-items-center">
+                                  <Button
+                                    variant="primary"
+                                    onClick={(e) => setShowDefault2(true)}
+                                    size="sm"
+                                    className="mb-2 mr-3"
+                                    style={{
+                                      borderRadius: "0",
+                                      marginLeft: "auto",
+                                      marginTop: "-50px",
+                                      height: "40px",
+                                      width: "200px",
+                                    }}
+                                  >
+                                    <span className="mr-2">
+                                      <Btn />
+                                    </span>
+                                    Ajouter un hommage
+                                  </Button>
+                                </div>
                               </div>
 
                               {prof?.comments?.map(
@@ -737,8 +788,15 @@ function App() {
                                             </Avatar>
 
                                             <Grid item xs={4}>
+<<<<<<< HEAD
                                               <div style={{marginBottom: '-10px',}}>
                                               <span className="postUsername" style={{marginLeft: '5px',}}>
+=======
+                                              <span
+                                                style={{ fontSize: "1.2em" }}
+                                                className="postUsername"
+                                              >
+>>>>>>> 2b279113929978a289675375fac6a9bff7dda8b0
                                                 {comment?.sender}
                                               </span>{" "}
                                               </div>
@@ -1128,7 +1186,7 @@ function App() {
                                         </div>
                                         <div className="media-support-info">
                                           <div className="row">
-                                            <h5>{comment?.sender}</h5>
+                                            <h4>{comment?.sender}</h4>
                                           </div>
 
                                           <p className="mb-0">
@@ -1210,7 +1268,6 @@ function App() {
               </div>
             </div>
           </div>
-      
         </>
       ) : (
         <>
@@ -1291,8 +1348,22 @@ function App() {
                 >
                   <div hidden={!parcours.etat} className="container p-0">
                     <div className="row">
-                      <div className="col-lg-8">
-                        <div className="iq-card p-2">
+                      <div className="col-lg-4">
+                        <div className="iq-card">
+                          <div className="iq-card-body">
+                            <div className="iq-header-title">
+                              <h4
+                                style={{ color: "#525252" }}
+                                className="card-title"
+                              >
+                                Images
+                              </h4>
+                            </div>
+
+                           <Carrousa photos={photos}></Carrousa>
+                          </div>
+                        </div>
+                        <div className="iq-card p-0">
                           <div className="iq-card-body">
                             <div className="iq-header-title">
                               <h4
@@ -1305,288 +1376,113 @@ function App() {
                             <span> {prof?.bio}</span>
                           </div>
                         </div>
-                        <div className="iq-card align-items-center justify-content-center">
-                          <div
-                            className="iq-card-body"
-                            style={{ minHeight: "200px" }}
-                          >
-                            <Box sx={{ width: "100%" }}>
-                              <Box
-                                sx={{
-                                  borderBottom: 1,
-                                  borderColor: "divider",
-                                }}
+                        <div className="iq-card p-0">
+                          <div className="iq-card-body">
+                            <div className="iq-header-title">
+                              <h4
+                                style={{ color: "#525252" }}
+                                className="card-title"
                               >
-                                <Tabs
-                                  value={value}
-                                  onChange={handleChange}
-                                  allowScrollButtonsMobile
-                                  variant="scrollable"
-                                  aria-label="scrollable force tabs example"
+                                Hommages
+                              </h4>
+                              <div className="iq-card-header-toolbar d-flex align-items-center">
+                                <Button
+                                  variant="primary"
+                                  onClick={(e) => setShowDefault2(true)}
+                                  size="sm"
+                                  className="mb-2 mr-3"
+                                  style={{
+                                    borderRadius: "0",
+                                    marginLeft: "auto",
+                                    marginTop: "-50px",
+                                    height: "40px",
+                                    width: "200px",
+                                  }}
                                 >
-                                  <Tab
-                                    wrapped
-                                    label="Photos "
-                                    {...a11yProps(0)}
-                                  />
-                                  <Tab
-                                    wrapped
-                                    label="Albums"
-                                    {...a11yProps(1)}
-                                  />
-                                  <Button
-                                    variant="primary"
-                                    onClick={(e) => handleshow("photo")}
-                                    size="sm"
-                                    className="mr-3 p-2"
-                                    style={{
-                                      borderRadius: "0",
-                                      marginLeft: "auto",
-                                      height: "40px",
-                                      width: "150px",
-                                    }}
-                                  >
-                                    <span className="mr-2">
-                                      <Btn />
-                                    </span>
-                                    Afficher plus
-                                  </Button>
-                                </Tabs>
-                              </Box>
-                              <TabPanel value={value} index={0}>
-                                <div className="friend-list-tab mt-2">
-                                  <div className="tab-content">
-                                    <div
-                                      className="tab-pane fade active show"
-                                      id="photosofyou"
-                                      role="tabpanel"
-                                    >
-                                      <div className="iq-card-body p-0">
-                                        <div className="row">
-                                          {photos?.slice(0, 12)?.map((img) => (
-                                            <div className="col mb-3">
-                                              <div className="user-images position-relative overflow-hidden">
+                                  <span className="mr-2">
+                                    <Btn />
+                                  </span>
+                                  Ajouter un hommage
+                                </Button>
+                              </div>
+                            </div>
+
+                            {prof?.comments?.map(
+                              (comment) =>
+                                comment?.state === 1 && (
+                                  <div className="post">
+                                    <div className="postWrapper">
+                                      <div className="postTop">
+                                        <div className="postTopLeft">
+                                          <Avatar>
+                                            {" "}
+                                            {comment?.sender[0]}{" "}
+                                          </Avatar>
+
+                                          <Grid item xs={4}>
+                                            <span
+                                              style={{ fontSize: "1.2em" }}
+                                              className="postUsername"
+                                            >
+                                              {comment?.sender}
+                                            </span>{" "}
+                                            <br />
+                                            <span className="postDate">
+                                              &ensp;{" "}
+                                              {moment(comment?.timestamp)
+                                                .locale("fr")
+                                                .format(
+                                                  "LLLL"
+                                                  /* "DD/MM/YYYY" + ", " + "HH:mm" */
+                                                )}
+                                            </span>
+                                          </Grid>
+                                        </div>
+                                      </div>
+
+                                      <div className="postCenter">
+                                        <span className="postText">
+                                          {comment?.message}
+                                        </span>
+                                        {(comment?.images).length > 0 && (
+                                          <div className="row g-0">
+                                            {comment?.images?.map((img) => (
+                                              <div className="col-sm-2 col-xs-2 m-2">
                                                 <a>
                                                   <ModalImage
                                                     hideDownload
-                                                    small={img}
-                                                    large={img}
+                                                    small={
+                                                      "http://skiesbook.com:3000/uploads/" +
+                                                      img
+                                                    }
+                                                    large={
+                                                      "http://skiesbook.com:3000/uploads/" +
+                                                      img
+                                                    }
                                                     className="img-fluid rounded"
                                                     alt=""
                                                   />
                                                 </a>
                                               </div>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </TabPanel>
-                              <TabPanel value={value} index={1}>
-                                <div className="tab-content">
-                                  <div
-                                    className="tab-pane fade active show"
-                                    id="albums"
-                                    role="tabpanel"
-                                  >
-                                    <div className="iq-card-body p-0">
-                                      <div className="row">
-                                        {!showAlbum ? (
-                                          prof?.albums
-                                            ?.slice(0, 4)
-                                            ?.map((album) => (
-                                              <Card
-                                                className="ml-2 mr-2"
-                                                onClick={(e) =>
-                                                  handleAlbum(album._id)
-                                                }
-                                                style={{ maxWidth: 250 }}
-                                              >
-                                                <CardActionArea>
-                                                  <CardMedia
-                                                    component="img"
-                                                    height="140"
-                                                    image={
-                                                      "http://skiesbook.com:3000/uploads/" +
-                                                      album?.images[0]
-                                                    }
-                                                    alt="album photo"
-                                                  />
-                                                  <CardContent>
-                                                    <Typography
-                                                      className="d-flex justify-content-center"
-                                                      gutterBottom
-                                                      variant="h5"
-                                                      component="div"
-                                                    >
-                                                      {album.name}
-                                                    </Typography>
-                                                  </CardContent>
-                                                </CardActionArea>
-                                              </Card>
-                                            ))
-                                        ) : (
-                                          <>
-                                            <div className="d-flex align-items-center m-2">
-                                              <Button
-                                                variant="primary"
-                                                size="xs"
-                                                className="m-3"
-                                                onClick={(e) =>
-                                                  setShowAlbum(false)
-                                                }
-                                              >
-                                                <FontAwesomeIcon
-                                                  icon={faArrowLeft}
-                                                  className="me-2"
-                                                />
-                                                Retour
-                                              </Button>
-                                              <h4>
-                                                {
-                                                  prof?.albums?.find(
-                                                    (x) => x._id === albumId
-                                                  )?.name
-                                                }
-                                              </h4>
-                                            </div>
-                                            <div className="row">
-                                              {prof?.albums
-                                                ?.find((x) => x._id === albumId)
-                                                ?.images?.map((img) => (
-                                                  <div className="col mb-3">
-                                                    <div className="user-images position-relative overflow-hidden">
-                                                      <a>
-                                                        <ModalImage
-                                                          hideDownload
-                                                          small={
-                                                            "http://skiesbook.com:3000/uploads/" +
-                                                            img
-                                                          }
-                                                          large={
-                                                            "http://skiesbook.com:3000/uploads/" +
-                                                            img
-                                                          }
-                                                          className="img-fluid rounded"
-                                                          alt="Responsive image"
-                                                        />
-                                                      </a>
-                                                    </div>
-                                                  </div>
-                                                ))}
-                                            </div>
-                                          </>
+                                            ))}
+                                          </div>
                                         )}
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              </TabPanel>
-                            </Box>
-                            <div className="card-footer"></div>
-                          </div>
-                        </div>
-
-                        <div className="iq-card p-2">
-                          <div className="iq-card-body">
-                            <div className="iq-header-title">
-                              <h4
-                                style={{ color: "#525252" }}
-                                className="card-title"
-                              >
-                                Parenté
-                              </h4>
-                            </div>
-                            <div className="iq-card-header-toolbar d-flex align-items-center">
-                              <Button
-                                variant="primary"
-                                onClick={(e) => handleshow("parente")}
-                                size="sm"
-                                className="mb-2 mr-3"
-                                style={{
-                                  borderRadius: "0",
-                                  marginLeft: "auto",
-                                  marginTop: "-50px",
-                                  height: "40px",
-                                  width: "150px",
-                                }}
-                              >
-                                <span className="mr-2">
-                                  <Btn />
-                                </span>
-                                Afficher plus
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="iq-card-body">
-                            <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
-                              {prof?.friends?.slice(0, 12)?.map((profile) => (
-                                <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
-                                  <a href={"/prof/" + profile?.prof?._id}>
-                                    <img
-                                      src={
-                                        "http://skiesbook.com:3000/uploads/" +
-                                        profile?.prof?.profileImage
-                                      }
-                                      alt="friend-img"
-                                      className="img-fluid"
-                                    />
-                                  </a>
-                                  <h6
-                                    onClick={(e) =>
-                                      history.push(
-                                        "/prof/" + profile?.prof?._id
-                                      )
-                                    }
-                                    className="mt-2"
-                                  >
-                                    {profile?.prof?.profileName}{" "}
-                                    {profile?.prof?.profileLastName}{" "}
-                                  </h6>
-                                  <span>{profile?.lien}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <div className="card-footer"></div>
+                                )
+                            )}
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-4">
-                        <div className="iq-card p-2">
-                          <div className="iq-card-body">
-                            <div className="iq-header-title">
-                              <h4
-                                style={{ color: "#525252" }}
-                                className="card-title"
-                              >
-                                Parcours
-                              </h4>
-                            </div>
-                            <div className="scroll-area-x">
-                              <div className="timeline-list mb-4 timeline-list--primary">
-                                {prof?.timeline?.map((timeline) => (
-                                  <div className="timeline-item">
-                                    <div className="timeline-item--content">
-                                      <div className="timeline-item--icon" />
-                                      <h4 className="timeline-item--label">
-                                        {moment(timeline.date).format(
-                                          "YYYY-MM-DD"
-                                        )}
-                                      </h4>
-                                      <small className="mt-2 d-block">
-                                        {timeline.message}
-                                      </small>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
+
+                  <div hidden={!images.etat} id="photos" role="tabpanel">
+                    <div className="iq-card">
+                      <div className="col-lg-3">
                         <div
-                          className="iq-card p-2"
+                          className="iq-card p-2 "
                           style={{ minHeight: "200px" }}
                         >
                           <div className="iq-card-header d-flex justify-content-between">
@@ -1600,194 +1496,54 @@ function App() {
                             </div>
                           </div>
                           <div className="iq-card-body">
-                            <div className="iq-card-body">
-                              <p> Adresse : {prof?.graveyard?.address} </p>
-                              <p>
-                                {" "}
-                                Contact cimetière: {prof?.graveyard?.phone}{" "}
-                              </p>
-                            </div>
+                            <p> Adresse : {prof?.graveyard?.address} </p>
+                            <p> Contact cimetière: {prof?.graveyard?.phone} </p>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div hidden={!images.etat} id="photos" role="tabpanel">
-                    <div className="iq-card">
-                      <div className="iq-card-body">
-                        <Box sx={{ width: "100%" }}>
-                          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <Tabs
-                              value={value}
-                              onChange={handleChange}
-                              allowScrollButtonsMobile
-                              variant="scrollable"
-                              aria-label="scrollable force tabs example"
-                            >
-                              <Tab wrapped label="Photos " {...a11yProps(0)} />
-                              <Tab wrapped label="Albums" {...a11yProps(1)} />
-                            </Tabs>
-                          </Box>
-                          <TabPanel value={value} index={0}>
-                            <div className="friend-list-tab mt-2">
-                              <div className="tab-content">
-                                <div
-                                  className="tab-pane fade active show"
-                                  id="photosofyou"
-                                  role="tabpanel"
-                                >
-                                  <div className="iq-card-body p-0">
-                                    <div className="row">
-                                      {photos?.map((img) => (
-                                        <div className="col mb-3">
-                                          <div className="user-images position-relative overflow-hidden">
-                                            <a>
-                                              <ModalImage
-                                                small={img}
-                                                large={img}
-                                                className="img-fluid rounded"
-                                                alt="Responsive image"
-                                              />
-                                            </a>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </TabPanel>
-                          <TabPanel value={value} index={1}>
-                            <div className="friend-list-tab mt-2">
-                              <div className="tab-content">
-                                <div
-                                  className="tab-pane fade active show"
-                                  id="photosofyou"
-                                  role="tabpanel"
-                                >
-                                  <div className="iq-card-body p-0">
-                                    <div className="row">
-                                      {!showAlbum ? (
-                                        prof?.albums?.map((album) => (
-                                          <Card
-                                            className="m-4"
-                                            onClick={(e) =>
-                                              handleAlbum(album._id)
-                                            }
-                                            style={{ maxWidth: 320 }}
-                                          >
-                                            <CardActionArea>
-                                              <CardMedia
-                                                component="img"
-                                                height="140"
-                                                image={
-                                                  "http://skiesbook.com:3000/uploads/" +
-                                                  album?.images[0]
-                                                }
-                                                alt="album photo"
-                                              />
-                                              <CardContent>
-                                                <Typography
-                                                  className="d-flex justify-content-center"
-                                                  gutterBottom
-                                                  variant="h5"
-                                                  component="div"
-                                                >
-                                                  {album.name}
-                                                </Typography>
-                                              </CardContent>
-                                            </CardActionArea>
-                                          </Card>
-                                        ))
-                                      ) : (
-                                        <>
-                                          <div className="d-flex align-items-center m-2">
-                                            <Button
-                                              variant="primary"
-                                              size="xs"
-                                              className="m-3"
-                                              onClick={(e) =>
-                                                setShowAlbum(false)
-                                              }
-                                            >
-                                              <FontAwesomeIcon
-                                                icon={faArrowLeft}
-                                                className="me-2"
-                                              />
-                                              Retour
-                                            </Button>
-                                            <h4>
-                                              {
-                                                prof?.albums?.find(
-                                                  (x) => x._id === albumId
-                                                )?.name
-                                              }
-                                            </h4>
-                                          </div>
-                                          <div className="row">
-                                            {prof?.albums
-                                              ?.find((x) => x._id === albumId)
-                                              ?.images?.map((img) => (
-                                                <div className="col mb-3">
-                                                  <div className="user-images position-relative overflow-hidden">
-                                                    <a>
-                                                      <ModalImage
-                                                        small={
-                                                          "http://skiesbook.com:3000/uploads/" +
-                                                          img
-                                                        }
-                                                        large={
-                                                          "http://skiesbook.com:3000/uploads/" +
-                                                          img
-                                                        }
-                                                        className="img-fluid rounded"
-                                                        alt="Responsive image"
-                                                      />
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              ))}
-                                          </div>
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </TabPanel>
-                        </Box>
+                      
                       </div>
                     </div>
                   </div>
 
                   <div hidden={!videos.etat} className="iq-card p-2">
-                    <div className="iq-card-body">
-                      <div className="iq-header-title">
-                        <h4 style={{ color: "#525252" }} className="card-title">
-                          Videos
-                        </h4>
-                      </div>
-
-                      {multi?.length > 0 ? (
-                        <div className="row">
-                          {multi?.map((video) => (
-                            <div className="col-md-4 col-lg-3 mb-2">
-                              <ReactPlayer
-                                playing
-                                width={"100%"}
-                                controls
-                                muted={false}
-                                url={video}
-                              />
+                    <div className="col-lg-3">
+                      <div
+                        className="iq-card p-2"
+                        style={{ minHeight: "400px" }}
+                      >
+                        <div className="iq-card-body">
+                          <div className="iq-header-title">
+                            <h4
+                              style={{ color: "#525252" }}
+                              className="card-title"
+                            >
+                              Parcours
+                            </h4>
+                          </div>
+                          <div className="scroll-area-x">
+                            <div className="timeline-list timeline-list--primary">
+                              {prof?.timeline?.map((timeline) => (
+                                <div className="timeline-item">
+                                  <div
+                                    className="timeline-item--content"
+                                    style={{ marginBottom: "40px" }}
+                                  >
+                                    <div className="timeline-item--icon" />
+                                    <h4 className="timeline-item--label">
+                                      {moment(timeline.date).format(
+                                        "YYYY-MM-DD"
+                                      )}
+                                    </h4>
+                                    <small className="mt-2 d-block">
+                                      {timeline.message}
+                                    </small>
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          </div>
                         </div>
-                      ) : (
-                        <span>Aucune vidéo trouvée</span>
-                      )}
+                      </div>
                     </div>
                   </div>
                   <div hidden={!parente.etat} className="iq-card">
@@ -1866,85 +1622,60 @@ function App() {
                           {prof?.comments?.map(
                             (comment) =>
                               comment?.state === 1 && (
-                                <div class="post-item mt-2">
-                                  <div class="user-post-data p-3">
-                                    <div class="d-flex flex-wrap">
-                                      <div class="media-support-user-img mr-3">
-                                        <Avatar
-                                          alt={comment?.sender}
-                                          src={
-                                            "http://skiesbook.com:3000/uploads/"
-                                          }
-                                          className="mx-auto"
-                                        />
-                                      </div>
-                                      <div className="media-support-info">
-                                        <div className="row">
-                                          <h5>{comment?.sender}</h5>
-                                        </div>
+                                <div className="post">
+                                  <div className="postWrapper">
+                                    <div className="postTop">
+                                      <div className="postTopLeft">
+                                        <Avatar> {comment?.sender[0]} </Avatar>
 
-                                        <p className="mb-0">
-                                          {moment(comment?.timestamp).fromNow()}
-                                        </p>
-                                      </div>
-                                      <div className="iq-card-post-toolbar">
-                                        <div className="dropdown">
+                                        <Grid item xs={4}>
                                           <span
-                                            className="dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            role="button"
+                                            style={{ fontSize: "1.2em" }}
+                                            className="postUsername"
                                           >
-                                            <i className="ri-flag-2-line"></i>
+                                            {comment?.sender}
+                                          </span>{" "}
+                                          <br />
+                                          <span className="postDate">
+                                            &ensp;{" "}
+                                            {moment(comment?.timestamp)
+                                              .locale("fr")
+                                              .format(
+                                                "LLLL"
+                                                /* "DD/MM/YYYY" + ", " + "HH:mm" */
+                                              )}
                                           </span>
-                                        </div>
+                                        </Grid>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="user-post">
-                                    {(comment?.images).length > 0 && (
-                                      <div className="row g-0">
-                                        {comment?.images?.map((img) => (
-                                          <div className="col mb-3">
-                                            <a>
-                                              <ModalImage
-                                                hideDownload
-                                                small={
-                                                  "http://skiesbook.com:3000/uploads/" +
-                                                  img
-                                                }
-                                                large={
-                                                  "http://skiesbook.com:3000/uploads/" +
-                                                  img
-                                                }
-                                                className="img-fluid rounded"
-                                                alt=""
-                                              />
-                                            </a>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                    <span> {comment?.message}</span>
-                                    <div className="comment-area mt-3">
-                                      <div className="d-flex justify-content-between align-items-center">
-                                        <div className="like-block position-relative d-flex align-items-center">
-                                          <div className="d-flex align-items-center">
-                                            <div className="like-data">
-                                              <div className="dropdown">
-                                                <span
-                                                  className="dropdown-toggle"
-                                                  data-toggle="dropdown"
-                                                  aria-haspopup="true"
-                                                  aria-expanded="false"
-                                                  role="button"
-                                                ></span>
-                                              </div>
+
+                                    <div className="postCenter">
+                                      <span className="postText">
+                                        {comment?.message}
+                                      </span>
+                                      {(comment?.images).length > 0 && (
+                                        <div className="row g-0">
+                                          {comment?.images?.map((img) => (
+                                            <div className="col-sm-2 col-xs-2 m-2">
+                                              <a>
+                                                <ModalImage
+                                                  hideDownload
+                                                  small={
+                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    img
+                                                  }
+                                                  large={
+                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    img
+                                                  }
+                                                  className="img-fluid rounded"
+                                                  alt=""
+                                                />
+                                              </a>
                                             </div>
-                                          </div>
+                                          ))}
                                         </div>
-                                      </div>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -1973,29 +1704,24 @@ function App() {
                 }}
               >
                 <BottomNavigationAction
-                  label="Parcous"
+                  label="Accueil"
                   onClick={(e) => handleshow("parcours")}
                   icon={<AccountCircle />}
                 />
                 <BottomNavigationAction
-                  label="Photos"
+                  label="Emplacement"
                   onClick={(e) => handleshow("photo")}
-                  icon={<PhotoIcon />}
+                  icon={<PinDropIcon />}
                 />
                 <BottomNavigationAction
-                  label="Videos"
+                  label="Parcours"
                   onClick={(e) => handleshow("videos")}
-                  icon={<VideoCallIcon />}
+                  icon={<ViewTimelineIcon />}
                 />
                 <BottomNavigationAction
                   label="Parenté"
                   onClick={() => handleshow("parente")}
                   icon={<FamilyRestroomIcon />}
-                />
-                <BottomNavigationAction
-                  label="Hommages"
-                  onClick={() => handleshow("hommage")}
-                  icon={<ChatIcon />}
                 />
               </BottomNavigation>
             </Paper>
