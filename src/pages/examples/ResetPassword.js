@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 
 import React,{useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +18,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 
-export default () => {
+export default  () => {
   let { id } = useParams();
 
   const [passwordType, setPasswordType] = useState("password");
@@ -40,14 +41,13 @@ export default () => {
       id: id,
       password:Password
     }
-console.log(mydata)
    await axios
      .post("http://skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
      .then((response) => {
        Swal.fire({
          position: "center",
          icon: "success",
-         title: "Mot de passe updated succesfully",
+         title: "Password updated succesfully",
          showConfirmButton: true,
        }).then((result) => {
          if (result.isConfirmed) {

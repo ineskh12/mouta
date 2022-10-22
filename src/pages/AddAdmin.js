@@ -219,7 +219,7 @@ const [data, setData] = useState([]);
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/users/addadmin",
+            "http://www.skiesbook.com:3000/api/v1/users/addadmin",
             mydata,
             config
           )

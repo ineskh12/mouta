@@ -20,7 +20,6 @@ import {
   Nav,
   Card,
   Table,
-  
   Row,
   Form,
   Button,
@@ -43,8 +42,8 @@ import {
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
 import { Badge } from "@themesberg/react-bootstrap";
-import Pagination from './pagination';
-import './pagination.css'
+import Pagination from "./pagination";
+import "./pagination.css";
 export default function AllSuperAdmins() {
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +72,7 @@ export default function AllSuperAdmins() {
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
   //console.log(currentPosts);
   // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -187,29 +186,33 @@ export default function AllSuperAdmins() {
                   <td>
                     {" "}
                     <>
-                      {dm?.role ==="help"
-                        ?   <Badge bg="primary" className="me-1">Help desk</Badge>
-                        : dm?.role ==="sales"
-                        ? <Badge bg="success" className="me-1">Sales</Badge>
-
-                        :  dm?.role ==="sadmin"
-                        ? <Badge bg="warning" className="me-1">Admin</Badge> : "none"}
-                      
+                      {dm?.role === "help" ? (
+                        <Badge bg="primary" className="me-1">
+                          Help desk
+                        </Badge>
+                      ) : dm?.role === "sales" ? (
+                        <Badge bg="success" className="me-1">
+                          Sales
+                        </Badge>
+                      ) : dm?.role === "sadmin" ? (
+                        <Badge bg="warning" className="me-1">
+                          Admin
+                        </Badge>
+                      ) : (
+                        "none"
+                      )}
                     </>
                   </td>
 
                   <td>
-                    
                     <Button
                       className="m-1"
-                      onClick={() =>
-                        history.push("/editsuperadmin/" + dm?._id)
-                      }                      variant="primary"
+                      onClick={() => history.push("/editsuperadmin/" + dm?._id)}
+                      variant="primary"
                       size="sm"
                     >
-                      <FontAwesomeIcon icon={faEdit}  />{" "}
+                      <FontAwesomeIcon icon={faEdit} />{" "}
                     </Button>
-                  
                   </td>
                 </tr>
               ))}
@@ -217,14 +220,13 @@ export default function AllSuperAdmins() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-            <Pagination 
-         className="pagination"
-        postsPerPage={postsPerPage}
-        totalPosts={data.length}
-        paginate={paginate}
-      />
+              <Pagination
+                className="pagination"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-           
           </Card.Footer>
         </Card.Body>
       </Card>

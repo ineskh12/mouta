@@ -1,11 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, Fragment, useRef } from "react";
 //import Profile from "./profiles/Profile/Profile";
-import {
-  BrowserRouter as Router,
-  useParams,
-  useHistory,
-} from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Btn from "./images/btn";
 import axios from "axios";
@@ -34,15 +30,15 @@ import moment from "moment-timezone";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea, Paper } from "@mui/material";
+import { CardActionArea, Icon, Paper } from "@mui/material";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
 import PinDropIcon from "@mui/icons-material/PinDrop";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ReactPlayer from "react-player";
 import {
   Col,
@@ -53,9 +49,9 @@ import {
   Image,
 } from "@themesberg/react-bootstrap";
 import Swal from "sweetalert2";
-import Carousel from "better-react-carousel";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import Sticky from "react-sticky-el";
-import Carrousa from "./story/caroussa";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -97,20 +93,20 @@ function App() {
     superLargeDesktop: {
       // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
-      items: 5
+      items: 5,
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 3
+      items: 5,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 4
+      items: 5,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 3
-    }
+      items: 3,
+    },
   };
 
   const handleChange = (event, newValue) => {
@@ -230,7 +226,7 @@ function App() {
   };
 
   const [width, setWidth] = useState(window.innerWidth);
-  const isMobile = width <= 768;
+  const isMobile = width <= 820;
 
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
@@ -257,7 +253,6 @@ function App() {
     mydata.append("message", inputList.message);
 
     mydata.append("email", inputList.email);
-    console.log(upload.files);
     for (let i = 0; i < upload.files.length; i++) {
       mydata.append("files", upload.files[i]);
     }
@@ -309,8 +304,14 @@ function App() {
         className="d-flex justify-content-center"
         show={showDefault3}
         onHide={handleClose3}
+        dialogClassName=" "
       >
-        <Image thumbnail src={imageDisplay} alt="userImage"></Image>
+        <Image
+          style={{ maxHeight: "700px" }}
+          thumbnail
+          src={imageDisplay}
+          alt="userImage"
+        ></Image>
       </Modal>
 
       <Modal
@@ -319,7 +320,7 @@ function App() {
         show={showDefault4}
         onHide={handleClose4}
       >
-        <div style={{ maxHeight: "850px" }}>
+        <div style={{ maxHeight: "700px" }}>
           <ReactPlayer
             url={videoDisplay}
             controls={true}
@@ -327,7 +328,7 @@ function App() {
             width="100%"
             height="100%"
           />
-        </div>
+        </div>{" "}
       </Modal>
 
       <Modal
@@ -342,11 +343,38 @@ function App() {
           </Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="align-items-center justify-content-center">
           <p>Scanner le Code QR</p>
           <Qrcode myvalue={"http://www.skiesbook.com/prof/" + id}></Qrcode>
           <hr />
-          <div className="d-flex flex-row align-items-center  justify-content-center">
+
+          <div className="d-flex flex-row align-items-center justify-content-center">
+            {
+              //copy url to clipboard span tag
+              navigator.clipboard ? (
+                <span
+                  className="btn btn-primary btn-sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "http://www.skiesbook.com/prof/" + id
+                    );
+                    Swal.fire({
+                      position: "center",
+                      icon: "success",
+                      title: "Lien copié",
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
+                  }}
+                >
+                  <ContentCopyIcon />
+                  Copier le lien
+                </span>
+              ) : (
+                ""
+              )
+            }
+
             <FacebookShareButton
               url={"www.skiesbook.com/prof/" + id}
               quote={
@@ -504,15 +532,15 @@ function App() {
                   </div>
                   <div style={{ top: "45%" }} className="user-detail prof">
                     <div className="profile-img">
-                      <ModalImage
-                        small={
+                      <img
+                        src={
                           "http://skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
-                        large={
-                          "http://skiesbook.com:3000/uploads/" +
-                          prof?.profileImage
-                        }
+                        onClick={() => {
+                          displayImage("http://skiesbook.com:3000/uploads/" +
+                          prof?.profileImage);
+                        }}
                         alt="profile-img"
                         className="avatar-130 img-fluid"
                       />
@@ -676,19 +704,24 @@ function App() {
                                 </h4>
                               </div>
 
-                              <Carousel height={"500px"} cols={4} rows={1} loop>
+                              <Carousel responsive={responsive}>
                                 {photos?.map((img, i) => (
-                                  <Carousel.Item key={i}>
+                                  <div key={i}>
                                     {img.split(".").pop() === "mp4" ? (
                                       <>
-                                        <div className="okbb"></div>
-                                        <video
-                                          style={{ borderRadius: "10px" }}
-                                          className="story "
-                                          src={img}
+                                        <div
+                                          className="okbb"
                                           onClick={() => {
                                             displayVideo(img);
                                           }}
+                                        ></div>
+                                        <video
+                                          onClick={() => {
+                                            displayVideo(img);
+                                          }}
+                                          style={{ borderRadius: "10px" }}
+                                          className="story "
+                                          src={img}
                                         ></video>
                                       </>
                                     ) : (
@@ -703,20 +736,7 @@ function App() {
                                         }}
                                       ></div>
                                     )}
-
-                                    {/* 
-                                     <div
-                                      style={{
-                                        backgroundImage: `url(${img})`,
-                                        backgroundRepeat: "no-repeat",
-                                      }}
-                                      className="story"
-                                      onClick={() => {
-                                        displayImage(img);
-                                      }}
-                                    ></div> 
-                                    <p> {img.type}</p> */}
-                                  </Carousel.Item>
+                                  </div>
                                 ))}
                               </Carousel>
                             </div>
@@ -778,15 +798,23 @@ function App() {
                                             </Avatar>
 
                                             <Grid item xs={4}>
-                                              <span
-                                                style={{ fontSize: "1.2em" }}
-                                                className="postUsername"
+                                              <div
+                                                style={{
+                                                  marginBottom: "-10px",
+                                                }}
                                               >
-                                                {comment?.sender}
-                                              </span>{" "}
-                                              <br />
-                                              <span className="postDate">
-                                                &ensp;{" "}
+                                                <span
+                                                  className="postUsername"
+                                                  style={{ marginLeft: "5px" }}
+                                                >
+                                                  {comment?.sender}
+                                                </span>{" "}
+                                              </div>
+
+                                              <span
+                                                className="postDate"
+                                                style={{ marginLeft: "5px" }}
+                                              >
                                                 {moment(comment?.timestamp)
                                                   .locale("fr")
                                                   .format(
@@ -1269,14 +1297,13 @@ function App() {
                     style={{ top: "40%" }}
                     className="user-detail text-center mb-2"
                   >
-                    <div className="profile-img">
+                    <div className="profile-img2">
                       <img
                         src={
                           "http://skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
                         alt="profile-img"
-                        className="avatar-130 img-fluid"
                       />
                     </div>
                     <div className="profile-detail">
@@ -1343,7 +1370,38 @@ function App() {
                               </h4>
                             </div>
 
-                           <Carrousa photos={photos}></Carrousa>
+                            <Carousel responsive={responsive}>
+                              {photos?.map((img, i) => (
+                                <div key={i}>
+                                  {img.split(".").pop() === "mp4" ? (
+                                    <>
+                                      <div className="okbb"   onClick={() => {
+                                            displayVideo(img);
+                                          }}></div>
+                                      <video
+                                        style={{ borderRadius: "10px" }}
+                                        className="story "
+                                        onClick={() => {
+                                          displayVideo(img);
+                                        }}
+                                        src={img}
+                                      ></video>
+                                    </>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        backgroundImage: `url(${img})`,
+                                        backgroundRepeat: "no-repeat",
+                                      }}
+                                      onClick={() => {
+                                        displayImage(img);
+                                      }}
+                                      className="storyMobile"
+                                    ></div>
+                                  )}
+                                </div>
+                              ))}
+                            </Carousel>
                           </div>
                         </div>
                         <div className="iq-card p-0">
@@ -1483,7 +1541,6 @@ function App() {
                             <p> Contact cimetière: {prof?.graveyard?.phone} </p>
                           </div>
                         </div>
-                      
                       </div>
                     </div>
                   </div>
@@ -1612,15 +1669,21 @@ function App() {
                                         <Avatar> {comment?.sender[0]} </Avatar>
 
                                         <Grid item xs={4}>
-                                          <span
-                                            style={{ fontSize: "1.2em" }}
-                                            className="postUsername"
+                                          <div
+                                            style={{ marginBottom: "-10px" }}
                                           >
-                                            {comment?.sender}
-                                          </span>{" "}
-                                          <br />
-                                          <span className="postDate">
-                                            &ensp;{" "}
+                                            <span
+                                              className="postUsername"
+                                              style={{ marginLeft: "5px" }}
+                                            >
+                                              {comment?.sender}
+                                            </span>{" "}
+                                          </div>
+
+                                          <span
+                                            className="postDate"
+                                            style={{ marginLeft: "5px" }}
+                                          >
                                             {moment(comment?.timestamp)
                                               .locale("fr")
                                               .format(

@@ -51,6 +51,7 @@ import StaffTickets from "./staffTickets";
 import GraveyardReport from "./dashboard/pergraveyard";
 import graveyard_dashboard_cim from "./graveDashboard/widgets";
 import comments from "./comments/index";
+import welcome from "./password/welcomePassword"
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -558,6 +559,11 @@ export default function Myroutes() {
             exact
             path="/reset-password/:id"
             component={ResetPassword}
+          />
+          <RouteWithLoader
+            exact
+            path="/welcome/:id/:timestamp"
+            component={welcome}
           />
           <RouteWithLoader
             exact

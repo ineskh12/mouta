@@ -10,7 +10,7 @@ const Carrousa = ({ photos }) => {
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 3,
+      items: 5,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -23,7 +23,6 @@ const Carrousa = ({ photos }) => {
   };
   return (
     <>
-    {console.log(photos)}
       <Carousel responsive={responsive}>
         {photos?.map((img, i) => (
           <div  key={i}>
@@ -47,19 +46,6 @@ const Carrousa = ({ photos }) => {
                
               ></div>
             )}
-
-            {/* 
-                                     <div
-                                      style={{
-                                        backgroundImage: `url(${img})`,
-                                        backgroundRepeat: "no-repeat",
-                                      }}
-                                      className="story"
-                                      onClick={() => {
-                                        displayImage(img);
-                                      }}
-                                    ></div> 
-                                    <p> {img.type}</p> */}
           </div>
         ))}
       </Carousel>
