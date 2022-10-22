@@ -11,8 +11,8 @@ import {
   faPlus,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import Pagination from './pagination';
-import './pagination.css'
+import Pagination from "./pagination";
+import "./pagination.css";
 import {
   Col,
   Row,
@@ -20,7 +20,6 @@ import {
   Image,
   Nav,
   Dropdown,
-
   Button,
   ButtonGroup,
   InputGroup,
@@ -113,12 +112,6 @@ const GetClient = () => {
   const [clientMail, setMail] = useState("");
   const [client, setClient] = useState("");
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-  //console.log(currentPosts);
-  // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber)
   function setModal(mail, clientid) {
     setShowDefault(true);
     setMail(mail);
@@ -178,7 +171,12 @@ const GetClient = () => {
       allowOutsideClick: () => !Swal.isLoading(),
     });
   }
-
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+  //console.log(currentPosts);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       {/*     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -395,7 +393,7 @@ const GetClient = () => {
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h4>Liste des Clients du cimetière  {grave?.name}</h4>
+          <h4>Liste des Clients du cimetière {grave?.name}</h4>
 
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
@@ -465,14 +463,13 @@ const GetClient = () => {
         </Card.Body>
         <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
           <Nav>
-          <Pagination 
-         className="pagination"
-        postsPerPage={postsPerPage}
-        totalPosts={data.length}
-        paginate={paginate}
-      />
+            <Pagination
+              className="pagination"
+              postsPerPage={postsPerPage}
+              totalPosts={data.length}
+              paginate={paginate}
+            />
           </Nav>
-       
         </Card.Footer>
       </Card>
     </>
@@ -634,7 +631,7 @@ const GetClient = () => {
                             className="m-1"
                           >
                             <FontAwesomeIcon icon={faEdit} />
-                        </Button>
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -695,7 +692,6 @@ const GetClient = () => {
             ))}
           </TableBody>
         </Table>
-        
       </TableContainer>
     );
   }
