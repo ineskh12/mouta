@@ -58,7 +58,7 @@ const Addprice = () => {
       const mydata = { fullname: fullname, myid: id };
       try {
         const { data: response } = await axios.post(
-          "http://skiesbook.com:3000/api/v1/profile/searchbyname",
+          "http://www.skiesbook.com:3000/api/v1/profile/searchbyname",
           mydata
         );
         setData(response);
@@ -77,7 +77,7 @@ const Addprice = () => {
     const mydata = { id: id, reciever: reciever, link: link };
     try {
       const { data: response } = await axios
-        .post("http://skiesbook.com:3000/api/v1/profile/sendinvitation", mydata)
+        .post("http://www.skiesbook.com:3000/api/v1/profile/sendinvitation", mydata)
         .then((res) => {
           Swal.fire({
             title: "Invitation envoyée",
@@ -134,7 +134,7 @@ const Addprice = () => {
               <div className="row justify-content-center">
                 <Avatar
                   alt="Remy Sharp"
-                  src={"http://skiesbook.com:3000/uploads/" + recieverimg}
+                  src={"http://www.skiesbook.com:3000/uploads/" + recieverimg}
                   className="mx-auto"
                   style={{ width: "100px", height: "100px" }}
                 />
@@ -197,7 +197,7 @@ const Addprice = () => {
                     <a href={"/prof/" + item?._id}>
                       <Image
                         src={
-                          "http://skiesbook.com:3000/uploads/" + item?.profileImage
+                          "http://www.skiesbook.com:3000/uploads/" + item?.profileImage
                         }
                         className="user-avatar md-avatar rounded-circle"
                       />

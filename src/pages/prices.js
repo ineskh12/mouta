@@ -53,7 +53,7 @@ export default function AllSuperAdmins() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/graveyard/prices"
+          "http://www.skiesbook.com:3000/api/v1/graveyard/prices"
         );
         setData(response);
         console.log(response);

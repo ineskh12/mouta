@@ -350,7 +350,7 @@ export default () => {
                   <div className="mb-3">
                     <div className="fw-bold">&gt; $ yarn start <span className="text-gray-600">(or npm run start)</span></div>
                     <div className="text-gray">SCSS watching</div>
-                    <div className="text-gray">Opening skiesbook.com:3000</div>
+                    <div className="text-gray">Opening www.skiesbook.com:3000</div>
                   </div>
                   <div>
                     <div className="fw-bold">&gt; $ that's it?</div>

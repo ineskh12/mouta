@@ -72,7 +72,7 @@ const Staffclient = () => {
     setLoading(true);
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/staffgetclients/" + decoded.userId
+        "http://www.skiesbook.com:3000/api/v1/profile/staffgetclients/" + decoded.userId
       );
       setData(response);
     } catch (error) {
@@ -84,7 +84,7 @@ const Staffclient = () => {
   async function getLocalWeather() {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/graveyard/" + graveyardId
+        "http://www.skiesbook.com:3000/api/v1/graveyard/" + graveyardId
       );
       setGrave(response);
     } catch (error) {
@@ -267,7 +267,7 @@ const Staffclient = () => {
                     height: "50px",
                     resizeMode: "contain",
                   }}
-                  src={"http://skiesbook.com:3000/uploads/" + row?.userimage}
+                  src={"http://www.skiesbook.com:3000/uploads/" + row?.userimage}
                   className="card-img-top rounded-circle border-white"
                 />
               </div>
@@ -335,7 +335,7 @@ const Staffclient = () => {
                                   resizeMode: "contain",
                                 }}
                                 src={
-                                  "http://skiesbook.com:3000/uploads/" +
+                                  "http://www.skiesbook.com:3000/uploads/" +
                                   row?.profileImage
                                 }
                                 className="card-img-top rounded-circle border-white"

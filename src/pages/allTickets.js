@@ -63,7 +63,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/alltickets"
+          "http://www.skiesbook.com:3000/api/v1/profile/alltickets"
         );
         setData(response);
         setfiltredData(response);
@@ -117,7 +117,7 @@ export default function AllProfiles() {
       preConfirm: async () => {
         return await axios
           .put(
-            "http://skiesbook.com:3000/api/v1/profile/changestatus/" + ticketId,
+            "http://www.skiesbook.com:3000/api/v1/profile/changestatus/" + ticketId,
             formData2,
             config
           )

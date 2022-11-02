@@ -55,7 +55,7 @@ export default function Dashboard() {
   async function getData() {
     try {
       const { data: response } = await axios.post(
-        "http://skiesbook.com:3000/api/v1/graveyard/graveyardgraph",
+        "http://www.skiesbook.com:3000/api/v1/graveyard/graveyardgraph",
         formdata
       );
       console.log(response);
@@ -66,7 +66,7 @@ export default function Dashboard() {
   }
   async function Fetchdata() {
     const { data: response } = await axios.post(
-      "http://skiesbook.com:3000/api/v1/graveyard/allusers",
+      "http://www.skiesbook.com:3000/api/v1/graveyard/allusers",
       formdata
     );
 

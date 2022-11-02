@@ -33,7 +33,7 @@ const InvOut = (props) => {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/prof/" + id
+        "http://www.skiesbook.com:3000/api/v1/profile/prof/" + id
       );
       setData(response);
       console.log(response);
@@ -75,7 +75,7 @@ const InvOut = (props) => {
                     <Image
                       onClick={() => history.push("/prof/" + item?.prof._id)}
                       src={
-                        "http://skiesbook.com:3000/uploads/" +
+                        "http://www.skiesbook.com:3000/uploads/" +
                         item?.prof.profileImage
                       }
                       className="user-avatar md-avatar rounded-circle"

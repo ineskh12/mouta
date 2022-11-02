@@ -57,7 +57,7 @@ const Addadminstaff = () => {
     mydata.append("role", formData.role);
 
     await axios
-      .post("http://skiesbook.com:3000/api/v1/users/addastaff", mydata, config)
+      .post("http://www.skiesbook.com:3000/api/v1/users/addastaff", mydata, config)
       .then((response) => {
         Swal.fire({
           position: "center",

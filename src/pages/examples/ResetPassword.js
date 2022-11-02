@@ -42,7 +42,7 @@ export default  () => {
       password:Password
     }
    await axios
-     .post("http://skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
+     .post("http://www.skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
      .then((response) => {
        Swal.fire({
          position: "center",

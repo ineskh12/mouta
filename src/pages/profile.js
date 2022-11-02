@@ -25,10 +25,10 @@ export default function ProfileCardWidget() {
 
     const call = async () => {
       const response = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/" + id
+        "http://www.skiesbook.com:3000/api/v1/profile/" + id
       );
       response.data.files.forEach((element, index) => {
-        response.data.files[index] = "http://skiesbook.com:3000/uploads/" + element;
+        response.data.files[index] = "http://www.skiesbook.com:3000/uploads/" + element;
       });
       setprof(response.data);
       setVideos(
@@ -80,7 +80,7 @@ export default function ProfileCardWidget() {
 
         <Card.Body className="pb-5">
           <Card.Img
-            src={"http://skiesbook.com:3000/uploads/" + prof?.profileImage}
+            src={"http://www.skiesbook.com:3000/uploads/" + prof?.profileImage}
             alt="Neil Portrait"
             className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
           />

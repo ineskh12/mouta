@@ -72,7 +72,7 @@ export default function BasicTabs() {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/pop/" + id
+        "http://www.skiesbook.com:3000/api/v1/users/pop/" + id
       );
       setData(response);
       setfirst(response?.profiles[0]);

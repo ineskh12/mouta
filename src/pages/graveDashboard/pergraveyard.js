@@ -72,7 +72,7 @@ export default function AllProfiles() {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.post(
-        "http://skiesbook.com:3000/api/v1/users/getfiltredprofiles/" + id,
+        "http://www.skiesbook.com:3000/api/v1/users/getfiltredprofiles/" + id,
         formdata
       );
       setData(response);
@@ -84,7 +84,7 @@ export default function AllProfiles() {
   const fetchUser = async () => {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/getadminbygrave/" + id
+        "http://www.skiesbook.com:3000/api/v1/users/getadminbygrave/" + id
       );
       setUser(response);
     } catch (error) {

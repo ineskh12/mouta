@@ -38,13 +38,13 @@ export default function AllProfiles() {
       try {
         if (decoded.role === "admin") {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getprofiles/" + decoded?.graveyardId
+          "http://www.skiesbook.com:3000/api/v1/users/getprofiles/" + decoded?.graveyardId
         );
         setData(response);
         }
         else {
           const { data: response } = await axios.get(
-            "http://skiesbook.com:3000/api/v1/profile"
+            "http://www.skiesbook.com:3000/api/v1/profile"
           );
           setData(response);
 

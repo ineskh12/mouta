@@ -84,7 +84,7 @@ const GetClient = () => {
     setLoading(true);
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/getclients/" + graveyardId
+        "http://www.skiesbook.com:3000/api/v1/users/getclients/" + graveyardId
       );
       setData(response);
     } catch (error) {
@@ -96,7 +96,7 @@ const GetClient = () => {
   async function getLocalWeather() {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/graveyard/" + graveyardId
+        "http://www.skiesbook.com:3000/api/v1/graveyard/" + graveyardId
       );
       setGrave(response);
     } catch (error) {
@@ -151,7 +151,7 @@ const GetClient = () => {
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
-          .post("http://skiesbook.com:3000/api/v1/users/addinstance", inputList)
+          .post("http://www.skiesbook.com:3000/api/v1/users/addinstance", inputList)
           .then((result) => {
             Swal.fire({
               position: "center",
@@ -524,7 +524,7 @@ const GetClient = () => {
                     height: "50px",
                     resizeMode: "contain",
                   }}
-                  src={"http://skiesbook.com:3000/uploads/" + row?.userimage}
+                  src={"http://www.skiesbook.com:3000/uploads/" + row?.userimage}
                   className="card-img-top rounded-circle border-white"
                 />
               </div>
@@ -591,7 +591,7 @@ const GetClient = () => {
                                   resizeMode: "contain",
                                 }}
                                 src={
-                                  "http://skiesbook.com:3000/uploads/" +
+                                  "http://www.skiesbook.com:3000/uploads/" +
                                   profile?.profileImage
                                 }
                                 className="card-img-top rounded-circle border-white"

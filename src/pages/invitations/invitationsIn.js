@@ -63,7 +63,7 @@ const InvOut = (props) => {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/prof/" + id
+        "http://www.skiesbook.com:3000/api/v1/profile/prof/" + id
       );
       setData(response);
     } catch (error) {
@@ -80,7 +80,7 @@ const InvOut = (props) => {
         lien2: item.lien,
       };
       const { data: response } = await axios.post(
-        "http://skiesbook.com:3000/api/v1/profile/accept",
+        "http://www.skiesbook.com:3000/api/v1/profile/accept",
         mydata
       );
       console.log(response);
@@ -136,7 +136,7 @@ const InvOut = (props) => {
           };
           console.log(mydata)
           const { data: response } = await axios.post(
-            "http://skiesbook.com:3000/api/v1/profile/removeinv",
+            "http://www.skiesbook.com:3000/api/v1/profile/removeinv",
             mydata
           );
           console.log(response);
@@ -178,7 +178,7 @@ const InvOut = (props) => {
               <div className="row justify-content-center">
                 <Avatar
                   alt="Remy Sharp"
-                  src={"http://skiesbook.com:3000/uploads/" + recieverimg}
+                  src={"http://www.skiesbook.com:3000/uploads/" + recieverimg}
                   className="mx-auto"
                   style={{ width: "100px", height: "100px" }}
                 />
@@ -242,7 +242,7 @@ const InvOut = (props) => {
                           history.push("/prof/" + item.prof._id);
                         }}
                         src={
-                          "http://skiesbook.com:3000/uploads/" +
+                          "http://www.skiesbook.com:3000/uploads/" +
                           item?.prof.profileImage
                         }
                         className="user-avatar md-avatar rounded-circle"

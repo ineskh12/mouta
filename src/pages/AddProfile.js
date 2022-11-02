@@ -76,7 +76,7 @@ const AddProfile = () => {
   }
     mydata.append("cimitiere", decoded.cimitiere);
     await axios
-      .put("http://skiesbook.com:3000/api/v1/profile/update/" + id, mydata,config)
+      .put("http://www.skiesbook.com:3000/api/v1/profile/update/" + id, mydata,config)
       .then((response) => {
         console.log(response);
       })
@@ -96,7 +96,7 @@ const AddProfile = () => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/" + id
+          "http://www.skiesbook.com:3000/api/v1/profile/" + id
         );
         setData(response);
         console.log(response);

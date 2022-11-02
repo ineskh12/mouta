@@ -45,7 +45,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/staffgetprofiles/" + decoded?.userId
+          "http://www.skiesbook.com:3000/api/v1/profile/staffgetprofiles/" + decoded?.userId
         );
         setData(response);
         console.log(response)

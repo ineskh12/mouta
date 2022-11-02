@@ -59,7 +59,7 @@ import React, {
       mydata.append("phone", formData.phone);
       mydata.append("role", formData.role);
       await axios
-        .post("http://skiesbook.com:3000/api/v1/users/addsuperadmin", mydata, config)
+        .post("http://www.skiesbook.com:3000/api/v1/users/addsuperadmin", mydata, config)
         .then((response) => {
           Swal.fire({
             position: "center",

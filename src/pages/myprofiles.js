@@ -45,7 +45,7 @@ export default function Myprofiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/userprofiles/" + decoded?.userId
+          "http://www.skiesbook.com:3000/api/v1/profile/userprofiles/" + decoded?.userId
         );
         setData(response);
       } catch (error) {

@@ -41,7 +41,7 @@ export const TextInput = () => {
       sender:decoded.userId,
       side: side
     };
-    await axios.put("http://skiesbook.com:3000/api/v1/profile/sendmessage/"+id, data).then(res => {
+    await axios.put("http://www.skiesbook.com:3000/api/v1/profile/sendmessage/"+id, data).then(res => {
         setMessage("");
     });
     

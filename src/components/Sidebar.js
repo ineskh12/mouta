@@ -147,7 +147,7 @@ export default (props = {}) => {
   async function getCount() {
     if (decoded.role === "client") {
       const response = await axios.post(
-        "http://skiesbook.com:3000/api/v1/profile/notifsin",
+        "http://www.skiesbook.com:3000/api/v1/profile/notifsin",
         {
           id: decoded.userId,
         }
@@ -214,7 +214,7 @@ export default (props = {}) => {
               <div className="d-flex align-items-center">
                 <div className="user-avatar lg-avatar me-4">
                   <Image
-                    src={"http://skiesbook.com:3000/uploads/" + decoded.image}
+                    src={"http://www.skiesbook.com:3000/uploads/" + decoded.image}
                     className="card-img-top rounded-circle border-white"
                   />
                 </div>

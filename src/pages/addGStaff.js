@@ -56,7 +56,7 @@ const Addsuperadmin = () => {
     mydata.append("gname", decoded.graveyardName);
 
     await axios
-      .post("http://skiesbook.com:3000/api/v1/users/addgstaff", mydata, config)
+      .post("http://www.skiesbook.com:3000/api/v1/users/addgstaff", mydata, config)
       .then((response) => {
         Swal.fire({
           position: "center",

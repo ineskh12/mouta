@@ -57,7 +57,7 @@ export default function Dashboard() {
   async function getData() {
     try {
       const { data: response } = await axios.post(
-        "http://skiesbook.com:3000/api/v1/graveyard/graveyardgraphcim/"+decoded.graveyardId,
+        "http://www.skiesbook.com:3000/api/v1/graveyard/graveyardgraphcim/"+decoded.graveyardId,
         formdata
       );
       console.log(response);
@@ -68,7 +68,7 @@ export default function Dashboard() {
   }
   async function Fetchdata() {
     const { data: response } = await axios.post(
-      "http://skiesbook.com:3000/api/v1/graveyard/alluserscim/"+decoded.graveyardId,
+      "http://www.skiesbook.com:3000/api/v1/graveyard/alluserscim/"+decoded.graveyardId,
       formdata
     );
 

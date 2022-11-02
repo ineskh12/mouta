@@ -78,7 +78,7 @@ export default function App(props) {
                       )}
                       displayName={message?.sender?.name}
                       photoURL={
-                        "http://skiesbook.com:3000/uploads/" +
+                        "http://www.skiesbook.com:3000/uploads/" +
                         message?.sender?.userimage
                       }
                       avatarDisp={true}
@@ -94,7 +94,7 @@ export default function App(props) {
                       )}
                       displayName={message?.sender?.name}
                       photoURL={
-                        "http://skiesbook.com:3000/uploads/" +
+                        "http://www.skiesbook.com:3000/uploads/" +
                         message?.sender?.userimage
                       }
                       avatarDisp={true}

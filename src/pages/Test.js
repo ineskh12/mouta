@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import thumbnail from "../assets/img/video.webp";
 import ImageGallery from "react-image-gallery";
 
-const PREFIX_URL = "http://skiesbook.com:3000/uploads/";
+const PREFIX_URL = "http://www.skiesbook.com:3000/uploads/";
 
 export default class App extends React.Component {
   constructor() {
@@ -154,7 +154,7 @@ export default class App extends React.Component {
     );
   }
   componentDidMount() {
-    fetch("http://skiesbook.com:3000/api/v1/profile/"+ this.props.id)
+    fetch("http://www.skiesbook.com:3000/api/v1/profile/"+ this.props.id)
       .then((res) => res.json())
       .then((data) => {
         this.setState({

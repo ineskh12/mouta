@@ -8,6 +8,8 @@ import {
   faSearch,
   faSignOutAlt,
   faUserShield,
+  faLanguage,
+  faFlag,
 } from "@fortawesome/free-solid-svg-icons";
 import { faUserCircle } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -19,6 +21,7 @@ import {
   Navbar,
   Dropdown,
   Container,
+  ListGroup,
 } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -40,11 +43,38 @@ export default (props) => {
         <div className="d-flex justify-content-between w-100">
           <div className="d-flex align-items-center"></div>
           <Nav className="align-items-center">
+
+          <Dropdown as={Nav.Item}>
+                  {/* chnage the language */}
+                  <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
+                <div className="media d-flex align-items-center">
+                  <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
+                    <span className="mb-0 font-small fw-bold">
+                     <FontAwesomeIcon icon={faLanguage}  className="me-4"/>
+                    </span>
+                  </div>
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
+                <Dropdown.Item
+                  onClick={() => localStorage.setItem("lang", "fr")}
+                  className="fw-bold"
+                >
+                  <FontAwesomeIcon icon={faUserCircle} className="me-2" /> FR
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => localStorage.setItem("lang", "en")}
+                  className="fw-bold"
+                >
+                  <FontAwesomeIcon icon={faUserCircle} className="me-2" /> EN
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">
                   <Image
-                    src={"http://skiesbook.com:3000/uploads/" + decoded.image}
+                    src={"http://www.skiesbook.com:3000/uploads/" + decoded.image}
                     className="user-avatar md-avatar rounded-circle"
                   />
                   <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
@@ -54,6 +84,7 @@ export default (props) => {
                   </div>
                 </div>
               </Dropdown.Toggle>
+              
               <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
                 <Dropdown.Item
                   onClick={() => history.push("/me/" + decoded.userId)}
@@ -74,6 +105,7 @@ export default (props) => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            
           </Nav>
         </div>
       </Container>

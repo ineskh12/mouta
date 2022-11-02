@@ -36,7 +36,7 @@ const Addprice = () => {
   async function Submit(e) {
     e.preventDefault();
     await axios
-      .post("http://skiesbook.com:3000/api/v1/graveyard/prices", formData, config)
+      .post("http://www.skiesbook.com:3000/api/v1/graveyard/prices", formData, config)
       .then((response) => {
         Swal.fire({
           position: "center",

@@ -170,14 +170,14 @@ if (token !== null) decoded = jwt_decode(token);
     useEffect(() => {  
       const call = async () => {
         const response = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/" + id
+          "http://www.skiesbook.com:3000/api/v1/profile/" + id
         );
         response.data.files.forEach((element, index) => {
-          response.data.files[index] = "http://skiesbook.com:3000/uploads/" + element;
+          response.data.files[index] = "http://www.skiesbook.com:3000/uploads/" + element;
         });
         setprof(response.data);
-        settestfile("http://skiesbook.com:3000/uploads/"+response.data.banner);
-        settestfile2("http://skiesbook.com:3000/uploads/"+response.data.profileImage);
+        settestfile("http://www.skiesbook.com:3000/uploads/"+response.data.banner);
+        settestfile2("http://www.skiesbook.com:3000/uploads/"+response.data.profileImage);
 
         setphotos( response.data.files.filter(ext => ext.slice(-3) === "png" ||ext.slice(-3) === "jpg" ||ext.slice(-4) === "jpeg" ||ext.slice(-3) === "gif"));
         setmultis(response.data.files.filter(ext => ext.slice(-3) === "mp4" ||ext.slice(-3) === "mov" ||ext.slice(-4) === "avi" ||ext.slice(-3) === "wmv"));
@@ -272,7 +272,7 @@ if (token !== null) decoded = jwt_decode(token);
         preConfirm: async () => {
           return await axios
             .put(
-              "http://skiesbook.com:3000/api/v1/profile/update/" + id,
+              "http://www.skiesbook.com:3000/api/v1/profile/update/" + id,
               mydata,
               config
             )
@@ -312,7 +312,7 @@ if (token !== null) decoded = jwt_decode(token);
         preConfirm: async () => {
           return await axios
             .post(
-              "http://skiesbook.com:3000/api/v1/profile/addtimeline/" + id,
+              "http://www.skiesbook.com:3000/api/v1/profile/addtimeline/" + id,
               formData2,
               config
             )
@@ -377,7 +377,7 @@ if (token !== null) decoded = jwt_decode(token);
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/profile/addphototoalbum/" + id,
+            "http://www.skiesbook.com:3000/api/v1/profile/addphototoalbum/" + id,
             mydata,
             config
           )
@@ -984,7 +984,7 @@ if (token !== null) decoded = jwt_decode(token);
                                           <CardMedia
                                             component="img"
                                             height="140"
-                                            image={"http://skiesbook.com:3000/uploads/"+album?.images[0]}
+                                            image={"http://www.skiesbook.com:3000/uploads/"+album?.images[0]}
                                             alt="album photo"
                                           />
                                           <CardContent>
@@ -1025,8 +1025,8 @@ if (token !== null) decoded = jwt_decode(token);
                                                 <div className="user-images position-relative overflow-hidden">
                                                   <a>
                                                     <ModalImage
-                                                      small={"http://skiesbook.com:3000/uploads/"+img}
-                                                      large={"http://skiesbook.com:3000/uploads/"+img}
+                                                      small={"http://www.skiesbook.com:3000/uploads/"+img}
+                                                      large={"http://www.skiesbook.com:3000/uploads/"+img}
                                                       className="img-fluid rounded"
                                                       alt="Responsive image"
                                                     />
@@ -1102,7 +1102,7 @@ if (token !== null) decoded = jwt_decode(token);
                                     <a href={"/prof/" + profile?.prof?._id}>
                                       <img
                                         src={
-                                          "http://skiesbook.com:3000/uploads/" +
+                                          "http://www.skiesbook.com:3000/uploads/" +
                                           profile?.prof?.profileImage
                                         }
                                         alt="friend-img"
@@ -1210,7 +1210,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   <a href={"/prof/" + profile?.prof?._id}>
                                     <img
                                       src={
-                                        "http://skiesbook.com:3000/uploads/" +
+                                        "http://www.skiesbook.com:3000/uploads/" +
                                         profile?.prof?.profileImage
                                       }
                                       alt="friend-img"
@@ -1355,7 +1355,7 @@ if (token !== null) decoded = jwt_decode(token);
                                           <CardMedia
                                             component="img"
                                             height="140"
-                                            image={"http://skiesbook.com:3000/uploads/"+album?.images[0]}
+                                            image={"http://www.skiesbook.com:3000/uploads/"+album?.images[0]}
                                             alt="album photo"
                                           />
                                           <CardContent>
@@ -1396,8 +1396,8 @@ if (token !== null) decoded = jwt_decode(token);
                                                 <div className="user-images position-relative overflow-hidden">
                                                   <a>
                                                     <ModalImage
-                                                      small={"http://skiesbook.com:3000/uploads/"+img}
-                                                      large={"http://skiesbook.com:3000/uploads/"+img}
+                                                      small={"http://www.skiesbook.com:3000/uploads/"+img}
+                                                      large={"http://www.skiesbook.com:3000/uploads/"+img}
                                                       className="img-fluid rounded"
                                                       alt="Responsive image"
                                                     />

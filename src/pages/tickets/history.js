@@ -22,7 +22,7 @@ export const Histring = (props) => {
     e.preventDefault();
     try {
       const { data: response } = await axios.put(
-        "http://skiesbook.com:3000/api/v1/profile/addhistory/" + id,
+        "http://www.skiesbook.com:3000/api/v1/profile/addhistory/" + id,
         {
           message: message,
         }

@@ -20,7 +20,7 @@ export default () => {
   const sendEmail = async (e) => {
     const reset = {email : email}
     await axios
-      .post("http://skiesbook.com:3000/api/v1/users/resetpassword", reset)
+      .post("http://www.skiesbook.com:3000/api/v1/users/resetpassword", reset)
       .then((response) => {
         Swal.fire({
           position: "center",

@@ -59,7 +59,7 @@ export default function footer (props) {
           <Col xs={12} lg={6} className="mb-4 mb-lg-0">
             <p className="mb-0 text-center text-xl-left">
               Copyright © 2022-{`${currentYear} `}
-              <Card.Link href="http://skiesbook.com:3000" target="_blank" className="text-blue text-decoration-none fw-normal">
+              <Card.Link href="http://www.skiesbook.com:3000" target="_blank" className="text-blue text-decoration-none fw-normal">
               Skiesbook
               </Card.Link>
             </p>
@@ -67,7 +67,7 @@ export default function footer (props) {
           <Col xs={12} lg={6}>
             <ul className="list-inline list-group-flush list-group-borderless text-center text-xl-right mb-0">
               <li className="list-inline-item px-0 px-sm-2">
-                <Card.Link href="http://skiesbook.com:3000" target="_blank">
+                <Card.Link href="http://www.skiesbook.com:3000" target="_blank">
                   Terms and Conditions
                 </Card.Link>
              </li>

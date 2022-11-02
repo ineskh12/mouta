@@ -50,7 +50,7 @@ export default function AllSuperAdmins() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getsupers"
+          "http://www.skiesbook.com:3000/api/v1/users/getsupers"
         );
         setData(response);
         console.log(response);
@@ -164,7 +164,7 @@ export default function AllSuperAdmins() {
                           height: "50px",
                           resizeMode: "contain",
                         }}
-                        src={"http://skiesbook.com:3000/uploads/" + dm.userimage}
+                        src={"http://www.skiesbook.com:3000/uploads/" + dm.userimage}
                         className="card-img-top rounded-circle border-white"
                       />
                     </div>

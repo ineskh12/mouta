@@ -50,7 +50,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/mytickets/" +
+          "http://www.skiesbook.com:3000/api/v1/profile/mytickets/" +
             decoded?.userId
         );
         setData(response);
@@ -82,7 +82,7 @@ export default function AllProfiles() {
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/profile/addticket/" +
+            "http://www.skiesbook.com:3000/api/v1/profile/addticket/" +
               decoded.userId,
             formData,
             config

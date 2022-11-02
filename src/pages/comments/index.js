@@ -32,7 +32,7 @@ export default function BasicTabs() {
   const fetchData = async () => {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/comments/" + decoded?.userId
+        "http://www.skiesbook.com:3000/api/v1/users/comments/" + decoded?.userId
       );
       setData(response);
     } catch (error) {
@@ -53,7 +53,7 @@ export default function BasicTabs() {
   
         preConfirm: async () => {
           return await axios
-            .post("http://skiesbook.com:3000/api/v1/profile/changecomstatus/" + profile,  {
+            .post("http://www.skiesbook.com:3000/api/v1/profile/changecomstatus/" + profile,  {
               action: action,
               id: id,
             })
@@ -151,11 +151,11 @@ export default function BasicTabs() {
                                                     <ModalImage
                                                       hideDownload
                                                       small={
-                                                        "http://skiesbook.com:3000/uploads/" +
+                                                        "http://www.skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       large={
-                                                        "http://skiesbook.com:3000/uploads/" +
+                                                        "http://www.skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       className="img-fluid rounded"

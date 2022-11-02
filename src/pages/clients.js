@@ -51,7 +51,7 @@ const Getadmins = () => {
     if (decoded.role === "sales" || decoded.role === "help") {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getadminsstaff/" +
+          "http://www.skiesbook.com:3000/api/v1/users/getadminsstaff/" +
             decoded.userId
         );
         setData(response);
@@ -61,7 +61,7 @@ const Getadmins = () => {
     } else {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getadmins"
+          "http://www.skiesbook.com:3000/api/v1/users/getadmins"
         );
         setData(response);
       } catch (error) {
@@ -92,7 +92,7 @@ const Getadmins = () => {
         if (result.isConfirmed) {
           setData(data.filter((c) => c._id !== dm._id));
           await axios
-            .delete("http://skiesbook.com:3000/api/v1/users/" + dm._id)
+            .delete("http://www.skiesbook.com:3000/api/v1/users/" + dm._id)
             .then(Swal.fire("User Deleted!", "", "success"));
         } else if (result.isDenied) {
           Swal.fire("Changes are not saved", "", "info");
@@ -177,7 +177,7 @@ const Getadmins = () => {
                               resizeMode: "contain",
                             }}
                             src={
-                              "http://skiesbook.com:3000/uploads/" +
+                              "http://www.skiesbook.com:3000/uploads/" +
                               dm.userimage
                             }
                             className="card-img-top rounded-circle border-white"

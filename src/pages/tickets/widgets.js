@@ -72,7 +72,7 @@ export default function BasicTabs() {
   async function getTicket() {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/getticket/" + id
+        "http://www.skiesbook.com:3000/api/v1/profile/getticket/" + id
       );
       setTicket(response);
     } catch (error) {

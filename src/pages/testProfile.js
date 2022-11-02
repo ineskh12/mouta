@@ -191,11 +191,11 @@ function App() {
   useEffect(() => {
     const call = async () => {
       const response = await axios.get(
-        "http://skiesbook.com:3000/api/v1/profile/" + id
+        "http://www.skiesbook.com:3000/api/v1/profile/" + id
       );
       response.data.files.forEach((element, index) => {
         response.data.files[index] =
-          "http://skiesbook.com:3000/uploads/" + element;
+          "http://www.skiesbook.com:3000/uploads/" + element;
       });
       setprof(response.data);
       setphotos(
@@ -265,7 +265,7 @@ function App() {
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/profile/addcomment/" + id,
+            "http://www.skiesbook.com:3000/api/v1/profile/addcomment/" + id,
             mydata
           )
           .then((result) => {
@@ -521,10 +521,10 @@ function App() {
                   <div className="cover-container">
                     <ModalImage
                       small={
-                        "http://skiesbook.com:3000/uploads/" + prof?.banner
+                        "http://www.skiesbook.com:3000/uploads/" + prof?.banner
                       }
                       large={
-                        "http://skiesbook.com:3000/uploads/" + prof?.banner
+                        "http://www.skiesbook.com:3000/uploads/" + prof?.banner
                       }
                       alt="profile-bg"
                       className="img-fluid"
@@ -534,11 +534,11 @@ function App() {
                     <div className="profile-img">
                       <img
                         src={
-                          "http://skiesbook.com:3000/uploads/" +
+                          "http://www.skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
                         onClick={() => {
-                          displayImage("http://skiesbook.com:3000/uploads/" +
+                          displayImage("http://www.skiesbook.com:3000/uploads/" +
                           prof?.profileImage);
                         }}
                         alt="profile-img"
@@ -665,7 +665,7 @@ function App() {
                                       <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
                                         <img
                                           src={
-                                            "http://skiesbook.com:3000/uploads/" +
+                                            "http://www.skiesbook.com:3000/uploads/" +
                                             profile?.prof?.profileImage
                                           }
                                           alt="friendImage"
@@ -838,11 +838,11 @@ function App() {
                                                     <ModalImage
                                                       hideDownload
                                                       small={
-                                                        "http://skiesbook.com:3000/uploads/" +
+                                                        "http://www.skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       large={
-                                                        "http://skiesbook.com:3000/uploads/" +
+                                                        "http://www.skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       className="img-fluid rounded"
@@ -982,7 +982,7 @@ function App() {
                                                   component="img"
                                                   height="140"
                                                   image={
-                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    "http://www.skiesbook.com:3000/uploads/" +
                                                     album?.images[0]
                                                   }
                                                   alt="album photo"
@@ -1034,11 +1034,11 @@ function App() {
                                                       <a>
                                                         <ModalImage
                                                           small={
-                                                            "http://skiesbook.com:3000/uploads/" +
+                                                            "http://www.skiesbook.com:3000/uploads/" +
                                                             img
                                                           }
                                                           large={
-                                                            "http://skiesbook.com:3000/uploads/" +
+                                                            "http://www.skiesbook.com:3000/uploads/" +
                                                             img
                                                           }
                                                           className="img-fluid rounded"
@@ -1119,7 +1119,7 @@ function App() {
                                   <a href={"/prof/" + profile?.prof?._id}>
                                     <img
                                       src={
-                                        "http://skiesbook.com:3000/uploads/" +
+                                        "http://www.skiesbook.com:3000/uploads/" +
                                         profile?.prof?.profileImage
                                       }
                                       alt="friend-img"
@@ -1190,7 +1190,7 @@ function App() {
                                           <Avatar
                                             alt={comment?.sender}
                                             src={
-                                              "http://skiesbook.com:3000/uploads/"
+                                              "http://www.skiesbook.com:3000/uploads/"
                                             }
                                             className="mx-auto"
                                           />
@@ -1230,11 +1230,11 @@ function App() {
                                                 <ModalImage
                                                   hideDownload
                                                   small={
-                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    "http://www.skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   large={
-                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    "http://www.skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   className="img-fluid rounded"
@@ -1288,7 +1288,7 @@ function App() {
                 <div className="profile-header">
                   <div className="cover-container">
                     <img
-                      src={"http://skiesbook.com:3000/uploads/" + prof?.banner}
+                      src={"http://www.skiesbook.com:3000/uploads/" + prof?.banner}
                       alt="profile-bg"
                       className="rounded img-fluid"
                     />
@@ -1300,7 +1300,7 @@ function App() {
                     <div className="profile-img2">
                       <img
                         src={
-                          "http://skiesbook.com:3000/uploads/" +
+                          "http://www.skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
                         alt="profile-img"
@@ -1493,11 +1493,11 @@ function App() {
                                                   <ModalImage
                                                     hideDownload
                                                     small={
-                                                      "http://skiesbook.com:3000/uploads/" +
+                                                      "http://www.skiesbook.com:3000/uploads/" +
                                                       img
                                                     }
                                                     large={
-                                                      "http://skiesbook.com:3000/uploads/" +
+                                                      "http://www.skiesbook.com:3000/uploads/" +
                                                       img
                                                     }
                                                     className="img-fluid rounded"
@@ -1601,7 +1601,7 @@ function App() {
                                 <a href={"/prof/" + profile?.prof?._id}>
                                   <img
                                     src={
-                                      "http://skiesbook.com:3000/uploads/" +
+                                      "http://www.skiesbook.com:3000/uploads/" +
                                       profile?.prof?.profileImage
                                     }
                                     alt="friend-img"
@@ -1707,11 +1707,11 @@ function App() {
                                                 <ModalImage
                                                   hideDownload
                                                   small={
-                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    "http://www.skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   large={
-                                                    "http://skiesbook.com:3000/uploads/" +
+                                                    "http://www.skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   className="img-fluid rounded"

@@ -62,7 +62,7 @@ export default function Dashboard() {
   async function getstaff() {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/getstaff/"+id
+        "http://www.skiesbook.com:3000/api/v1/users/getstaff/"+id
         
       );
       setData2(response);
@@ -82,7 +82,7 @@ export default function Dashboard() {
       id = first._id;
       }
       const { data: response } = await axios.post(
-        "http://skiesbook.com:3000/api/v1/users/gravestaffreporting/"+id,
+        "http://www.skiesbook.com:3000/api/v1/users/gravestaffreporting/"+id,
         formdata
       );
       setData(response);

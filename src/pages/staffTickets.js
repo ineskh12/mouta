@@ -51,7 +51,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/profile/stafftickets/" +
+          "http://www.skiesbook.com:3000/api/v1/profile/stafftickets/" +
             decoded?.userId
         );
         setData(response);
@@ -105,7 +105,7 @@ export default function AllProfiles() {
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/profile/addticket/" +
+            "http://www.skiesbook.com:3000/api/v1/profile/addticket/" +
               decoded.userId,
             formData,
             config
@@ -142,7 +142,7 @@ export default function AllProfiles() {
       preConfirm: async () => {
         return await axios
           .post(
-            "http://skiesbook.com:3000/api/v1/profile/assignticket/" + e,
+            "http://www.skiesbook.com:3000/api/v1/profile/assignticket/" + e,
             data,
             config
           )

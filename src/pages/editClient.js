@@ -44,7 +44,7 @@ const Addadmin = () => {
   async function getGrave() {
     try {
       const { data: response } = await axios.get(
-        "http://skiesbook.com:3000/api/v1/users/" + id
+        "http://www.skiesbook.com:3000/api/v1/users/" + id
       );
       setUser(response);
     } catch (error) {
@@ -90,7 +90,7 @@ const Addadmin = () => {
     /*     mydata.append("latitude", position.lat);
     mydata.append("logitude", position.lng); */
     const { data } = await axios.put(
-      "http://skiesbook.com:3000/api/v1/users/" + id,
+      "http://www.skiesbook.com:3000/api/v1/users/" + id,
       mydata,
       config
     );

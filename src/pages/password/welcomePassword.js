@@ -19,28 +19,31 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Modal } from "@themesberg/react-bootstrap";
 
 export default () => {
   let { id } = useParams();
   let { timeStamp } = useParams();
 
+  const [open, setOpen] = useState(false);
+
   const [passwordType, setPasswordType] = useState("password");
   const [Password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [checkBox,setCheckBox] = useState(false);
+  const [checkBox, setCheckBox] = useState(false);
 
-//   if (timeStamp > 24 ){
-//     Swal.fire({
-//         position: "center",
-//         icon: "error",
-//         title: "Link Expired",
-//         showConfirmButton: true,
-//         }).then((result) => {
-//         if (result.isConfirmed) {
-//             history.push("/signin");
-//         }
-//         });
-//     }
+  //   if (timeStamp > 24 ){
+  //     Swal.fire({
+  //         position: "center",
+  //         icon: "error",
+  //         title: "Link Expired",
+  //         showConfirmButton: true,
+  //         }).then((result) => {
+  //         if (result.isConfirmed) {
+  //             history.push("/signin");
+  //         }
+  //         });
+  //     }
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text");
@@ -56,10 +59,7 @@ export default () => {
       password: Password,
     };
     await axios
-      .post(
-        "http://skiesbook.com:3000/api/v1/users/resetpasswordrequest",
-        mydata
-      )
+      .post("http://www.skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
       .then((response) => {
         Swal.fire({
           position: "center",
@@ -85,6 +85,27 @@ export default () => {
 
   return (
     <main>
+      <Modal size="lg"  as={Modal.Dialog} show={open}>
+        <Modal.Header>
+          <Modal.Title className="h6">Terms and conditions</Modal.Title>
+          <Button
+            variant="close"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+          />
+        </Modal.Header>
+        <Modal.Body>
+          <iframe
+            title="terms"
+            src="http://www.skiesbook.com:3000/uploads/terms.pdf"
+            width="100%"
+            height="450"
+            style={{ border: 0 }}
+            allowfullscreen=""
+            loading="lazy"
+          ></iframe>
+        </Modal.Body>
+      </Modal>
       <section className="bg-soft d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
           <Row className="justify-content-center">
@@ -173,21 +194,30 @@ export default () => {
                   ) : (
                     <span></span>
                   )}
-                  <a style={{marginTop:"200px",marginBottom:20}}>
+                  <Button
+                  onClick={()=>setOpen(true)}
+                    style={{
+                      marginTop: "20px",
+                      backgroundColor: "transparent",
+                      color: "black",
+                      borderColor: "transparent",
+                    }}
+                  >
                     termes et conditions
-                  </a>
+                  </Button>
                   <Form.Check
                     className="mt-3"
                     type="checkbox"
                     label="J'accepte les termes et conditions"
                     onChange={(e) => setCheckBox(e.target.checked)}
-                    />
-
+                  />
                 </Form.Group>
+                {console.log(checkBox)}
+
                 <Button
                   variant="primary"
                   className="w-100"
-                  disabled={Password !== confirmPassword}
+                  disabled={Password !== confirmPassword || checkBox === false || Password === ""}
                   onClick={() => Submit()}
                 >
                   Confirmer mon mot de passe

@@ -140,7 +140,7 @@ const AddClient = () => {
 
     await axios
       .post(
-        "http://skiesbook.com:3000/api/v1/users/addclient",
+        "http://www.skiesbook.com:3000/api/v1/users/addclient",
         mydata,
         config
       )

@@ -44,7 +44,7 @@ import React, {
     
       try {
         const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/"+ id
+          "http://www.skiesbook.com:3000/api/v1/users/"+ id
           );
         setUser(response);
       } catch (error) {
@@ -96,7 +96,7 @@ import React, {
       /*     mydata.append("latitude", position.lat);
       mydata.append("logitude", position.lng); */
       const { data } = await axios.put(
-        "http://skiesbook.com:3000/api/v1/users/editadmin/" + id,
+        "http://www.skiesbook.com:3000/api/v1/users/editadmin/" + id,
         mydata,
         config
       );
