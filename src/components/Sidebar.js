@@ -436,6 +436,12 @@ export default (props = {}) => {
                   />
                   <NavItem
                     external
+                    title="Partnership requests"
+                    link="/requests"
+                    icon={faTicketAlt}
+                  />
+                  <NavItem
+                    external
                     title="Rapports"
                     link="/graveyard_dashboard"
                     icon={faChartPie}

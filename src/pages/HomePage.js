@@ -52,6 +52,7 @@ import GraveyardReport from "./dashboard/pergraveyard";
 import graveyard_dashboard_cim from "./graveDashboard/widgets";
 import comments from "./comments/index";
 import welcome from "./password/welcomePassword"
+import requests from "./requests";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -144,6 +145,7 @@ export default function Myroutes() {
             path="/singlereport/:id"
             component={GraveyardReport}
           />
+                    <RouteWithSidebar exact path="/requests" component={requests} />
 
           <RouteWithSidebar exact path="/me/:id" component={Me} />
           <RouteWithSidebar exact path="/profiles" component={AllProfiles} />

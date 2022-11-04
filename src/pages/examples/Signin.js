@@ -19,6 +19,7 @@ import {
   FormCheck,
   Container,
   InputGroup,
+  Modal,
 } from "@themesberg/react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
@@ -26,6 +27,7 @@ import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
 import Swal from "sweetalert2";
 import logo_colored from "../../assets/img/logo_colored.png";
+import PhoneInput from "react-phone-input-2";
 
 export default function Signin() {
   const history = useHistory();
@@ -38,6 +40,21 @@ export default function Signin() {
       "Content-Type": "application/json",
     },
   };
+  const [formData, setFormData] = useState({
+    name: "",
+    lastn: "",
+    email: "",
+    address: "",
+    phone: "",
+    country: "Canada",
+    ville: "",
+    region: "",
+    zip: "",
+  });
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   async function submit() {
     await axios
       .post("http://www.skiesbook.com:3000/api/v1/auth/login", myForm, config)
@@ -52,28 +69,20 @@ export default function Signin() {
             history.go("/adminclients");
           } else if (response?.data.role === "client") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "gstaff") {
+          } else if (response?.data.role === "gstaff") {
             history.go("/Staffclient");
-          }
-          else if (response?.data.role === "gadmin") {
+          } else if (response?.data.role === "gadmin") {
             history.go("/Staffclient");
-          }
-          else if (response?.data.role === "gcompta") {
+          } else if (response?.data.role === "gcompta") {
             history.go("/adminclients");
-          }
-          else if (response?.data.role === "sales") {
+          } else if (response?.data.role === "sales") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "help") {
+          } else if (response?.data.role === "help") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "sadmin") {
+          } else if (response?.data.role === "sadmin") {
             history.go("/myProfiles");
           }
         } else {
-          
-
           Swal.fire({
             title: "Wrong Credentials",
             text: "Try to enter a valid mail or password",
@@ -91,8 +100,195 @@ export default function Signin() {
         });
       });
   }
+
+  function submitB2b(e) {
+    e.preventDefault();
+
+    if (formData.phone === "14747474747" || formData.phone === "") {
+      Swal.fire({
+        title: "Phone number is required",
+        text: "Try to enter a valid phone number",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    } else {
+      axios
+        .post("http://localhost:3000/api/v1/request", formData)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            Swal.fire({
+              title: "Request sent",
+              text: "We will contact you soon",
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+            handleClose();
+          }
+        });
+    }
+  }
   return (
     <main>
+      <Modal size="lg" show={show} onHide={handleClose}>
+        <Form
+          onSubmit={(e) => {
+            submitB2b(e);
+          }}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Devenir un partenaire</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              <Col md={6} className="mb-3">
+                <Form.Group id="firstName">
+                  <Form.Label>Nom</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="profileName"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group id="lastName">
+                  <Form.Label>Prénom</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="profileLastName"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        lastn: e.target.value,
+                      })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6} className="mb-3">
+                <Form.Group id="firstName">
+                  <Form.Label>adresse Email</Form.Label>
+                  <Form.Control
+                    required
+                    type="email"
+                    name="profileName"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        email: e.target.value,
+                      })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group id="lastName">
+                  <Form.Label>Telephone</Form.Label>
+                  <PhoneInput
+                    required
+                    country={"ca"}
+                    onlyCountries={["us", "ca"]}
+                    onChange={(e) => setFormData({ ...formData, phone: e })}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Row className="align-items-center">
+              <Col md={6} className="mb-3">
+                <Form.Group id="gender">
+                  <Form.Label>Pays</Form.Label>
+                  <Form.Select
+                    defaultValue="Canada"
+                    name="Canada"
+                    onChange={(e) =>
+                      setFormData({ ...formData, country: e.target.value })
+                    }
+                  >
+                    <option value="Canada">Canada</option>
+                    <option value="Etat-unis">Etats-unis</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group id="Emplacement du funérailles">
+                  <Form.Label>Adresse</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Entrer les cordonnées"
+                    name="cords"
+                    onChange={(e) =>
+                      setFormData({ ...formData, address: e.target.value })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={6} className="mb-3">
+                <Form.Group id="funérailles">
+                  <Form.Label>Ville</Form.Label>
+                  <Form.Control
+                    required
+                    name="hometown"
+                    type="text"
+                    onChange={(e) =>
+                      setFormData({ ...formData, ville: e.target.value })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group id="emal">
+                  <Form.Label>Region</Form.Label>
+                  <Form.Control
+                    required
+                    name="hometown"
+                    type="text"
+                    onChange={(e) =>
+                      setFormData({ ...formData, region: e.target.value })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group id="ville">
+                  <Form.Label>ZIP / Postcode</Form.Label>
+                  <Form.Control
+                    required
+                    name="hometown"
+                    type="text"
+                    onChange={(e) =>
+                      setFormData({ ...formData, zip: e.target.value })
+                    }
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Fermer
+              </Button>
+              <Button type="submit" variant="primary">
+                Sauvegarder
+              </Button>
+            </Modal.Footer>
+          </Modal.Footer>
+        </Form>
+      </Modal>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
           <Col
@@ -148,8 +344,8 @@ export default function Signin() {
                     />
                   </InputGroup>
                 </Form.Group>
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                  <Form.Check type="checkbox">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <Form.Check style={{ marginLeft: "20px" }} type="checkbox">
                     <FormCheck.Input id="defaultCheck5" className="me-2" />
                     <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">
                       Remember me
@@ -160,6 +356,11 @@ export default function Signin() {
                     onClick={() => history.push("/forgot-password")}
                   >
                     Mot de passe oublié ?
+                  </Card.Link>
+                </div>
+                <div className="mb-2">
+                  <Card.Link onClick={() => handleShow()}>
+                    Devenir un partenaire ?
                   </Card.Link>
                 </div>
               </Form.Group>
