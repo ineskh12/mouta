@@ -355,12 +355,7 @@ export default function Signin() {
                     className="small text-end"
                     onClick={() => history.push("/forgot-password")}
                   >
-                    Mot de passe oublié ?
-                  </Card.Link>
-                </div>
-                <div className="mb-2">
-                  <Card.Link onClick={() => handleShow()}>
-                    Devenir un partenaire ?
+                    Mot de passe oublié
                   </Card.Link>
                 </div>
               </Form.Group>
@@ -372,6 +367,11 @@ export default function Signin() {
               >
                 Sign in
               </Button>
+              <div className="mt-2 mb-2">
+                <a style={{ color: "#0E63C0" }} onClick={() => handleShow()}>
+                  Devenir un partenaire
+                </a>
+              </div>
               {/*}
                 <div className="mt-3 mb-4 text-center">
                   <span className="fw-normal">or login with</span>
