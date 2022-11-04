@@ -32,7 +32,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://localhost:3000/api/v1/request"
+          "http://www.skiesbook.com:3000/api/v1/request"
         );
         setData(response);
         setfiltredData(response);
