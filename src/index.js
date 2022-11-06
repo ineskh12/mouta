@@ -1,21 +1,7 @@
-// =========================================================
-// * Volt React Dashboard
-// =========================================================
-
-// * Product Page: https://themesberg.com/product/dashboard/volt-react
-// * Copyright 2021 Themesberg (https://www.themesberg.com)
-// * Official Repository: https://github.com/themesberg/volt-react-dashboard
-// * License: MIT License (https://themesberg.com/licensing)
-
-// * Designed and coded by https://themesberg.com
-
-// =========================================================
-
-// * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. Please contact us to request a removal.
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 // core styles
 import './index.css';
 import "./scss/volt.scss";
@@ -26,12 +12,35 @@ import "react-datetime/css/react-datetime.css";
 import HomePage from "./pages/HomePage";
 import ScrollToTop from "./components/ScrollToTop";
 
-ReactDOM.render(
-  
-  <BrowserRouter
-  basename="/">
-    <ScrollToTop />
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from 'i18next-browser-languagedetector';
+import HttpApi from 'i18next-http-backend';
 
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .use(LanguageDetector)
+  .use(HttpApi)
+  .init({
+    fallbackLng: "en",
+    detection: {
+      // order and from where user language should be detected
+      order: ['cookie', 'htmlTag', 'localStorage', 'path', 'subdomain'],
+      caches: ['cookie']
+
+    },
+    backend: {
+      loadPath: '/assets/locales/{{lng}}/translation.json'
+    },
+    react: { useSuspense: false }
+  });
+
+ReactDOM.render(
+
+  <BrowserRouter
+    basename="/">
+      
+    <ScrollToTop />
     <HomePage />
   </BrowserRouter>,
   document.getElementById("root")
