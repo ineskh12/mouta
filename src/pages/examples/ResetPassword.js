@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import { Col, Row, Form, Card, Button, Container, InputGroup } from '@themesberg/react-bootstrap';
 import { Link, useParams,useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Routes } from "../../routes";
 import {
@@ -36,18 +37,20 @@ export default  () => {
   };
   const history = useHistory();
   
+  const { t } = useTranslation();
+  
   async function Submit() {
     const mydata = {
       id: id,
       password:Password
     }
    await axios
-     .post("http://www.skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
+     .post("http://skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
      .then((response) => {
        Swal.fire({
          position: "center",
          icon: "success",
-         title: "Password updated succesfully",
+         title: t('password_updated_succesfully'),
          showConfirmButton: true,
        }).then((result) => {
          if (result.isConfirmed) {
@@ -59,7 +62,7 @@ export default  () => {
        Swal.fire({
          position: "center",
          icon: "error",
-         title: "error",
+         title: t('error'),
          showConfirmButton: false,
          timer: 1500,
        });
@@ -81,8 +84,8 @@ export default  () => {
                 to={Routes.Signin.path}
                 className="text-gray-700"
               >
-                <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-                sign in
+                <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
+                {t('back_home_page')}
               </Card.Link>
             </p>
             <Col
@@ -90,10 +93,10 @@ export default  () => {
               className="d-flex align-items-center justify-content-center"
             >
               <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <h3 className="mb-4">Reset password</h3>
+                <h3 className="mb-4">{t('reset_password')}</h3>
 
                 <Form.Group id="firstName" className="mb-4">
-                  <Form.Label>Mot de passe</Form.Label>
+                  <Form.Label>{t('password')}</Form.Label>
                   <InputGroup>
                     <Button
                       size="sm"
@@ -117,7 +120,7 @@ export default  () => {
                     <Form.Control
                       type={passwordType}
                       required
-                      placeholder="Entrer votre mot de passe"
+                      placeholder={t('enter_your_password')}
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
@@ -125,7 +128,7 @@ export default  () => {
                   </InputGroup>
                 </Form.Group>
                 <Form.Group id="firstName" className="mb-4">
-                  <Form.Label> Confirmer votre mot de passe</Form.Label>
+                  <Form.Label>{t('confirm_your_password')}</Form.Label>
                   <InputGroup>
                     <Button
                       size="sm"
@@ -149,20 +152,20 @@ export default  () => {
                     <Form.Control
                       type={passwordType}
                       required
-                      placeholder="Confirmer votre mot de passe"
+                      placeholder={t('confirm_your_password')}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     ></Form.Control>
                   </InputGroup>
                   {confirmPassword !== Password && confirmPassword !== "" ? (
                     <MuiAlert severity="warning">
-                      Password ne correspond pas
+                      {t('password_does_not_match')}
                     </MuiAlert>
                   ) : (
                     <span></span>
                   )}
                 </Form.Group>
                 <Button variant="primary" className="w-100" onClick={()=> Submit()}>
-                  Reset password
+                  {t('reset_password')}
                 </Button>
               </div>
             </Col>

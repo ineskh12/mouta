@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  faEdit,
-  faEye,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
 import {
   Col,
   Nav,
   Card,
   Table,
-  
   Breadcrumb,
   Form,
   Button,
@@ -18,8 +13,8 @@ import {
   Modal,
   Badge,
 } from "@themesberg/react-bootstrap";
-import Pagination from './pagination';
-import './pagination.css'
+import Pagination from "./pagination";
+import "./pagination.css";
 import jwt_decode from "jwt-decode";
 import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,12 +22,15 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { faFilter } from "@fortawesome/fontawesome-free-solid";
+import { useTranslation } from "react-i18next";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
@@ -63,7 +61,7 @@ export default function AllProfiles() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/profile/alltickets"
+          "http://skiesbook.com:3000/api/v1/profile/alltickets"
         );
         setData(response);
         setfiltredData(response);
@@ -79,7 +77,7 @@ export default function AllProfiles() {
   const currentPosts = filtreddata.slice(indexOfFirstPost, indexOfLastPost);
   //console.log(currentPosts);
   // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const [formData, setFormData] = useState({
     sender: decoded.userId,
     subject: "",
@@ -109,15 +107,15 @@ export default function AllProfiles() {
     setShow(false);
 
     Swal.fire({
-      title: "Etes vous sur de vouloir changer l'etat de ce ticket ?",
+      title: t("Are you sure you want to change the status of this ticket?"),
 
       showCancelButton: true,
-      confirmButtonText: "Oui",
+      confirmButtonText: t("yes"),
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
           .put(
-            "http://www.skiesbook.com:3000/api/v1/profile/changestatus/" + ticketId,
+            "http://skiesbook.com:3000/api/v1/profile/changestatus/" + ticketId,
             formData2,
             config
           )
@@ -125,7 +123,7 @@ export default function AllProfiles() {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Ticket mis a jour",
+              title: t("Updated ticket"),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -134,7 +132,7 @@ export default function AllProfiles() {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`Error serveur: ${error}`);
+            Swal.showValidationMessage(`${t("server error")}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -158,14 +156,14 @@ export default function AllProfiles() {
         onHide={handleClose}
       >
         <Modal.Header>
-          <Modal.Title className="h6">Status ticket</Modal.Title>
+          <Modal.Title className="h6">{t("ticket status")}</Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
 
         <Form onSubmit={(e) => changerEtat(e)}>
           <Modal.Body>
             <div className="flex justify-content-center">
-              <h4>Changer status de ticket </h4>
+              <h4>{t("Change ticket status")}</h4>
               <br></br>
               {/*select option*/}
               <Form.Control
@@ -175,22 +173,22 @@ export default function AllProfiles() {
                   setFormData2({ ...formData2, status: e.target.value })
                 }
               >
-                <option value="open">Ouvert</option>
-                <option value="progress">En cours</option>
-                <option value="closed">Fermé</option>
+                <option value="open">{t("open")}</option>
+                <option value="progress">{t("progress")}</option>
+                <option value="closed">{t("closed")}</option>
               </Form.Control>
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit">
-              Approuver
+              {t("Approve")}
             </Button>
             <Button
               variant="secondary"
               className="text-gray ms-auto"
               onClick={handleClose}
             >
-              Fermer
+              {t("close")}
             </Button>
           </Modal.Footer>
         </Form>
@@ -204,7 +202,7 @@ export default function AllProfiles() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Vos tickets support </h4>
+          <h4>{t("Your support tickets")}</h4>
         </div>
       </div>
       <div className="d-block mb-4 mb-md-2">
@@ -217,7 +215,7 @@ export default function AllProfiles() {
               <Form.Control
                 onChange={(e) => searchKeyword(e.target.value)}
                 type="text"
-                placeholder="Search"
+                placeholder={t("search")}
               />
             </InputGroup>
           </Col>
@@ -227,14 +225,14 @@ export default function AllProfiles() {
                 <FontAwesomeIcon icon={faFilter} />
               </InputGroup.Text>
               <Form.Select
-                aria-label="Default select example"
+                aria-label={t("Default select example")}
                 onChange={(val) => filterdata(val.target.value)}
                 defaultValue="C"
               >
-                <option value="all">Tous</option>
-                <option value="open">Ouvert</option>
-                <option value="progress">En cours</option>
-                <option value="closed">Fermé</option>
+                <option value="all">{t("all")}</option>
+                <option value="open">{t("open")}</option>
+                <option value="progress">{t("progress")}</option>
+                <option value="closed">{t("closed")}</option>
               </Form.Select>
             </InputGroup>
           </Col>
@@ -246,13 +244,13 @@ export default function AllProfiles() {
             <thead className="thead-light">
               <tr>
                 <th className="border-0">#</th>
-                <th className="border-0">cimetière</th>
-                <th className="border-0">Sujet</th>
-                <th className="border-0">Expéditeur</th>
-                <th className="border-0">assignment</th>
-                <th className="border-0">Status </th>
-                <th className="border-0">Date de réalisation</th>
-                <th className="border-0">Actions</th>
+                <th className="border-0">{t("cemetery")}</th>
+                <th className="border-0">{t("Topic")}</th>
+                <th className="border-0">{t("Sender")}</th>
+                <th className="border-0">{t("assignment")}</th>
+                <th className="border-0">{t("Status")}</th>
+                <th className="border-0">{t("Date of completion")}</th>
+                <th className="border-0">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -274,18 +272,18 @@ export default function AllProfiles() {
                     <>
                       {dm?.status === "open" ? (
                         <Badge bg="primary" className="me-1">
-                          Ouvert
+                          {t("open")}
                         </Badge>
                       ) : dm?.status === "progress" ? (
                         <Badge bg="success" className="me-1">
-                          en cours
+                          {t("progress")}
                         </Badge>
                       ) : dm?.status === "closed" ? (
                         <Badge bg="danger" className="me-1">
-                          Fermé
+                          {t("closed")}
                         </Badge>
                       ) : (
-                        "none"
+                        t("none")
                       )}
                     </>
                   </td>
@@ -297,7 +295,7 @@ export default function AllProfiles() {
                       variant="primary"
                       size="sm"
                     >
-                      <FontAwesomeIcon icon={faEye}  />{" "}
+                      <FontAwesomeIcon icon={faEye} />{" "}
                     </Button>
                     <Button
                       className="m-1"
@@ -305,7 +303,7 @@ export default function AllProfiles() {
                       variant="primary"
                       size="sm"
                     >
-                      <FontAwesomeIcon icon={faEdit}  />{" "}
+                      <FontAwesomeIcon icon={faEdit} />{" "}
                     </Button>
                   </td>
                 </tr>
@@ -314,14 +312,13 @@ export default function AllProfiles() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-            <Pagination 
-         className="pagination"
-        postsPerPage={postsPerPage}
-        totalPosts={data.length}
-        paginate={paginate}
-      />
+              <Pagination
+                className="pagination"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-          
           </Card.Footer>
         </Card.Body>
       </Card>

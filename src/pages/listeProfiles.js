@@ -23,12 +23,16 @@ import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+  
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
@@ -38,13 +42,13 @@ export default function AllProfiles() {
       try {
         if (decoded.role === "admin") {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/users/getprofiles/" + decoded?.graveyardId
+          "http://skiesbook.com:3000/api/v1/users/getprofiles/" + decoded?.graveyardId
         );
         setData(response);
         }
         else {
           const { data: response } = await axios.get(
-            "http://www.skiesbook.com:3000/api/v1/profile"
+            "http://skiesbook.com:3000/api/v1/profile"
           );
           setData(response);
 
@@ -73,7 +77,7 @@ export default function AllProfiles() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>liste profils des cimetières </h4>
+          <h4>{t('list of cemetery profiles')}</h4>
 {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}       
@@ -89,7 +93,7 @@ export default function AllProfiles() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           </div>
@@ -99,12 +103,12 @@ export default function AllProfiles() {
           <thead className="thead-light">
               <tr>
                 <th className="border-0">#</th>
-                <th className="border-0">Nom Prénom</th>
-                <th className="border-0">Date de naissance </th>
-                <th className="border-0">Date de décés</th>
-                <th className="border-0">Coordonnées</th>
-                <th className="border-0">Email de référence</th>
-                <th className="border-0">Actions</th>
+                <th className="border-0">{t('full_name')}</th>
+                <th className="border-0">{t('date_of_birth')}</th>
+                <th className="border-0">{t('Date of death')}</th>
+                <th className="border-0">{t('Contact information')}</th>
+                <th className="border-0">{t('reference_email')}</th>
+                <th className="border-0">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>

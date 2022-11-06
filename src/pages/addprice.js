@@ -17,8 +17,12 @@ import { useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import "react-phone-input-2/lib/style.css";
+import { useTranslation } from "react-i18next";
 
 const Addprice = () => {
+
+  const { t } = useTranslation();
+
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   let decoded = null;
@@ -36,12 +40,12 @@ const Addprice = () => {
   async function Submit(e) {
     e.preventDefault();
     await axios
-      .post("http://www.skiesbook.com:3000/api/v1/graveyard/prices", formData, config)
+      .post("http://skiesbook.com:3000/api/v1/graveyard/prices", formData, config)
       .then((response) => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Formule ajouté avec succès",
+          title: t('Formula successfully added'),
           showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -53,7 +57,7 @@ const Addprice = () => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "error",
+          title: t("error"),
           showConfirmButton: false,
           timer: 1500,
         });
@@ -74,20 +78,20 @@ const Addprice = () => {
               className="me-2"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-              Retour
+              {t('back')}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">Ajout d'une nouvelle formule</h5>
-        <Form onSubmit={(e)=> Submit(e)}>
+        <h5 className="mb-4">{t('Added a new formula')}</h5>
+        <Form onSubmit={(e) => Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Tag</Form.Label>
+                <Form.Label>{t('Tag')}</Form.Label>
                 <Form.Control
                   required
                   type="text"
-                  placeholder="Tag"
+                  placeholder={t('Tag')}
                   onChange={(e) =>
                     setFormData({ ...formData, tag: e.target.value })
                   }
@@ -96,11 +100,11 @@ const Addprice = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Valeur</Form.Label>
+                <Form.Label>{t('Value')}</Form.Label>
                 <Form.Control
                   required
                   type="number"
-                  placeholder="price"
+                  placeholder={t("price")}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
                   }
@@ -108,11 +112,11 @@ const Addprice = () => {
               </Form.Group>
             </Col>
           </Row>
-        
+
 
           <div className="mt-3">
             <Button type="submit" variant="primary">
-              Sauvegarder
+              {t('save')}
             </Button>
           </div>
         </Form>

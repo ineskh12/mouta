@@ -28,6 +28,7 @@ import BgImage from "../../assets/img/illustrations/signin.svg";
 import Swal from "sweetalert2";
 import logo_colored from "../../assets/img/logo_colored.png";
 import PhoneInput from "react-phone-input-2";
+import { useTranslation } from "react-i18next";
 
 export default function Signin() {
   const history = useHistory();
@@ -52,12 +53,14 @@ export default function Signin() {
     zip: "",
   });
   const [show, setShow] = useState(false);
+  const { t } = useTranslation();
+
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   async function submit() {
     await axios
-      .post("http://www.skiesbook.com:3000/api/v1/auth/login", myForm, config)
+      .post("http://skiesbook.com:3000/api/v1/auth/login", myForm, config)
       .then((response) => {
         console.log(response);
         localStorage.setItem("email", JSON.stringify(response?.data.email));
@@ -69,34 +72,42 @@ export default function Signin() {
             history.go("/adminclients");
           } else if (response?.data.role === "client") {
             history.go("/myProfiles");
-          } else if (response?.data.role === "gstaff") {
+          }
+          else if (response?.data.role === "gstaff") {
             history.go("/Staffclient");
-          } else if (response?.data.role === "gadmin") {
+          }
+          else if (response?.data.role === "gadmin") {
             history.go("/Staffclient");
-          } else if (response?.data.role === "gcompta") {
+          }
+          else if (response?.data.role === "gcompta") {
             history.go("/adminclients");
-          } else if (response?.data.role === "sales") {
+          }
+          else if (response?.data.role === "sales") {
             history.go("/myProfiles");
-          } else if (response?.data.role === "help") {
+          }
+          else if (response?.data.role === "help") {
             history.go("/myProfiles");
-          } else if (response?.data.role === "sadmin") {
+          }
+          else if (response?.data.role === "sadmin") {
             history.go("/myProfiles");
           }
         } else {
+
+
           Swal.fire({
-            title: "Wrong Credentials",
-            text: "Try to enter a valid mail or password",
+            title: t('wrong_credentials'),
+            text: t('try_enter_valid_mail_or_password'),
             icon: "error",
-            confirmButtonText: "Cool i'll try again",
+            confirmButtonText: t("cool_i'll_try_again"),
           });
         }
       })
       .catch((e) => {
         Swal.fire({
-          title: "Wrong Credentials",
-          text: "Try to enter a valid mail or password",
-          icon: "error",
-          confirmButtonText: "Cool i'll try again",
+          title: t('wrong_credentials'),
+            text: t('try_enter_valid_mail_or_password'),
+            icon: "error",
+            confirmButtonText: t("cool_i'll_try_again"),
         });
       });
   }
@@ -291,6 +302,17 @@ export default function Signin() {
       </Modal>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
+          <p className="text-center">
+            <Card.Link
+              as={Link}
+              to={Routes.DashboardOverview.path}
+              className="text-gray-700"
+            >
+              <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
+              {t('back_home_page')}
+            </Card.Link>
+          </p>
+
           <Col
             xs={12}
             className="d-flex align-items-center justify-content-center"
@@ -307,11 +329,11 @@ export default function Signin() {
                 <img alt="logo" src={logo_colored} width="20%" />
               </div>
               <div className="flex items-center justify-center pb-3">
-                <h3 className="mb-0">Sign in Skiesbook</h3>
+                <h3 className="mb-0">{t('sign_in_skiesbook')}</h3>
               </div>
 
               <Form.Group id="email" className="mb-4">
-                <Form.Label>Votre adresse mail</Form.Label>
+                <Form.Label>{t('your_email')}</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
                     <FontAwesomeIcon icon={faEnvelope} />
@@ -329,7 +351,7 @@ export default function Signin() {
               </Form.Group>
               <Form.Group>
                 <Form.Group id="password" className="mb-4">
-                  <Form.Label>Mot de passe</Form.Label>
+                  <Form.Label>{t('your_password')}</Form.Label>
                   <InputGroup>
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUnlockAlt} />
@@ -340,22 +362,22 @@ export default function Signin() {
                       }
                       required
                       type="password"
-                      placeholder="Mot de passe"
+                      placeholder={t('password')}
                     />
                   </InputGroup>
                 </Form.Group>
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <Form.Check style={{ marginLeft: "20px" }} type="checkbox">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                  <Form.Check type="checkbox">
                     <FormCheck.Input id="defaultCheck5" className="me-2" />
                     <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">
-                      Remember me
+                      {t('remember_me')}
                     </FormCheck.Label>
                   </Form.Check>
                   <Card.Link
                     className="small text-end"
                     onClick={() => history.push("/forgot-password")}
                   >
-                    Mot de passe oublié
+                    {t('forgot_password')}
                   </Card.Link>
                 </div>
               </Form.Group>
@@ -365,7 +387,7 @@ export default function Signin() {
                 className="w-100"
                 onClick={() => submit()}
               >
-                Sign in
+                {t('login')}
               </Button>
               <div className="mt-2 mb-2">
                 <a style={{ color: "#0E63C0" }} onClick={() => handleShow()}>

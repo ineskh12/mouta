@@ -15,7 +15,6 @@ import {
   Nav,
   Card,
   Table,
-  
   Row,
   Form,
   Button,
@@ -27,8 +26,8 @@ import {
   DropdownButton,
 } from "@themesberg/react-bootstrap";
 import jwt_decode from "jwt-decode";
-import Pagination from './pagination';
-import './pagination.css'
+import Pagination from "./pagination";
+import "./pagination.css";
 import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
@@ -40,8 +39,11 @@ import {
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
 import { Badge } from "@themesberg/react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 export default function AllSuperAdmins() {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
@@ -53,7 +55,7 @@ export default function AllSuperAdmins() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/graveyard/prices"
+          "http://skiesbook.com:3000/api/v1/graveyard/prices"
         );
         setData(response);
         console.log(response);
@@ -69,7 +71,7 @@ export default function AllSuperAdmins() {
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
   //console.log(currentPosts);
   // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -80,7 +82,7 @@ export default function AllSuperAdmins() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Formules d'abonnement </h4>
+          <h4>{t("Subscription plans")}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
@@ -96,7 +98,7 @@ export default function AllSuperAdmins() {
               className="me-2"
             >
               <FontAwesomeIcon icon={faPlus} className="me-2" />
-              Nouvelle formule
+              {t("New formula")}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
@@ -109,7 +111,7 @@ export default function AllSuperAdmins() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           <Col xs={4} md={2} xl={1}>
@@ -126,7 +128,7 @@ export default function AllSuperAdmins() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t("show")}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -147,21 +149,18 @@ export default function AllSuperAdmins() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Tag</th>
-                <th className="border-bottom">Formule</th>
-                <th className="border-bottom">Actions</th>
+                <th className="border-bottom">{t("Tag")}</th>
+                <th className="border-bottom">{t("formula")}</th>
+                <th className="border-bottom">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
               {currentPosts?.map((dm, index) => (
                 <tr>
-                  <td>
-                    {index + 1}
-                  </td>
-              
+                  <td>{index + 1}</td>
+
                   <td>{dm?.tag}</td>
                   <td>{dm?.price}</td>
-                
 
                   <td>
                     {" "}
@@ -179,19 +178,20 @@ export default function AllSuperAdmins() {
                         className="float-left"
                       >
                         <CDropdownItem
-                          onClick={() =>
-                           console.log('clicked') //history.push("/editsuperadmin/" + dm?._id)
+                          onClick={
+                            () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
                           }
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          Editer{" "}
+                          {t("Edit")}{" "}
                         </CDropdownItem>
                         <CDropdownItem
-                         onClick={() =>
-                            console.log('clicked') //history.push("/editsuperadmin/" + dm?._id)
-                           }>
+                          onClick={
+                            () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
+                          }
+                        >
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          Supprimer
+                          {t("delete")}
                         </CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
@@ -202,14 +202,13 @@ export default function AllSuperAdmins() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-            <Pagination 
-         className="pagination"
-        postsPerPage={postsPerPage}
-        totalPosts={data.length}
-        paginate={paginate}
-      />
+              <Pagination
+                className="pagination"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-          
           </Card.Footer>
         </Card.Body>
       </Card>

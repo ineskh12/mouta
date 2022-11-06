@@ -44,7 +44,10 @@ import {
 import { Badge } from "@themesberg/react-bootstrap";
 import Pagination from "./pagination";
 import "./pagination.css";
+import { useTranslation } from "react-i18next";
 export default function AllSuperAdmins() {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(3);
@@ -56,7 +59,7 @@ export default function AllSuperAdmins() {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/users/getastaff"
+          "http://skiesbook.com:3000/api/v1/users/getastaff"
         );
         setData(response);
         console.log(response);
@@ -83,7 +86,7 @@ export default function AllSuperAdmins() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Liste de vos employés </h4>
+          <h4>{t("list_of_your_employees")}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
@@ -99,7 +102,7 @@ export default function AllSuperAdmins() {
               className="me-2"
             >
               <FontAwesomeIcon icon={faPlus} className="me-2" />
-              Nouvel employé
+              {t("new_employee")}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
@@ -112,7 +115,7 @@ export default function AllSuperAdmins() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           <Col xs={4} md={2} xl={1}>
@@ -129,7 +132,7 @@ export default function AllSuperAdmins() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t("show")}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -150,12 +153,12 @@ export default function AllSuperAdmins() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Nom Prénom</th>
-                <th className="border-bottom">Email de référence</th>
-                <th className="border-bottom">Téléphone</th>
-                <th className="border-bottom">Ventes</th>
-                <th className="border-bottom">Affilication</th>
-                <th className="border-bottom">Actions</th>
+                <th className="border-bottom">{t("full_name")}</th>
+                <th className="border-bottom">{t("reference_email")}</th>
+                <th className="border-bottom">{t("phone")}</th>
+                <th className="border-bottom">{t("sales")}</th>
+                <th className="border-bottom">{t("membership")}</th>
+                <th className="border-bottom">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -171,7 +174,7 @@ export default function AllSuperAdmins() {
                           resizeMode: "contain",
                         }}
                         src={
-                          "http://www.skiesbook.com:3000/uploads/" + dm.userimage
+                          "http://skiesbook.com:3000/uploads/" + dm.userimage
                         }
                         className="card-img-top rounded-circle border-white"
                       />
@@ -188,18 +191,18 @@ export default function AllSuperAdmins() {
                     <>
                       {dm?.role === "help" ? (
                         <Badge bg="primary" className="me-1">
-                          Help desk
+                          {t("help_desk")}
                         </Badge>
                       ) : dm?.role === "sales" ? (
                         <Badge bg="success" className="me-1">
-                          Sales
+                          {t("sales")}
                         </Badge>
                       ) : dm?.role === "sadmin" ? (
                         <Badge bg="warning" className="me-1">
-                          Admin
+                          {t("admin")}
                         </Badge>
                       ) : (
-                        "none"
+                        t("none")
                       )}
                     </>
                   </td>
