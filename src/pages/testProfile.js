@@ -52,6 +52,7 @@ import Swal from "sweetalert2";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Sticky from "react-sticky-el";
+import { useTranslation } from "react-i18next";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -87,6 +88,8 @@ function a11yProps(index) {
 }
 
 function App() {
+  const { t } = useTranslation();
+
   const [value, setValue] = React.useState(0);
   const [value1, setValue1] = React.useState(0);
   const responsive = {
@@ -191,11 +194,11 @@ function App() {
   useEffect(() => {
     const call = async () => {
       const response = await axios.get(
-        "http://www.skiesbook.com:3000/api/v1/profile/" + id
+        "http://skiesbook.com:3000/api/v1/profile/" + id
       );
       response.data.files.forEach((element, index) => {
         response.data.files[index] =
-          "http://www.skiesbook.com:3000/uploads/" + element;
+          "http://skiesbook.com:3000/uploads/" + element;
       });
       setprof(response.data);
       setphotos(
@@ -257,15 +260,15 @@ function App() {
       mydata.append("files", upload.files[i]);
     }
     Swal.fire({
-      title: "Ajouter un hommage",
+      title: t('add_tribute'),
       showCancelButton: true,
-      confirmButtonText: "Oui !",
+      confirmButtonText: `${t('yes')} !`,
       showLoaderOnConfirm: true,
 
       preConfirm: async () => {
         return await axios
           .post(
-            "http://www.skiesbook.com:3000/api/v1/profile/addcomment/" + id,
+            "http://skiesbook.com:3000/api/v1/profile/addcomment/" + id,
             mydata
           )
           .then((result) => {
@@ -273,7 +276,7 @@ function App() {
               position: "center",
               icon: "success",
               title:
-                "Hommage ajouté avec succès en attente que le propriétaire accepte ce commentaire",
+                t('tribute_added_successfully_waiting_for_the_owner_to_accept_this_comment'),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -282,7 +285,7 @@ function App() {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`erreur: ${error}`);
+            Swal.showValidationMessage(`${t('error')}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -339,12 +342,12 @@ function App() {
       >
         <Modal.Header>
           <Modal.Title className="h6">
-            Partage sur les réseaux sociaux
+            {t('sharing_on_social_networks')}
           </Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
         <Modal.Body className="align-items-center justify-content-center">
-          <p>Scanner le Code QR</p>
+          <p>{t('scan_qr_code')}</p>
           <Qrcode myvalue={"http://www.skiesbook.com/prof/" + id}></Qrcode>
           <hr />
 
@@ -361,14 +364,14 @@ function App() {
                     Swal.fire({
                       position: "center",
                       icon: "success",
-                      title: "Lien copié",
+                      title: t('link_copied'),
                       showConfirmButton: false,
                       timer: 1500,
                     });
                   }}
                 >
                   <ContentCopyIcon />
-                  Copier le lien
+                  {t('copy_link')}
                 </span>
               ) : (
                 ""
@@ -378,7 +381,7 @@ function App() {
             <FacebookShareButton
               url={"www.skiesbook.com/prof/" + id}
               quote={
-                "sharing the profile of " + prof?.profileName + " on skiesbook"
+                `${t('sharing_the_profile_of')} ${prof?.profileName} ${t('on_skiesbook')}`
               }
               hashtag={"#restinpeace"}
               description={prof?.bio}
@@ -390,7 +393,7 @@ function App() {
             <TwitterShareButton
               className="ml-3"
               title={
-                "sharing the profile of " + prof?.profileName + " on skiesbook"
+                `${t('sharing_the_profile_of')} ${prof?.profileName} ${t('on_skiesbook')}`
               }
               url={"www.skiesbook.com/prof/" + id}
               hashtags={["#restinpeace"]}
@@ -401,14 +404,14 @@ function App() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            I Got It
+            {t('i_got_it')}
           </Button>
           <Button
             variant="link"
             className="text-gray ms-auto"
             onClick={handleClose}
           >
-            Fermer
+            {t('close')}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -421,19 +424,19 @@ function App() {
       >
         <Form onSubmit={(e) => ajouterhommage(e)}>
           <Modal.Header>
-            <Modal.Title className="h6">Ajouter un hommage</Modal.Title>
+            <Modal.Title className="h6">{t('add_tribute')}</Modal.Title>
             <Button variant="close" aria-label="Close" onClick={handleClose2} />
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>Nom et prenom</Form.Label>
+                  <Form.Label>{t('full_name')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileName"
-                    placeholder="Entrer votre Nom"
+                    placeholder={t('enter_your_name')}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -447,12 +450,12 @@ function App() {
             <Row className="align-items-center">
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>Adresse mail</Form.Label>
+                  <Form.Label>{t('mail_address')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileName"
-                    placeholder="Entrer votre Nom"
+                    placeholder={t('enter_your_email_address')}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -467,7 +470,7 @@ function App() {
             <Row className="align-items-center">
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>Hommage </Form.Label>
+                  <Form.Label>{t('tribute')}</Form.Label>
                   <textarea
                     class="form-control"
                     required
@@ -484,12 +487,12 @@ function App() {
               </Col>
               <Col md={12} className="mb-3">
                 <Form.Group id="Images">
-                  <Form.Label>Images</Form.Label>
+                  <Form.Label>{t('images')}</Form.Label>
                   <DropzoneArea
                     required
                     acceptedFiles={[".jpg", ".jpeg", ".png", ".gif"]}
                     filesLimit={3}
-                    dropzoneText="Déposez vos images ici .jpg / .jepg / .png / .gif "
+                    dropzoneText={`${t('drop_your_images_here')} .jpg / .jepg / .png / .gif `}
                     showFileNames={true}
                     maxFileSize={500000000}
                     onChange={(files) => setUpload({ ...upload, files })}
@@ -500,14 +503,14 @@ function App() {
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="secondary">
-              Ajouter
+              {t('add')}
             </Button>
             <Button
               variant="link"
               className="text-gray ms-auto"
               onClick={handleClose2}
             >
-              Fermer
+              {t('close')}
             </Button>
           </Modal.Footer>
         </Form>
@@ -521,10 +524,10 @@ function App() {
                   <div className="cover-container">
                     <ModalImage
                       small={
-                        "http://www.skiesbook.com:3000/uploads/" + prof?.banner
+                        "http://skiesbook.com:3000/uploads/" + prof?.banner
                       }
                       large={
-                        "http://www.skiesbook.com:3000/uploads/" + prof?.banner
+                        "http://skiesbook.com:3000/uploads/" + prof?.banner
                       }
                       alt="profile-bg"
                       className="img-fluid"
@@ -534,12 +537,12 @@ function App() {
                     <div className="profile-img">
                       <img
                         src={
-                          "http://www.skiesbook.com:3000/uploads/" +
+                          "http://skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
                         onClick={() => {
-                          displayImage("http://www.skiesbook.com:3000/uploads/" +
-                          prof?.profileImage);
+                          displayImage("http://skiesbook.com:3000/uploads/" +
+                            prof?.profileImage);
                         }}
                         alt="profile-img"
                         className="avatar-130 img-fluid"
@@ -579,7 +582,7 @@ function App() {
                         className="mr-2 "
                         icon={faShareAlt}
                       ></FontAwesomeIcon>
-                      Partager
+                      {t('share')}
                     </Button>
                   </div>
                 </div>
@@ -612,15 +615,15 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    Emplacement
+                                    {t('location')}
                                   </h4>
                                 </div>
                               </div>
                               <div className="iq-card-body">
-                                <p> Adresse : {prof?.graveyard?.address} </p>
+                                <p> {t('address')} : {prof?.graveyard?.address} </p>
                                 <p>
                                   {" "}
-                                  Contact cimetière: {
+                                  {t('contact_cemetery')}: {
                                     prof?.graveyard?.phone
                                   }{" "}
                                 </p>
@@ -633,7 +636,7 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    Parenté
+                                    {t('relationship')}
                                   </h4>
                                 </div>
                                 <div className="iq-card-header-toolbar d-flex align-items-center">
@@ -653,7 +656,7 @@ function App() {
                                     <span className="mr-2">
                                       <Btn />
                                     </span>
-                                    Afficher plus
+                                    {t('show_more')}
                                   </Button>
                                 </div>
                               </div>
@@ -665,7 +668,7 @@ function App() {
                                       <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
                                         <img
                                           src={
-                                            "http://www.skiesbook.com:3000/uploads/" +
+                                            "http://skiesbook.com:3000/uploads/" +
                                             profile?.prof?.profileImage
                                           }
                                           alt="friendImage"
@@ -700,7 +703,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  Images
+                                  {t('images')}
                                 </h4>
                               </div>
 
@@ -748,7 +751,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  Bio
+                                  {t('biography')}
                                 </h4>
                               </div>
                               <span> {prof?.bio}</span>
@@ -761,7 +764,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  Hommages
+                                  {t('tributes')}
                                 </h4>
                                 <div className="iq-card-header-toolbar d-flex align-items-center">
                                   <Button
@@ -780,7 +783,7 @@ function App() {
                                     <span className="mr-2">
                                       <Btn />
                                     </span>
-                                    Ajouter un hommage
+                                    {t('add_tribute')}
                                   </Button>
                                 </div>
                               </div>
@@ -838,11 +841,11 @@ function App() {
                                                     <ModalImage
                                                       hideDownload
                                                       small={
-                                                        "http://www.skiesbook.com:3000/uploads/" +
+                                                        "http://skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       large={
-                                                        "http://www.skiesbook.com:3000/uploads/" +
+                                                        "http://skiesbook.com:3000/uploads/" +
                                                         img
                                                       }
                                                       className="img-fluid rounded"
@@ -874,7 +877,7 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    Parcours
+                                    {t('journey')}
                                   </h4>
                                 </div>
                                 <div className="scroll-area-x">
@@ -922,7 +925,7 @@ function App() {
                               >
                                 <Tab
                                   wrapped
-                                  label="Photos "
+                                  label={t('photos')}
                                   {...a11yProps(0)}
                                 />
                                 <Tab wrapped label="Albums" {...a11yProps(1)} />
@@ -982,7 +985,7 @@ function App() {
                                                   component="img"
                                                   height="140"
                                                   image={
-                                                    "http://www.skiesbook.com:3000/uploads/" +
+                                                    "http://skiesbook.com:3000/uploads/" +
                                                     album?.images[0]
                                                   }
                                                   alt="album photo"
@@ -1015,7 +1018,7 @@ function App() {
                                                   icon={faArrowLeft}
                                                   className="me-2"
                                                 />
-                                                Retour
+                                                {t('back')}
                                               </Button>
                                               <h4>
                                                 {
@@ -1034,11 +1037,11 @@ function App() {
                                                       <a>
                                                         <ModalImage
                                                           small={
-                                                            "http://www.skiesbook.com:3000/uploads/" +
+                                                            "http://skiesbook.com:3000/uploads/" +
                                                             img
                                                           }
                                                           large={
-                                                            "http://www.skiesbook.com:3000/uploads/" +
+                                                            "http://skiesbook.com:3000/uploads/" +
                                                             img
                                                           }
                                                           className="img-fluid rounded"
@@ -1069,7 +1072,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            Videos
+                            {t('videos')}
                           </h4>
                         </div>
 
@@ -1097,7 +1100,7 @@ function App() {
                             </div>
                           </div>
                         ) : (
-                          <span>Aucune vidéo trouvée</span>
+                          <span>{t('no_videos_found')}</span>
                         )}
                       </div>
                     </div>
@@ -1108,7 +1111,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            Parenté
+                            {t('relationship')}
                           </h4>
                         </div>
                         {prof?.friends?.length > 0 ? (
@@ -1119,7 +1122,7 @@ function App() {
                                   <a href={"/prof/" + profile?.prof?._id}>
                                     <img
                                       src={
-                                        "http://www.skiesbook.com:3000/uploads/" +
+                                        "http://skiesbook.com:3000/uploads/" +
                                         profile?.prof?.profileImage
                                       }
                                       alt="friend-img"
@@ -1143,7 +1146,7 @@ function App() {
                             </ul>
                           </div>
                         ) : (
-                          <span>Aucun lien de parenté trouvée</span>
+                          <span>{t('no_relatives_found')}</span>
                         )}
                       </div>
                     </div>
@@ -1156,7 +1159,7 @@ function App() {
                               style={{ color: "#525252" }}
                               className="card-title"
                             >
-                              Hommages
+                              {t('tributes')}
                             </h4>
                             <div className="iq-card-header-toolbar d-flex align-items-center">
                               <Button
@@ -1175,7 +1178,7 @@ function App() {
                                 <span className="mr-2">
                                   <Btn />
                                 </span>
-                                Ajouter un hommage
+                                {t('add_tribute')}
                               </Button>
                             </div>
                           </div>
@@ -1190,7 +1193,7 @@ function App() {
                                           <Avatar
                                             alt={comment?.sender}
                                             src={
-                                              "http://www.skiesbook.com:3000/uploads/"
+                                              "http://skiesbook.com:3000/uploads/"
                                             }
                                             className="mx-auto"
                                           />
@@ -1230,11 +1233,11 @@ function App() {
                                                 <ModalImage
                                                   hideDownload
                                                   small={
-                                                    "http://www.skiesbook.com:3000/uploads/" +
+                                                    "http://skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   large={
-                                                    "http://www.skiesbook.com:3000/uploads/" +
+                                                    "http://skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   className="img-fluid rounded"
@@ -1288,7 +1291,7 @@ function App() {
                 <div className="profile-header">
                   <div className="cover-container">
                     <img
-                      src={"http://www.skiesbook.com:3000/uploads/" + prof?.banner}
+                      src={"http://skiesbook.com:3000/uploads/" + prof?.banner}
                       alt="profile-bg"
                       className="rounded img-fluid"
                     />
@@ -1300,7 +1303,7 @@ function App() {
                     <div className="profile-img2">
                       <img
                         src={
-                          "http://www.skiesbook.com:3000/uploads/" +
+                          "http://skiesbook.com:3000/uploads/" +
                           prof?.profileImage
                         }
                         alt="profile-img"
@@ -1339,7 +1342,7 @@ function App() {
                           className="mr-2 "
                           icon={faShareAlt}
                         ></FontAwesomeIcon>
-                        Partager
+                        {t('share')}
                       </Button>
                     </div>
                   </div>
@@ -1366,7 +1369,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                Images
+                                {t('images')}
                               </h4>
                             </div>
 
@@ -1375,9 +1378,9 @@ function App() {
                                 <div key={i}>
                                   {img.split(".").pop() === "mp4" ? (
                                     <>
-                                      <div className="okbb"   onClick={() => {
-                                            displayVideo(img);
-                                          }}></div>
+                                      <div className="okbb" onClick={() => {
+                                        displayVideo(img);
+                                      }}></div>
                                       <video
                                         style={{ borderRadius: "10px" }}
                                         className="story "
@@ -1411,7 +1414,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                Bio
+                                {t('biography')}
                               </h4>
                             </div>
                             <span> {prof?.bio}</span>
@@ -1424,7 +1427,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                Hommages
+                                {t('tributes')}
                               </h4>
                               <div className="iq-card-header-toolbar d-flex align-items-center">
                                 <Button
@@ -1443,7 +1446,7 @@ function App() {
                                   <span className="mr-2">
                                     <Btn />
                                   </span>
-                                  Ajouter un hommage
+                                  {t('add_tribute')}
                                 </Button>
                               </div>
                             </div>
@@ -1493,11 +1496,11 @@ function App() {
                                                   <ModalImage
                                                     hideDownload
                                                     small={
-                                                      "http://www.skiesbook.com:3000/uploads/" +
+                                                      "http://skiesbook.com:3000/uploads/" +
                                                       img
                                                     }
                                                     large={
-                                                      "http://www.skiesbook.com:3000/uploads/" +
+                                                      "http://skiesbook.com:3000/uploads/" +
                                                       img
                                                     }
                                                     className="img-fluid rounded"
@@ -1532,13 +1535,13 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                Emplacement
+                                {t('location')}
                               </h4>
                             </div>
                           </div>
                           <div className="iq-card-body">
-                            <p> Adresse : {prof?.graveyard?.address} </p>
-                            <p> Contact cimetière: {prof?.graveyard?.phone} </p>
+                            <p> {t('address')} : {prof?.graveyard?.address} </p>
+                            <p> {t('contact_cemetery')}: {prof?.graveyard?.phone} </p>
                           </div>
                         </div>
                       </div>
@@ -1557,7 +1560,7 @@ function App() {
                               style={{ color: "#525252" }}
                               className="card-title"
                             >
-                              Parcours
+                              {t('journey')}
                             </h4>
                           </div>
                           <div className="scroll-area-x">
@@ -1590,7 +1593,7 @@ function App() {
                     <div className="iq-card-body">
                       <div className="iq-header-title">
                         <h4 style={{ color: "#525252" }} className="card-title">
-                          Parenté
+                          {t('relationship')}
                         </h4>
                       </div>
                       {prof?.friends?.length > 0 ? (
@@ -1601,7 +1604,7 @@ function App() {
                                 <a href={"/prof/" + profile?.prof?._id}>
                                   <img
                                     src={
-                                      "http://www.skiesbook.com:3000/uploads/" +
+                                      "http://skiesbook.com:3000/uploads/" +
                                       profile?.prof?.profileImage
                                     }
                                     alt="friend-img"
@@ -1623,7 +1626,7 @@ function App() {
                           </ul>
                         </div>
                       ) : (
-                        <span>Aucune lien de parenté trouvée</span>
+                        <span>{t('no_relatives_found')}</span>
                       )}
                     </div>
                   </div>
@@ -1635,7 +1638,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            Hommages
+                            {t('tributes')}
                           </h4>
                           <div className="iq-card-header-toolbar d-flex align-items-center">
                             <Button
@@ -1654,7 +1657,7 @@ function App() {
                               <span className="mr-2">
                                 <Btn />
                               </span>
-                              Ajouter un hommage
+                              {t('add_tribute')}
                             </Button>
                           </div>
                         </div>
@@ -1707,11 +1710,11 @@ function App() {
                                                 <ModalImage
                                                   hideDownload
                                                   small={
-                                                    "http://www.skiesbook.com:3000/uploads/" +
+                                                    "http://skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   large={
-                                                    "http://www.skiesbook.com:3000/uploads/" +
+                                                    "http://skiesbook.com:3000/uploads/" +
                                                     img
                                                   }
                                                   className="img-fluid rounded"
@@ -1750,22 +1753,22 @@ function App() {
                 }}
               >
                 <BottomNavigationAction
-                  label="Accueil"
+                  label={t('home')}
                   onClick={(e) => handleshow("parcours")}
                   icon={<AccountCircle />}
                 />
                 <BottomNavigationAction
-                  label="Emplacement"
+                  label={t('location')}
                   onClick={(e) => handleshow("photo")}
                   icon={<PinDropIcon />}
                 />
                 <BottomNavigationAction
-                  label="Parcours"
+                  label={t('journey')}
                   onClick={(e) => handleshow("videos")}
                   icon={<ViewTimelineIcon />}
                 />
                 <BottomNavigationAction
-                  label="Parenté"
+                  label={t('relationship')}
                   onClick={() => handleshow("parente")}
                   icon={<FamilyRestroomIcon />}
                 />

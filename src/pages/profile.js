@@ -12,8 +12,12 @@ import ImageGallery from "react-image-gallery";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { useParams } from "react-router-dom";
 import Test from "./Test";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileCardWidget() {
+  
+  const { t } = useTranslation();
+
   const [images, setImages] = React.useState(null);
   const [prof, setprof] = React.useState(null);
   const [videos, setVideos] = React.useState(undefined);
@@ -25,10 +29,10 @@ export default function ProfileCardWidget() {
 
     const call = async () => {
       const response = await axios.get(
-        "http://www.skiesbook.com:3000/api/v1/profile/" + id
+        "http://skiesbook.com:3000/api/v1/profile/" + id
       );
       response.data.files.forEach((element, index) => {
-        response.data.files[index] = "http://www.skiesbook.com:3000/uploads/" + element;
+        response.data.files[index] = "http://skiesbook.com:3000/uploads/" + element;
       });
       setprof(response.data);
       setVideos(
@@ -80,7 +84,7 @@ export default function ProfileCardWidget() {
 
         <Card.Body className="pb-5">
           <Card.Img
-            src={"http://www.skiesbook.com:3000/uploads/" + prof?.profileImage}
+            src={"http://skiesbook.com:3000/uploads/" + prof?.profileImage}
             alt="Neil Portrait"
             className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
           />
@@ -112,16 +116,16 @@ export default function ProfileCardWidget() {
             </div>
           </div>
           <Button variant="primary" size="sm" className="me-2">
-            <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Contact the
-            familly via {prof?.profileEmail}
+            <FontAwesomeIcon icon={faUserPlus} className="me-1" /> 
+            {t('contact_the_family_via')} {prof?.profileEmail}
           </Button>
           <Button variant="secondary" size="sm">
-            Send Message
+            {t('send_message')}
           </Button>
           <Card.Body style={{ width: "100%" }}>
-            <Card.Title>image gallery</Card.Title>
+            <Card.Title>{t('image_gallery')}</Card.Title>
             <ProfileWidget></ProfileWidget>
-            <Card.Title className="mt-4">Video gallery</Card.Title>
+            <Card.Title className="mt-4">{t('video_gallery')}</Card.Title>
 
             <Test wow={videos} id={id} />
           </Card.Body>

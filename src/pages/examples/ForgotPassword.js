@@ -14,18 +14,20 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Routes } from "../../routes";
+import { useTranslation } from "react-i18next";
 
-export default () => {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const { t } = useTranslation();
   const sendEmail = async (e) => {
-    const reset = {email : email}
+    const reset = { email: email }
     await axios
-      .post("http://www.skiesbook.com:3000/api/v1/users/resetpassword", reset)
+      .post("http://skiesbook.com:3000/api/v1/users/resetpassword", reset)
       .then((response) => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Verifier votre boite email",
+          title: t('check_your_mailbox'),
           showConfirmButton: true,
         });
       })
@@ -33,7 +35,7 @@ export default () => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Addresse email non valide",
+          title: t('email_address_invalid'),
           showConfirmButton: false,
           timer: 1500,
         });
@@ -41,7 +43,7 @@ export default () => {
   }
 
 
-  
+
   return (
     <main>
       <section className="vh-lg-100 mt-4 mt-lg-0 bg-soft d-flex align-items-center">
@@ -53,8 +55,8 @@ export default () => {
                 to={Routes.Signin.path}
                 className="text-gray-700"
               >
-                <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-                sign in
+                <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
+                {t('back_home_page')}
               </Card.Link>
             </p>
             <Col
@@ -62,33 +64,31 @@ export default () => {
               className="d-flex align-items-center justify-content-center"
             >
               <div className="signin-inner my-3 my-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <h3>Mot de passe oublié?</h3>
+                <h3>{t('forgot_password')}</h3>
                 <p className="mb-4">
-                  Ne vous inquiétez pas ! Il vous suffit de saisir votre adresse
-                  e-mail et nous vous enverrons un code pour réinitialiser votre
-                  mot de passe ! !
+                  {t('message_forgot_password')}
                 </p>
-            
-                  <div className="mb-4">
-                    <Form.Label htmlFor="email">Email</Form.Label>
-                    <InputGroup id="email">
-                      <Form.Control
-                        required
-                        autoFocus
-                        type="email"
-                        placeholder="john@mail.com"
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </InputGroup>
-                  </div>
-                  <Button
-                    variant="primary"
-                    className="w-100"
-                    onClick={(e) => sendEmail(e)}
-                  >
-                    Envoyer le lien de réinitialisation
-                  </Button>
-            
+
+                <div className="mb-4">
+                  <Form.Label htmlFor="email">{t('your_email')}</Form.Label>
+                  <InputGroup id="email">
+                    <Form.Control
+                      required
+                      autoFocus
+                      type="email"
+                      placeholder="john@mail.com"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </InputGroup>
+                </div>
+                <Button
+                  variant="primary"
+                  className="w-100"
+                  onClick={(e) => sendEmail(e)}
+                >
+                  {t('send_reset_link')}
+                </Button>
+
               </div>
             </Col>
           </Row>

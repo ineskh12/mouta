@@ -1,4 +1,4 @@
-import React, { useState, useEffect,Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -14,7 +14,7 @@ import {
   Form,
   InputGroup,
   ButtonGroup,
-  Dropdown,Button
+  Dropdown, Button
 } from "@themesberg/react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -23,7 +23,11 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import Swal from "sweetalert2";
 import jwt_decode from "jwt-decode";
+import { useTranslation } from "react-i18next";
 const Addadmin = () => {
+
+  const { t } = useTranslation();
+
   const [passwordType, setPasswordType] = useState("password");
   const [place, setPlace] = useState("");
   const [user, setUser] = useState({});
@@ -43,7 +47,7 @@ const Addadmin = () => {
   async function getGrave() {
     try {
       const { data: response } = await axios.get(
-        "http://www.skiesbook.com:3000/api/v1/users/" + id
+        "http://skiesbook.com:3000/api/v1/users/" + id
       );
       setUser(response);
     } catch (error) {
@@ -88,7 +92,7 @@ const Addadmin = () => {
     /*     mydata.append("latitude", position.lat);
     mydata.append("logitude", position.lng); */
     const { data } = await axios.put(
-      "http://www.skiesbook.com:3000/api/v1/users/" + id,
+      "http://skiesbook.com:3000/api/v1/users/" + id,
       mydata,
       config
     );
@@ -96,9 +100,9 @@ const Addadmin = () => {
     if (data._id) {
       Swal.fire({
         title: "Success",
-        text: "User Updated",
+        text: t("User Updated"),
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK"),
       }).then((result) => {
         if (result.value) {
           history.push("/");
@@ -107,9 +111,9 @@ const Addadmin = () => {
     } else {
       Swal.fire({
         title: "Error",
-        text: "User not Updated",
+        text: t("User not Updated"),
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK"),
       });
     }
   }
@@ -127,22 +131,22 @@ const Addadmin = () => {
               className="me-2"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-              Retour
+              {t('back')}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">Mon profil</h5>
+        <h5 className="mb-4">{t("My profile")}</h5>
 
-        <h5 className="mb-4">Informations générales</h5>
+        <h5 className="mb-4">{t('General informations')}</h5>
         <Form onSubmit={(e) => Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Prénom</Form.Label>
+                <Form.Label>{t('firstname')}</Form.Label>
                 <Form.Control
                   defaultValue={user?.name}
                   type="text"
-                  placeholder="Entrer votre Prénom"
+                  placeholder={t('Enter your first name')}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -151,11 +155,11 @@ const Addadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Nom</Form.Label>
+                <Form.Label>{t('lastname')}</Form.Label>
                 <Form.Control
                   defaultValue={user?.lastn}
                   type="text"
-                  placeholder="Et votre Nom"
+                  placeholder={t("And your last name")}
                   onChange={(e) =>
                     setFormData({ ...formData, lastn: e.target.value })
                   }
@@ -166,7 +170,7 @@ const Addadmin = () => {
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
-                <Form.Label>Date de naissance</Form.Label>
+                <Form.Label>{t('date_of_birth')}</Form.Label>
                 <Col md={6} className="mb-3">
                   <Form.Group id="birthday">
                     <InputGroup>
@@ -190,16 +194,16 @@ const Addadmin = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
-                <Form.Label>Sexe</Form.Label>
+                <Form.Label>{t('gender')}</Form.Label>
                 <Form.Select
                   defaultValue={user?.sex}
                   onChange={(e) =>
                     setFormData({ ...formData, sex: e.target.value })
                   }
                 >
-                  <option value="o">Autre</option>
-                  <option value="F">Femme</option>
-                  <option value="M">Homme</option>
+                  <option value="o">{t('other')}</option>
+                  <option value="F">{t('women')}</option>
+                  <option value="M">{t('man')}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -207,7 +211,7 @@ const Addadmin = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t('email')}</Form.Label>
                 <Form.Control
                   defaultValue={user?.email}
                   type="email"
@@ -220,7 +224,7 @@ const Addadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>Téléphone</Form.Label>
+                <Form.Label>{t('phone')}</Form.Label>
                 <Form.Control
                   defaultValue={user?.phone}
                   type="number"
@@ -233,46 +237,46 @@ const Addadmin = () => {
             </Col>
           </Row>
           <Row>
-          <Col md={6} className="mb-3">
+            <Col md={6} className="mb-3">
 
-<Form.Group id="firstName">
-  <Form.Label>Mot de passe</Form.Label>
-  <InputGroup>
+              <Form.Group id="firstName">
+                <Form.Label>{t('password')}</Form.Label>
+                <InputGroup>
 
-  <Button
-    size="sm"
-    style={{
-      borderColor: "transparent",
-      marginRight: 5,
-      backgroundColor: "#d7dce4",
-    }}
-    onClick={() => togglePassword()}
-  >
-    {passwordType === "password" ? (
-      <InputGroup.Text>
-        <FontAwesomeIcon icon={faEye} />
-      </InputGroup.Text>
-    ) : (
-      <InputGroup.Text>
-        <FontAwesomeIcon icon={faEyeSlash} />
-      </InputGroup.Text>
-    )}
-  </Button>
-  <Form.Control
-    type={passwordType}
-    placeholder="Entrer votre mot de pass"
-    onChange={(e) =>
-      setFormData({ ...formData, password: e.target.value })
-    }
-  />
-</InputGroup>
+                  <Button
+                    size="sm"
+                    style={{
+                      borderColor: "transparent",
+                      marginRight: 5,
+                      backgroundColor: "#d7dce4",
+                    }}
+                    onClick={() => togglePassword()}
+                  >
+                    {passwordType === "password" ? (
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faEye} />
+                      </InputGroup.Text>
+                    ) : (
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      </InputGroup.Text>
+                    )}
+                  </Button>
+                  <Form.Control
+                    type={passwordType}
+                    placeholder={t('enter_your_password')}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                  />
+                </InputGroup>
 
-</Form.Group>
+              </Form.Group>
 
-</Col>
+            </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label> Confirmer votre mot de passe</Form.Label>
+                <Form.Label>{t('confirm_your_password')}</Form.Label>
                 <InputGroup>
                   <Button
                     size="sm"
@@ -295,7 +299,7 @@ const Addadmin = () => {
                   </Button>
                   <Form.Control
                     type={passwordType}
-                    placeholder="Confirmer votre mot de passe"
+                    placeholder={t('confirm_your_password')}
                     onChange={(e) =>
                       setFormData({
                         ...formData,
@@ -305,8 +309,8 @@ const Addadmin = () => {
                   ></Form.Control>
                 </InputGroup>
                 {formData.confirmPassword !== formData.password &&
-                formData.confirmPassword !== "" ? (
-                  <MuiAlert severity="warning">Mot de passe ne correspond pas</MuiAlert>
+                  formData.confirmPassword !== "" ? (
+                  <MuiAlert severity="warning">{t('password_does_not_match')}</MuiAlert>
                 ) : (
                   <span></span>
                 )}
@@ -315,10 +319,10 @@ const Addadmin = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Image</Form.Label>
+                <Form.Label>{t('image')}</Form.Label>
                 <Form.Control
                   type="file"
-                  placeholder="Entrer votre mot de pass"
+                  placeholder={t("Choose a picture")}
                   onChange={(e) =>
                     setFormData({ ...formData, userimage: e.target.files[0] })
                   }
@@ -329,7 +333,7 @@ const Addadmin = () => {
 
           <div className="mt-3">
             <Button variant="primary" type="submit">
-              Sauvegarder
+              {t('save')}
             </Button>
           </div>
         </Form>

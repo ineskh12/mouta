@@ -15,14 +15,13 @@ import {
   faSearch,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import Pagination from './pagination';
-import './pagination.css'
+import Pagination from "./pagination";
+import "./pagination.css";
 import {
   Col,
   Nav,
   Card,
   Table,
-
   Row,
   Form,
   Button,
@@ -39,18 +38,28 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../routes";
 import axios from "axios";
-import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/bootstrap-react";
+import {
+  CDropdown,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+} from "@coreui/bootstrap-react";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 export default function AllSuperAdmins() {
+  const { t } = useTranslation();
+
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
+
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/users/getsupers"
+          "http://skiesbook.com:3000/api/v1/users/getsupers"
         );
         setData(response);
         console.log(response);
@@ -65,9 +74,38 @@ export default function AllSuperAdmins() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+
+  async function deleteSuperAdmin(id) {
+    try {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const { data: response } = await axios.delete(
+            `http://skiesbook.com:3000/api/v1/users/${id}`
+          );
+          Swal.fire("Deleted!", "user has been deleted.", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            }
+          );
+        }
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
   //console.log(currentPosts);
   // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -78,14 +116,13 @@ export default function AllSuperAdmins() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Liste des Super admins </h4>
+          <h4>{t("List of Super admins")}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
         </div>
 
         <div className="btn-toolbar mb-2 mb-md-0">
-
           <ButtonGroup>
             <Dropdown.Toggle
               onClick={(e) => history.push("/addsuperadmin")}
@@ -95,7 +132,7 @@ export default function AllSuperAdmins() {
               className="me-2"
             >
               <FontAwesomeIcon icon={faPlus} className="me-2" />
-              Nouveau super admin
+              {t("add_a_new_super_admin")}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
@@ -108,7 +145,7 @@ export default function AllSuperAdmins() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           <Col xs={4} md={2} xl={1}>
@@ -125,7 +162,7 @@ export default function AllSuperAdmins() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t("show")}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -146,10 +183,10 @@ export default function AllSuperAdmins() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Nom Prénom</th>
-                <th className="border-bottom">Email de référence</th>
-                <th className="border-bottom">Téléphone</th>
-                <th className="border-bottom">Actions</th>
+                <th className="border-bottom">{t("full_name")}</th>
+                <th className="border-bottom">{t("reference_email")}</th>
+                <th className="border-bottom">{t("phone")}</th>
+                <th className="border-bottom">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -164,7 +201,9 @@ export default function AllSuperAdmins() {
                           height: "50px",
                           resizeMode: "contain",
                         }}
-                        src={"http://www.skiesbook.com:3000/uploads/" + dm.userimage}
+                        src={
+                          "http://skiesbook.com:3000/uploads/" + dm.userimage
+                        }
                         className="card-img-top rounded-circle border-white"
                       />
                     </div>
@@ -178,8 +217,7 @@ export default function AllSuperAdmins() {
                   <td>
                     {" "}
                     <CDropdown className="dropleft" direction="dropstart">
-                        
-                        <CDropdownToggle color="transparant">
+                      <CDropdownToggle color="transparant">
                         <span className="icon icon-sm">
                           <FontAwesomeIcon
                             icon={faEllipsisH}
@@ -197,11 +235,13 @@ export default function AllSuperAdmins() {
                           }
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          Editer{" "}
+                          {t("Edit")}{" "}
                         </CDropdownItem>
-                        <CDropdownItem>
+                        <CDropdownItem
+                          onClick={() => deleteSuperAdmin(dm?._id)}
+                        >
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          Supprimer
+                          {t("delete")}
                         </CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
@@ -212,14 +252,13 @@ export default function AllSuperAdmins() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-            <Pagination 
-         className="pagination"
-        postsPerPage={postsPerPage}
-        totalPosts={data.length}
-        paginate={paginate}
-      />
+              <Pagination
+                className="pagination m-2"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-           
           </Card.Footer>
         </Card.Body>
       </Card>
