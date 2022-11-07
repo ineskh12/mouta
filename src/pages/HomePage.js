@@ -53,6 +53,7 @@ import graveyard_dashboard_cim from "./graveDashboard/widgets";
 import comments from "./comments/index";
 import welcome from "./password/welcomePassword";
 import requests from "./requests";
+import Language from "../components/language";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -67,6 +68,7 @@ const RouteWithLoader = ({ component: Component, ...rest }) => {
       render={(props) => (
         <>
           {" "}
+          <Language />
           <Preloader show={loaded ? false : true} /> <Component {...props} />{" "}
         </>
       )}
