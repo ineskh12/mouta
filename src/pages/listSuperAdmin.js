@@ -45,13 +45,15 @@ import {
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 export default function AllSuperAdmins() {
   const { t } = useTranslation();
 
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
+
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +74,35 @@ export default function AllSuperAdmins() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+
+  async function deleteSuperAdmin(id) {
+    try {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const { data: response } = await axios.delete(
+            `http://skiesbook.com:3000/api/v1/users/${id}`
+          );
+          Swal.fire("Deleted!", "user has been deleted.", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            }
+          );
+        }
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
   //console.log(currentPosts);
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -206,7 +237,9 @@ export default function AllSuperAdmins() {
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
                           {t("Edit")}{" "}
                         </CDropdownItem>
-                        <CDropdownItem>
+                        <CDropdownItem
+                          onClick={() => deleteSuperAdmin(dm?._id)}
+                        >
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
                           {t("delete")}
                         </CDropdownItem>
@@ -220,7 +253,7 @@ export default function AllSuperAdmins() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination
-                className="pagination"
+                className="pagination m-2"
                 postsPerPage={postsPerPage}
                 totalPosts={data.length}
                 paginate={paginate}

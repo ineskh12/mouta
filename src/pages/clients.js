@@ -37,7 +37,7 @@ const Getadmins = () => {
 
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(2);
+  const [postsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -204,7 +204,7 @@ const Getadmins = () => {
                     </td>
 
                     <td className="fw-bold">
-                      {dm.name} {dm.lastn}
+                      {dm.name + " "} {dm.lastn}
                     </td>
                     <td>{dm?.phone}</td>
                     <td data-tip={dm?.graveyard?.address}>

@@ -48,6 +48,7 @@ export default function Signin() {
     address: "",
     phone: "",
     country: "Canada",
+    graveyardName: "",
     ville: "",
     region: "",
     zip: "",
@@ -55,14 +56,12 @@ export default function Signin() {
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
 
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   async function submit() {
     await axios
       .post("http://skiesbook.com:3000/api/v1/auth/login", myForm, config)
       .then((response) => {
-        console.log(response);
         localStorage.setItem("email", JSON.stringify(response?.data.email));
         localStorage.setItem("token", JSON.stringify(response?.data.idToken));
         if (response?.status === 200) {
@@ -72,31 +71,23 @@ export default function Signin() {
             history.go("/adminclients");
           } else if (response?.data.role === "client") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "gstaff") {
+          } else if (response?.data.role === "gstaff") {
             history.go("/Staffclient");
-          }
-          else if (response?.data.role === "gadmin") {
+          } else if (response?.data.role === "gadmin") {
             history.go("/Staffclient");
-          }
-          else if (response?.data.role === "gcompta") {
+          } else if (response?.data.role === "gcompta") {
             history.go("/adminclients");
-          }
-          else if (response?.data.role === "sales") {
+          } else if (response?.data.role === "sales") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "help") {
+          } else if (response?.data.role === "help") {
             history.go("/myProfiles");
-          }
-          else if (response?.data.role === "sadmin") {
+          } else if (response?.data.role === "sadmin") {
             history.go("/myProfiles");
           }
         } else {
-
-
           Swal.fire({
-            title: t('wrong_credentials'),
-            text: t('try_enter_valid_mail_or_password'),
+            title: t("wrong_credentials"),
+            text: t("try_enter_valid_mail_or_password"),
             icon: "error",
             confirmButtonText: t("cool_i'll_try_again"),
           });
@@ -104,10 +95,10 @@ export default function Signin() {
       })
       .catch((e) => {
         Swal.fire({
-          title: t('wrong_credentials'),
-            text: t('try_enter_valid_mail_or_password'),
-            icon: "error",
-            confirmButtonText: t("cool_i'll_try_again"),
+          title: t("wrong_credentials"),
+          text: t("try_enter_valid_mail_or_password"),
+          icon: "error",
+          confirmButtonText: t("cool_i'll_try_again"),
         });
       });
   }
@@ -124,9 +115,8 @@ export default function Signin() {
       });
     } else {
       axios
-        .post("http://skiesbook.com:3000/api/v1/request", formData)
+        .post("http://localhost:3000/api/v1/request", formData)
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             Swal.fire({
               title: "Request sent",
@@ -152,6 +142,7 @@ export default function Signin() {
           </Modal.Header>
           <Modal.Body>
             <Row>
+              <h5 className="mb-2">Information responsable cimetière </h5>
               <Col md={6} className="mb-3">
                 <Form.Group id="firstName">
                   <Form.Label>Nom</Form.Label>
@@ -215,8 +206,25 @@ export default function Signin() {
                 </Form.Group>
               </Col>
             </Row>
+            <h5 className="mb-2">Information cimetière </h5>
 
             <Row className="align-items-center">
+              <Col md={6} className="mb-3">
+                <Form.Group id="firstName">
+                  <Form.Label>Nom du cimetière</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    name="cim name"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        graveyardName: e.target.value,
+                      })
+                    }
+                  />
+                </Form.Group>
+              </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="gender">
                   <Form.Label>Pays</Form.Label>
@@ -309,7 +317,7 @@ export default function Signin() {
               className="text-gray-700"
             >
               <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
-              {t('back_home_page')}
+              {t("back_home_page")}
             </Card.Link>
           </p>
 
@@ -329,11 +337,11 @@ export default function Signin() {
                 <img alt="logo" src={logo_colored} width="20%" />
               </div>
               <div className="flex items-center justify-center pb-3">
-                <h3 className="mb-0">{t('sign_in_skiesbook')}</h3>
+                <h3 className="mb-0">{t("sign_in_skiesbook")}</h3>
               </div>
 
               <Form.Group id="email" className="mb-4">
-                <Form.Label>{t('your_email')}</Form.Label>
+                <Form.Label>{t("your_email")}</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
                     <FontAwesomeIcon icon={faEnvelope} />
@@ -351,7 +359,7 @@ export default function Signin() {
               </Form.Group>
               <Form.Group>
                 <Form.Group id="password" className="mb-4">
-                  <Form.Label>{t('your_password')}</Form.Label>
+                  <Form.Label>{t("your_password")}</Form.Label>
                   <InputGroup>
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUnlockAlt} />
@@ -362,22 +370,22 @@ export default function Signin() {
                       }
                       required
                       type="password"
-                      placeholder={t('password')}
+                      placeholder={t("password")}
                     />
                   </InputGroup>
                 </Form.Group>
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <Form.Check type="checkbox">
+                  <Form.Check style={{ marginLeft: "20px" }} type="checkbox">
                     <FormCheck.Input id="defaultCheck5" className="me-2" />
                     <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">
-                      {t('remember_me')}
+                      {t("remember_me")}
                     </FormCheck.Label>
                   </Form.Check>
                   <Card.Link
                     className="small text-end"
                     onClick={() => history.push("/forgot-password")}
                   >
-                    {t('forgot_password')}
+                    {t("forgot_password")}
                   </Card.Link>
                 </div>
               </Form.Group>
@@ -387,7 +395,7 @@ export default function Signin() {
                 className="w-100"
                 onClick={() => submit()}
               >
-                {t('login')}
+                {t("login")}
               </Button>
               <div className="mt-2 mb-2">
                 <a style={{ color: "#0E63C0" }} onClick={() => handleShow()}>

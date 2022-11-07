@@ -36,7 +36,7 @@ export default function AllProfiles() {
   const [data, setData] = useState([]);
   const [filtreddata, setfiltredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
   const [ticketId, setTicketId] = useState();
 
   async function searchKeyword(word) {

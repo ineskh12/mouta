@@ -35,7 +35,7 @@ export default function AllProfiles() {
 
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {

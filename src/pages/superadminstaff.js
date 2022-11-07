@@ -50,7 +50,7 @@ export default function AllSuperAdmins() {
 
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(3);
+  const [postsPerPage] = useState(10);
   const token = JSON.parse(localStorage.getItem("token"));
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
