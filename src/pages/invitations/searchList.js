@@ -22,8 +22,10 @@ import moment from "moment-timezone";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useTranslation } from "react-i18next";
 
 const Addprice = () => {
+  const { t } = useTranslation();
   const fullname = useParams().fullname;
   const id = useParams().id;
   const [data, setData] = useState([]);
@@ -32,24 +34,24 @@ const Addprice = () => {
   const [recieverimg, setRecieverImg] = useState("");
   const [link, setLink] = useState("");
   const famillyLinks = [
-    { title: "père", value: "père" },
-    { title: "mère", value: "mère" },
-    { title: "frère", value: "frère" },
-    { title: "sœur", value: "sœur" },
-    { title: "grandpère", value: "grandpère" },
-    { title: "grandmère", value: "grandmère" },
-    { title: "petit-fils", value: "petit-fils" },
-    { title: "petite-fille", value: "petite-fille" },
-    { title: "cousin", value: "cousin" },
-    { title: "neveu", value: "neveu" },
-    { title: "nièce", value: "nièce" },
-    { title: "oncle", value: "oncle" },
-    { title: "tante", value: "tante" },
-    { title: "sibling", value: "sibling" },
-    { title: "belle-mère", value: "belle-mère" },
-    { title: "beau-père", value: "beau-père" },
-    { title: "beau-frère", value: "beau-frère" },
-    { title: "belle-sœur", value: "belle-sœur" },
+    { title: t("father"), value: "père" },
+    { title: t("mother"), value: "mère" },
+    { title: t("brother"), value: "frère" },
+    { title: t("sister"), value: "sœur" },
+    { title: t("grandfather"), value: "grandpère" },
+    { title: t("grandmother"), value: "grandmère" },
+    { title: t("grandson"), value: "petit-fils" },
+    { title: t("granddaughter"), value: "petite-fille" },
+    { title: t("cousin"), value: "cousin" },
+    { title: t("nephew"), value: "neveu" },
+    { title: t("niece"), value: "nièce" },
+    { title: t("uncle"), value: "oncle" },
+    { title: t("aunt"), value: "tante" },
+    { title: t("sibling"), value: "sibling" },
+    { title: t("mother-in-law"), value: "belle-mère" },
+    { title: t("stepfather"), value: "beau-père" },
+    { title: t("brother-in-law"), value: "beau-frère" },
+    { title: t("sister-in-law"), value: "belle-sœur" },
   ];
 
   const fetchData = async () => {
@@ -80,10 +82,10 @@ const Addprice = () => {
         .post("http://www.skiesbook.com:3000/api/v1/profile/sendinvitation", mydata)
         .then((res) => {
           Swal.fire({
-            title: "Invitation envoyée",
-            text: "Votre invitation a été envoyée avec succès",
+            title: t("Invitation sent"),
+            text: t("Your invitation has been sent successfully"),
             icon: "success",
-            confirmButtonText: "Ok",
+            confirmButtonText: t("OK"),
           }).then((result) => {
             if (result.isConfirmed) {
               history.push("/parente/" + decoded.userId);
@@ -122,14 +124,14 @@ const Addprice = () => {
       >
         <Modal.Header>
           <Modal.Title className="h6">
-            Envoyer invitation de parenté
+            {t("Send relationship invitation")}
           </Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
         <Form onSubmit={(e) => sendinvi(e)}>
           <Modal.Body>
             <div className="d-flex justify-content-center">
-              <h4>Entrez votre lien de parenté avec {recievername} </h4>
+              <h4>{t("Enter your relationship with")}{' '}{recievername} </h4>
               <br></br>
               <div className="row justify-content-center">
                 <Avatar
@@ -148,7 +150,7 @@ const Addprice = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Lien de parenté"
+                    label={t("relationship")}
                     onBlur={(e) => {
                       setLink(e.target.value);
                     }}
@@ -159,14 +161,14 @@ const Addprice = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit">
-              Inviter{" "}
+              {t("Invite")}{" "}
             </Button>
             <Button
               variant="secondary"
               className="text-gray ms-auto"
               onClick={handleClose}
             >
-              Fermer
+              {t("close")}
             </Button>
           </Modal.Footer>
         </Form>
@@ -183,11 +185,11 @@ const Addprice = () => {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                Retour
+                {t("back")}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h5 className="mb-4">Liste des profils</h5>
+          <h5 className="mb-4">{t("list_of_profiles")}</h5>
 
           <Row>
             {data.map((item) => (
@@ -215,7 +217,7 @@ const Addprice = () => {
                         openModal(item._id, item.profileName, item.profileImage)
                       }
                     >
-                      Envoyer une Invitation
+                      {t("Send an invitation")}
                     </Button>
                   </Toast.Header>
                   <Toast.Body className="text-center">

@@ -33,8 +33,10 @@ import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../routes";
 import axios from "axios";
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/bootstrap-react";
+import { useTranslation } from "react-i18next";
 
 export default function AllSuperAdmins() {
+  const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   let decoded = null
@@ -66,7 +68,7 @@ export default function AllSuperAdmins() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Liste de vos employés</h4>
+          <h4>{t("list_of_your_employees")}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
@@ -83,7 +85,7 @@ export default function AllSuperAdmins() {
               className="me-2"
             >
               <FontAwesomeIcon icon={faPlus} className="me-2" />
-              Nouvel employé
+              {t("new_employee")}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
@@ -96,7 +98,7 @@ export default function AllSuperAdmins() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t('search')} />
             </InputGroup>
           </Col>
           <Col xs={4} md={2} xl={1}>
@@ -113,7 +115,7 @@ export default function AllSuperAdmins() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t('show')}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -134,11 +136,11 @@ export default function AllSuperAdmins() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Nom Prénom</th>
-                <th className="border-bottom">Email de référence</th>
-                <th className="border-bottom">Téléphone</th>
-                <th className="border-bottom">Role</th>
-                <th className="border-bottom">Actions</th>
+                <th className="border-bottom">{t('full_name')}</th>
+                <th className="border-bottom">{t("reference_email")}</th>
+                <th className="border-bottom">{t("phone")}</th>
+                <th className="border-bottom">{t('role')}</th>
+                <th className="border-bottom">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -167,13 +169,13 @@ export default function AllSuperAdmins() {
                     {" "}
                     <>
                       {dm?.role ==="gstaff"
-                        ?   <Badge bg="primary" className="me-1">Vendeur</Badge>
+                        ?   <Badge bg="primary" className="me-1">{t("seller")}</Badge>
                         : dm?.role ==="gadmin"
-                        ? <Badge bg="success" className="me-1">Admin</Badge>
+                        ? <Badge bg="success" className="me-1">{t("admin")}</Badge>
                         :  dm?.role ==="admin"
-                        ?   <Badge bg="dark" className="me-1">Super Admin</Badge>
+                        ?   <Badge bg="dark" className="me-1">{t("super_admin")}</Badge>
                         :  dm?.role ==="gcompta"
-                        ? <Badge bg="warning" className="me-1">Comptabilité</Badge> : "none"}
+                        ? <Badge bg="warning" className="me-1">{t("Accounting")}</Badge> : "none"}
                       
                     </>
                   </td>
@@ -201,11 +203,11 @@ export default function AllSuperAdmins() {
                           }
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          Editer{" "}
+                          {t("Edit")}{" "}
                         </CDropdownItem>
                         <CDropdownItem>
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          Supprimer
+                          {t('delete')}
                         </CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
@@ -217,17 +219,17 @@ export default function AllSuperAdmins() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Précédent</Pagination.Prev>
+                <Pagination.Prev>{t("Previous")}</Pagination.Prev>
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
                 <Pagination.Item>4</Pagination.Item>
                 <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>Suivant</Pagination.Next>
+                <Pagination.Next>{t("Next")}</Pagination.Next>
               </Pagination>
             </Nav>
             <small className="fw-bold">
-              Affichage de <b>{2}</b> sur <b>25</b> entrées
+              {t("Display of")} <b>{2}</b> {t("on")} <b>25</b> {t("entries")}
             </small>
           </Card.Footer>
         </Card.Body>

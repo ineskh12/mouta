@@ -1,16 +1,17 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 //import Profile from "./profiles/Profile/Profile";
-import { BrowserRouter as Router, useParams,useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, useParams, useHistory } from 'react-router-dom';
 import axios from "axios";
 import ModalImage from "react-modal-image";
 import Test from "./Test";
-import { Button, Card, Image,Modal,OverlayTrigger ,Col,
+import {
+  Button, Card, Image, Modal, OverlayTrigger, Col,
   Form,
   InputGroup,
   Row,
 } from '@themesberg/react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faShare,faCalendar, faAlignLeft, faArrowLeft } from "@fortawesome/fontawesome-free-solid";
+import { faDownload, faShare, faCalendar, faAlignLeft, faArrowLeft } from "@fortawesome/fontawesome-free-solid";
 import Qrcode from "./QrCodeshare";
 import { DropzoneArea } from "material-ui-dropzone";
 import {
@@ -43,20 +44,24 @@ import PropTypes from "prop-types";
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 
 function App() {
-  const [parcours, setparcours] =useState({etat : true,style:"nav-link active"});
-  const [images, setimages] =useState({etat : false,style:"nav-link"});
-  const [videos, setvideos] = useState({etat : false,style:"nav-link"});
-  const [other, setother] = useState({etat : false,style:"nav-link"});
+
+  const { t } = useTranslation();
+
+  const [parcours, setparcours] = useState({ etat: true, style: "nav-link active" });
+  const [images, setimages] = useState({ etat: false, style: "nav-link" });
+  const [videos, setvideos] = useState({ etat: false, style: "nav-link" });
+  const [other, setother] = useState({ etat: false, style: "nav-link" });
   const [showAlbum, setShowAlbum] = useState(false);
 
   const history = useHistory();
 
   const [photos, setphotos] = useState(null);
-  const [prof, setprof] =useState(null); 
-  const [multi, setmultis] =useState(null);
+  const [prof, setprof] = useState(null);
+  const [multi, setmultis] = useState(null);
   const [testfile, settestfile] = useState(null);
   const [testfile2, settestfile2] = useState(null);
   const [toggleSettings, settoggleSettings] = useState(false);
@@ -73,7 +78,7 @@ function App() {
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
-  
+
     return (
       <div
         role="tabpanel"
@@ -90,7 +95,7 @@ function App() {
       </div>
     );
   }
-  
+
   TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
@@ -107,88 +112,89 @@ function App() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  function handleshow(e){
+  function handleshow(e) {
     switch (e) {
       case "parcours":
-        setimages({ ...images, etat: false,style:"nav-link" });
-        setparcours({ ...parcours, etat: true,style:"nav-link active" });
-        setvideos({ ...videos, etat: false,style:"nav-link" });
-        setother({ ...other, etat: false,style:"nav-link" });
+        setimages({ ...images, etat: false, style: "nav-link" });
+        setparcours({ ...parcours, etat: true, style: "nav-link active" });
+        setvideos({ ...videos, etat: false, style: "nav-link" });
+        setother({ ...other, etat: false, style: "nav-link" });
 
 
         break;
       case "photo":
-        setimages({ ...images, etat: true,style:"nav-link active" });
-        setparcours({ ...parcours, etat: false,style:"nav-link" });
-        setvideos({ ...videos, etat: false,style:"nav-link" });
-        setother({ ...other, etat: false,style:"nav-link" });
+        setimages({ ...images, etat: true, style: "nav-link active" });
+        setparcours({ ...parcours, etat: false, style: "nav-link" });
+        setvideos({ ...videos, etat: false, style: "nav-link" });
+        setother({ ...other, etat: false, style: "nav-link" });
 
         break;
       case "videos":
-        setimages({ ...images, etat: false,style:"nav-link" });
-        setparcours({ ...parcours, etat: false,style:"nav-link" });
-        setvideos({ ...videos, etat: true,style:"nav-link active" });
-        setother({ ...other, etat: false,style:"nav-link" });
+        setimages({ ...images, etat: false, style: "nav-link" });
+        setparcours({ ...parcours, etat: false, style: "nav-link" });
+        setvideos({ ...videos, etat: true, style: "nav-link active" });
+        setother({ ...other, etat: false, style: "nav-link" });
 
         break;
-        case "other":
-        setimages({ ...images, etat: false,style:"nav-link" });
-        setparcours({ ...parcours, etat: false,style:"nav-link" });
-        setvideos({ ...videos, etat: false,style:"nav-link" });
-        setother({ ...other, etat: true,style:"nav-link active" });
+      case "other":
+        setimages({ ...images, etat: false, style: "nav-link" });
+        setparcours({ ...parcours, etat: false, style: "nav-link" });
+        setvideos({ ...videos, etat: false, style: "nav-link" });
+        setother({ ...other, etat: true, style: "nav-link active" });
 
         break;
       default:
-        setimages({ ...images, etat: false,style:"nav-link" });
-        setparcours({ ...parcours, etat: true,style:"nav-link active" });
-        setvideos({ ...videos, etat: false,style:"nav-link" });
+        setimages({ ...images, etat: false, style: "nav-link" });
+        setparcours({ ...parcours, etat: true, style: "nav-link active" });
+        setvideos({ ...videos, etat: false, style: "nav-link" });
         break;
-    }}
-    let { id } = useParams();
-    const [showDefault, setShowDefault] = useState(false);
-const handleClose = () => setShowDefault(false);  
-const [showDefault2, setShowDefault2] = useState(false);
-const handleClose2 = () => setShowDefault2(false);
-const [showDefault3, setShowDefault3] = useState(false);
-const handleClose3 = () => setShowDefault3(false);
-const [showDefault4, setShowDefault4] = useState(false);
-const handleClose4 = () => setShowDefault4(false);  
-const [showDefault5, setShowDefault5] = useState(false);
-const handleClose5 = () => setShowDefault5(false);  
-const token = JSON.parse(localStorage.getItem("token"));
+    }
+  }
+  let { id } = useParams();
+  const [showDefault, setShowDefault] = useState(false);
+  const handleClose = () => setShowDefault(false);
+  const [showDefault2, setShowDefault2] = useState(false);
+  const handleClose2 = () => setShowDefault2(false);
+  const [showDefault3, setShowDefault3] = useState(false);
+  const handleClose3 = () => setShowDefault3(false);
+  const [showDefault4, setShowDefault4] = useState(false);
+  const handleClose4 = () => setShowDefault4(false);
+  const [showDefault5, setShowDefault5] = useState(false);
+  const handleClose5 = () => setShowDefault5(false);
+  const token = JSON.parse(localStorage.getItem("token"));
 
-function changebio(e){
-  settoggleSettings(true);
-  setbio(e.target.value);
+  function changebio(e) {
+    settoggleSettings(true);
+    setbio(e.target.value);
 
-}
-const [media, setMedia] = useState(true);
+  }
+  const [media, setMedia] = useState(true);
 
-let decoded = null;
-if (token !== null) decoded = jwt_decode(token);
+  let decoded = null;
+  if (token !== null) decoded = jwt_decode(token);
 
-    useEffect(() => {  
-      const call = async () => {
-        const response = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/profile/" + id
-        );
-        response.data.files.forEach((element, index) => {
-          response.data.files[index] = "http://www.skiesbook.com:3000/uploads/" + element;
-        });
-        setprof(response.data);
-        settestfile("http://www.skiesbook.com:3000/uploads/"+response.data.banner);
-        settestfile2("http://www.skiesbook.com:3000/uploads/"+response.data.profileImage);
+  useEffect(() => {
+    const call = async () => {
+      const response = await axios.get(
+        "http://www.skiesbook.com:3000/api/v1/profile/" + id
+      );
+      response.data.files.forEach((element, index) => {
+        response.data.files[index] = "http://www.skiesbook.com:3000/uploads/" + element;
+      });
+      setprof(response.data);
+      settestfile("http://www.skiesbook.com:3000/uploads/" + response.data.banner);
+      settestfile2("http://www.skiesbook.com:3000/uploads/" + response.data.profileImage);
 
-        setphotos( response.data.files.filter(ext => ext.slice(-3) === "png" ||ext.slice(-3) === "jpg" ||ext.slice(-4) === "jpeg" ||ext.slice(-3) === "gif"));
-        setmultis(response.data.files.filter(ext => ext.slice(-3) === "mp4" ||ext.slice(-3) === "mov" ||ext.slice(-4) === "avi" ||ext.slice(-3) === "wmv"));
+      setphotos(response.data.files.filter(ext => ext.slice(-3) === "png" || ext.slice(-3) === "jpg" || ext.slice(-4) === "jpeg" || ext.slice(-3) === "gif"));
+      setmultis(response.data.files.filter(ext => ext.slice(-3) === "mp4" || ext.slice(-3) === "mov" || ext.slice(-4) === "avi" || ext.slice(-3) === "wmv"));
 
-      }
-      call();
-    }, []);
-    const hiddenFileInput = React.useRef();
-    const hiddenFileInput2 = React.useRef();
+    }
+    call();
+  }, []);
+  const hiddenFileInput = React.useRef();
+  const hiddenFileInput2 = React.useRef();
 
-   const onClick = React.useCallback(() => {
+  const onClick = React.useCallback(() => {
     if (hiddenFileInput.current === undefined) {
       return;
     }
@@ -201,19 +207,19 @@ if (token !== null) decoded = jwt_decode(token);
     }
     hiddenFileInput2.current.click();
   }, []);
-  
- const  handleFileUpload = event => {
-   setpdp(event.target.files[0]);
+
+  const handleFileUpload = event => {
+    setpdp(event.target.files[0]);
     settestfile(URL.createObjectURL(event.target.files[0]));
     settoggleSettings(true);
   };
-  const  handleFileUpload2 = event => {
+  const handleFileUpload2 = event => {
     setpdp2(event.target.files[0]);
     settestfile2(URL.createObjectURL(event.target.files[0]));
     settoggleSettings(true);
 
   };
-  function removeimage(index){
+  function removeimage(index) {
     setphotos((index) => index.filter((_, index) => index !== 0));
     settoggleSettings(true);
   }
@@ -224,117 +230,118 @@ if (token !== null) decoded = jwt_decode(token);
 
   const [formData1, setFormData1] = useState({
     searchId: "",
-    name:"",
-    lastname:"",
-    fullname:""
+    name: "",
+    lastname: "",
+    fullname: ""
   });
   const [formData2, setFormData2] = useState({
     message: "",
-    date:"01/01/2000",
+    date: "01/01/2000",
   });
   const [formData3, setFormData3] = useState({
     name: "",
     files: "",
   });
-  async function searchit1(e){
+  async function searchit1(e) {
     e.preventDefault();
-    history.push("/invi/"+id+"/"+formData1.fullname);
+    history.push("/invi/" + id + "/" + formData1.fullname);
   }
-  async function searchit2(e){
+  async function searchit2(e) {
     e.preventDefault();
-    history.push("/invi/"+id+"/"+formData1.searchId);
+    history.push("/invi/" + id + "/" + formData1.searchId);
   }
- async function saveit(e){
-  e.preventDefault();
+  async function saveit(e) {
+    e.preventDefault();
 
     const mydata = new FormData();
     mydata.append("profileimage", pdp2);
     mydata.append("banner", pdp);
-    
-      for (let i = 0; i < formData.files.length; i++) {
-        mydata.append("files", formData.files[i]);
-      }
+
+    for (let i = 0; i < formData.files.length; i++) {
+      mydata.append("files", formData.files[i]);
+    }
 
 
-    mydata.append("bio",bio);
+    mydata.append("bio", bio);
     mydata.append("cimitiere", decoded.graveyardId);
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-      Swal.fire({
-        title: "Êtes-vous sûr de vouloir modifier ce profil ?",
+    Swal.fire({
+      title: t("Are you sure you want to edit this profile?"),
 
-        showCancelButton: true,
-        confirmButtonText: "Yes, edit it!",
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          return await axios
-            .put(
-              "http://www.skiesbook.com:3000/api/v1/profile/update/" + id,
-              mydata,
-              config
-            )
-            .then((result) => {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Profil modifié avec succès",
-                showConfirmButton: true,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  history.go(0)              }
-              });
-            })
-            .catch((error) => {
-              Swal.showValidationMessage(`error`);
+      showCancelButton: true,
+      confirmButtonText: t("Yes, edit it!"),
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        return await axios
+          .put(
+            "http://www.skiesbook.com:3000/api/v1/profile/update/" + id,
+            mydata,
+            config
+          )
+          .then((result) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: t("Profile changed successfully"),
+              showConfirmButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.go(0)
+              }
             });
-        },
-        allowOutsideClick: () => !Swal.isLoading(),
-      });
-      
+          })
+          .catch((error) => {
+            Swal.showValidationMessage(t('error'));
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
   }
 
-  async function addtimeline(e){
+  async function addtimeline(e) {
     e.preventDefault();
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-      Swal.fire({
-        title: "Êtes-vous sûr de vouloir ajouter cet événement ?",
+    Swal.fire({
+      title: t("Are you sure you want to add this event?"),
 
-        showCancelButton: true,
-        confirmButtonText: "Oui, ajouter !",
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          return await axios
-            .post(
-              "http://www.skiesbook.com:3000/api/v1/profile/addtimeline/" + id,
-              formData2,
-              config
-            )
-            .then((result) => {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Profil modifié avec succès",
-                showConfirmButton: true,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  history.go(0)
-                }
-              });
-            })
-            .catch((error) => {
-              Swal.showValidationMessage(`error`);
+      showCancelButton: true,
+      confirmButtonText: t("Yes, add it!"),
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        return await axios
+          .post(
+            "http://www.skiesbook.com:3000/api/v1/profile/addtimeline/" + id,
+            formData2,
+            config
+          )
+          .then((result) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: t("Profile changed successfully"),
+              showConfirmButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.go(0)
+              }
             });
-        },
-        allowOutsideClick: () => !Swal.isLoading(),
-      });
-      
+          })
+          .catch((error) => {
+            Swal.showValidationMessage(t('error'));
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
+
   }
 
   const handleAlbum = (e) => {
@@ -344,21 +351,20 @@ if (token !== null) decoded = jwt_decode(token);
   const addAlbum = (e) => {
     e.preventDefault();
     const mydata = new FormData();
-    mydata.append("name", formData3.name);    
-      for (let i = 0; i < formData3.files.length; i++) {
-        mydata.append("files", formData3.files[i]);
-      }
+    mydata.append("name", formData3.name);
+    for (let i = 0; i < formData3.files.length; i++) {
+      mydata.append("files", formData3.files[i]);
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-    if ((formData3.files === "") || (formData3.files.length === 0)) 
-    {
+    if ((formData3.files === "") || (formData3.files.length === 0)) {
       Swal.fire({
         position: "center",
         icon: "error",
-        title: "Veuillez entrer des images pour l'album",
+        title: t("Please enter images for the album"),
         showConfirmButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
@@ -367,41 +373,41 @@ if (token !== null) decoded = jwt_decode(token);
       });
     }
     else {
- 
-    Swal.fire({
-      title: "Êtes-vous sûr de vouloir ajouter cet album ?",
 
-      showCancelButton: true,
-      confirmButtonText: "Oui, ajouter !",
-      showLoaderOnConfirm: true,
-      preConfirm: async () => {
-        return await axios
-          .post(
-            "http://www.skiesbook.com:3000/api/v1/profile/addphototoalbum/" + id,
-            mydata,
-            config
-          )
-          .then((result) => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Album ajouté avec succès",
-              showConfirmButton: true,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                history.go(0)
-              }
+      Swal.fire({
+        title: t("Are you sure you want to add this album?"),
+
+        showCancelButton: true,
+        confirmButtonText: t("Yes, add it!"),
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+          return await axios
+            .post(
+              "http://www.skiesbook.com:3000/api/v1/profile/addphototoalbum/" + id,
+              mydata,
+              config
+            )
+            .then((result) => {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: t("Album added successfully"),
+                showConfirmButton: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  history.go(0)
+                }
+              });
+            })
+            .catch((error) => {
+              Swal.showValidationMessage(t('error'));
             });
-          })
-          .catch((error) => {
-            Swal.showValidationMessage(`error`);
-          });
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    });
-  }
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+      });
+    }
 
-}
+  }
 
 
   return (
@@ -417,7 +423,7 @@ if (token !== null) decoded = jwt_decode(token);
                 className="my-3 "
                 onClick={() => setShowDefault2(true)}
               >
-                Recherche d'autres profils
+                {t("Search other profiles")}
               </Button>
             </InputGroup>
           </Col>
@@ -442,7 +448,7 @@ if (token !== null) decoded = jwt_decode(token);
           >
             <Modal.Header>
               <Modal.Title className="h6">
-                Partage sur les réseaux sociaux
+                {t("sharing_on_social_networks")}
               </Modal.Title>
               <Button
                 variant="close"
@@ -451,7 +457,7 @@ if (token !== null) decoded = jwt_decode(token);
               />
             </Modal.Header>
             <Modal.Body>
-              <p>Scan the QrCode</p>
+              <p>{t("scan_qr_code")}</p>
               <Qrcode
                 myvalue={"http://www.skiesbook.com/graveyard/prof/" + id}
               ></Qrcode>
@@ -468,7 +474,7 @@ if (token !== null) decoded = jwt_decode(token);
                 description={prof?.bio}
                 className="Demo__some-network__share-button"
               >
-                <FacebookIcon size={32} round /> Facebook share
+                <FacebookIcon size={32} round /> {t("Share on facebook")}
               </FacebookShareButton>
               <br></br>
               <TwitterShareButton
@@ -482,19 +488,19 @@ if (token !== null) decoded = jwt_decode(token);
                 hashtags={["#restinpeace"]}
               >
                 <TwitterIcon size={32} round />
-                Twitter share
+                {t("Share on Twitter")}
               </TwitterShareButton>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                I Got It
+                {t("i_got_it")}
               </Button>
               <Button
                 variant="link"
                 className="text-gray ms-auto"
                 onClick={handleClose}
               >
-                Fermer
+                {t('close')}
               </Button>
             </Modal.Footer>
           </Modal>
@@ -503,7 +509,7 @@ if (token !== null) decoded = jwt_decode(token);
             <Modal.Header>
               <Modal.Title className="h6">
                 {" "}
-                Recherche un profil existant
+                {t("Search for an existing profile")}
               </Modal.Title>
               <Button
                 variant="close"
@@ -516,11 +522,11 @@ if (token !== null) decoded = jwt_decode(token);
                 <Row>
                   <Col md={8} className="mb-3">
                     <Form.Group id="name">
-                      <Form.Label>Full name</Form.Label>
+                      <Form.Label>{t("full_name")}</Form.Label>
                       <Form.Control
                         required
                         type="text"
-                        placeholder="name & lastname"
+                        placeholder={t("full_name")}
                         onChange={(e) =>
                           setFormData1({
                             ...formData1,
@@ -534,19 +540,19 @@ if (token !== null) decoded = jwt_decode(token);
                 <Row>
                   <div className="mt-3">
                     <Button type="submit" variant="primary">
-                      Search
+                      {t('search')}
                     </Button>
                   </div>
                 </Row>
               </Form>
             </Modal.Body>
           </Modal>
-          
+
           <Modal show={showDefault3} onHide={handleClose3}>
             <Modal.Header>
               <Modal.Title className="h6">
                 {" "}
-                Ajouter un évènement marquant
+                {t("Add an important event")}
               </Modal.Title>
               <Button
                 variant="close"
@@ -559,49 +565,49 @@ if (token !== null) decoded = jwt_decode(token);
                 <Row>
                   <Col md={10} className="mb-3">
                     <Form.Group id="name">
-                      <Form.Label>Evènement</Form.Label>
-                              <textarea
-                          className="form-control"
-                          required
-                          rows={4}
-                          type="textarea"
-                          placeholder="Evènement"
-                          onChange={(e) =>
-                            setFormData2({ ...formData2, message: e.target.value })
-                          }
-                            ></textarea>
+                      <Form.Label>{t("Event")}</Form.Label>
+                      <textarea
+                        className="form-control"
+                        required
+                        rows={4}
+                        type="textarea"
+                        placeholder={t("Event")}
+                        onChange={(e) =>
+                          setFormData2({ ...formData2, message: e.target.value })
+                        }
+                      ></textarea>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col md={8} className="mb-3">
-                      <Form.Group id="birthday">
-                        <Form.Label>Date</Form.Label>
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Stack>
-                              <DatePicker
-                              required
-                              inputFormat="dd/MM/yyyy"
+                  <Col md={8} className="mb-3">
+                    <Form.Group id="birthday">
+                      <Form.Label>{t('Date')}</Form.Label>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Stack>
+                          <DatePicker
+                            required
+                            inputFormat="dd/MM/yyyy"
 
-                                disableFuture
-                                label="Date de l'évènement"
-                                openTo="year"
-                                views={["year", "month", "day"]}
-                                value={formData2.date}
-                                onChange={(e) =>
-                                  setFormData2({ ...formData2, date: e })
-                                }
-                                renderInput={(params) => <TextField {...params} />}
-                              />
-                            </Stack>
-                          </LocalizationProvider>
-                      </Form.Group>
+                            disableFuture
+                            label={t("Event date")}
+                            openTo={t("year")}
+                            views={[t("year"), t("month"), t("day")]}
+                            value={formData2.date}
+                            onChange={(e) =>
+                              setFormData2({ ...formData2, date: e })
+                            }
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </Stack>
+                      </LocalizationProvider>
+                    </Form.Group>
 
                   </Col>
                 </Row>
                 <Row>
                   <div className="mt-3">
                     <Button type="submit" variant="primary">
-                      Ajouter
+                      {t("add")}
                     </Button>
                   </div>
                 </Row>
@@ -614,7 +620,7 @@ if (token !== null) decoded = jwt_decode(token);
             <Modal.Header>
               <Modal.Title className="h6">
                 {" "}
-                Ajouter un album
+                {t("Add album")}
               </Modal.Title>
               <Button
                 variant="close"
@@ -627,48 +633,48 @@ if (token !== null) decoded = jwt_decode(token);
                 <Row>
                   <Col md={10} className="mb-3">
                     <Form.Group id="name">
-                      <Form.Label>Nom de l'album</Form.Label>
-                              <input
-                          className="form-control"
-                          required
-                          placeholder="Album"
-                          onChange={(e) =>
-                            setFormData3({ ...formData3, name: e.target.value })
-                          }
-                            ></input>
+                      <Form.Label>{t("Album name")}</Form.Label>
+                      <input
+                        className="form-control"
+                        required
+                        placeholder="Album"
+                        onChange={(e) =>
+                          setFormData3({ ...formData3, name: e.target.value })
+                        }
+                      ></input>
                     </Form.Group>
-                    </Col>
+                  </Col>
 
-                    <Col md={12} className="mb-3">
-                      <Form.Group id="Images">
-                        <Form.Label>Images</Form.Label>
-                        <DropzoneArea
-                            required
-                            acceptedFiles={[
-                              ".jpg",
-                              ".jpeg",
-                              ".png",
-                              ".gif",
-                            ]}
-                            filesLimit={20}
-                            
-                            dropzoneText="Déposez vos images ici .jpg / .jepg / .png / .gif "
-                            showFileNames={true}
-                            maxFileSize={500000000}
-                            onChange={(files) =>
-                              setFormData3({ ...formData3, files: files })
-                            }
-                          />
-                         
-                      
-                      </Form.Group>
+                  <Col md={12} className="mb-3">
+                    <Form.Group id="Images">
+                      <Form.Label>{t("images")}</Form.Label>
+                      <DropzoneArea
+                        required
+                        acceptedFiles={[
+                          ".jpg",
+                          ".jpeg",
+                          ".png",
+                          ".gif",
+                        ]}
+                        filesLimit={20}
+
+                        dropzoneText={`${t("drop_your_images_here")} .jpg / .jepg / .png / .gif `}
+                        showFileNames={true}
+                        maxFileSize={500000000}
+                        onChange={(files) =>
+                          setFormData3({ ...formData3, files: files })
+                        }
+                      />
+
+
+                    </Form.Group>
 
                   </Col>
                 </Row>
                 <Row>
                   <div className="mt-3">
                     <Button type="submit" variant="primary">
-                      Ajouter l'album
+                      {t("Add the Album")}
                     </Button>
                   </div>
                 </Row>
@@ -681,7 +687,7 @@ if (token !== null) decoded = jwt_decode(token);
             <Modal.Header>
               <Modal.Title className="h6">
                 {" "}
-                Ajouter photos/videos
+                {t("Add photos/videos")}
               </Modal.Title>
               <Button
                 variant="close"
@@ -692,37 +698,38 @@ if (token !== null) decoded = jwt_decode(token);
             <Modal.Body>
               <Form onSubmit={(e) => saveit(e)}>
                 <Row>
-                    <Col md={12} className="mb-3">
-                      <Form.Group id="Images">
-                        <Form.Label>Ajouter vos souvenirs photo ou video par ici</Form.Label>
-                        
-                       
-                          <DropzoneArea
-                            
-                            acceptedFiles={[
-                              ".jpg",
-                              ".jpeg",
-                              ".png",
-                              ".gif",
-                              ".mp4",
-                            ]}
-                            filesLimit={20}
-                            dropzoneText="Déposez vos fichier ici .jpg / .jepg / .png / .gif / .mp4"
-                            showFileNames={true}
-                            maxFileSize={500000000}
-                            onDrop={(e)=> settoggleSettings(!toggleSettings)}
-                            onChange={(files) =>{
-                              setFormData({ ...formData, files: files })}
-                            }
-                          />
-                      </Form.Group>
+                  <Col md={12} className="mb-3">
+                    <Form.Group id="Images">
+                      <Form.Label>{t("Add your photo or video memories here")}</Form.Label>
+
+
+                      <DropzoneArea
+
+                        acceptedFiles={[
+                          ".jpg",
+                          ".jpeg",
+                          ".png",
+                          ".gif",
+                          ".mp4",
+                        ]}
+                        filesLimit={20}
+                        dropzoneText={`${t("drop_your_images_here")} .jpg / .jepg / .png / .gif / .mp4 `}
+                        showFileNames={true}
+                        maxFileSize={500000000}
+                        onDrop={(e) => settoggleSettings(!toggleSettings)}
+                        onChange={(files) => {
+                          setFormData({ ...formData, files: files })
+                        }
+                        }
+                      />
+                    </Form.Group>
 
                   </Col>
                 </Row>
                 <Row>
                   <div className="mt-3">
                     <Button type="submit" variant="primary">
-                      Ajouter
+                      {t('add')}
                     </Button>
                   </div>
                 </Row>
@@ -780,16 +787,16 @@ if (token !== null) decoded = jwt_decode(token);
                             {prof?.profileName} {prof?.profileLastName}
                           </h3>
                           <p className="mb-0">
-                          <b><strong>
-                          {moment(prof?.profileDatebirth).format(
-                              "DD-MM-YYYY"
-                            )}{" "}•{" "}
-                            {moment(prof?.profileDatedeath).format(
-                              "DD-MM-YYYY"
-                            )}
-                            
+                            <b><strong>
+                              {moment(prof?.profileDatebirth).format(
+                                "DD-MM-YYYY"
+                              )}{" "}•{" "}
+                              {moment(prof?.profileDatedeath).format(
+                                "DD-MM-YYYY"
+                              )}
+
                             </strong></b>
-                            </p>
+                          </p>
 
                           <div
                             style={{ position: "absolute", bottom: "30%" }}
@@ -815,56 +822,56 @@ if (token !== null) decoded = jwt_decode(token);
                     </div>
                   </div>
                   <div className="">
-                  <div className="iq-card-body p-0">
-                    <div className="user-tabing">
-                      <ul className="nav nav-pills2 d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
-                        <li className="col-sm-3 p-0">
-                          <a
-                            className={parcours.style}
-                            data-toggle="pill"
-                            onClick={(e) => handleshow("parcours")}
-                          >
-                            parcours
-                          </a>
-                        </li>
-                        <li className="col-sm-3 p-0">
-                          <a
-                            className={images.style}
-                            data-toggle="pill"
-                            onClick={(e) => handleshow("photo")}
-                          >
-                            Galerie
-                          </a>
-                        </li>
-                        <li className="col-sm-3 p-0">
-                          <a
-                            className={videos.style}
-                            data-toggle="pill"
-                            onClick={(e) => handleshow("videos")}
-                          >
-                            Videos
-                          </a>
-                        </li>
-                        <li className="col-sm-3 p-0">
-                          <a
-                            className={other.style}
-                            data-toggle="pill"
-                            onClick={(e) => handleshow("other")}
-                          >
-                            Parenté
-                          </a>
-                        </li>
-                      </ul>
+                    <div className="iq-card-body p-0">
+                      <div className="user-tabing">
+                        <ul className="nav nav-pills2 d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
+                          <li className="col-sm-3 p-0">
+                            <a
+                              className={parcours.style}
+                              data-toggle="pill"
+                              onClick={(e) => handleshow("parcours")}
+                            >
+                              {t("journey")}
+                            </a>
+                          </li>
+                          <li className="col-sm-3 p-0">
+                            <a
+                              className={images.style}
+                              data-toggle="pill"
+                              onClick={(e) => handleshow("photo")}
+                            >
+                              {t("Gallery")}
+                            </a>
+                          </li>
+                          <li className="col-sm-3 p-0">
+                            <a
+                              className={videos.style}
+                              data-toggle="pill"
+                              onClick={(e) => handleshow("videos")}
+                            >
+                              {t("videos")}
+                            </a>
+                          </li>
+                          <li className="col-sm-3 p-0">
+                            <a
+                              className={other.style}
+                              data-toggle="pill"
+                              onClick={(e) => handleshow("other")}
+                            >
+                              {t("relationship")}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
                 <input
                   ref={hiddenFileInput}
                   onChange={handleFileUpload}
                   type="file"
                   style={{ display: "none" }}
-                  // multiple={false}
+                // multiple={false}
                 />
                 <input
                   ref={hiddenFileInput2}
@@ -872,7 +879,7 @@ if (token !== null) decoded = jwt_decode(token);
                   type="file"
                   style={{ display: "none" }}
                 />
-               
+
               </div>
               <div className="col-sm-12">
                 <div className="tab-content">
@@ -883,11 +890,11 @@ if (token !== null) decoded = jwt_decode(token);
                   >
                     <div hidden={!parcours.etat} className="iq-card-body p-0">
                       <div className="row">
-                      <div className="col-lg-5">
+                        <div className="col-lg-5">
                           <div className="iq-card">
                             <div className="iq-card-header d-flex justify-content-between">
                               <div className="iq-header-title">
-                                <h4 className="card-title">Biographie</h4>
+                                <h4 className="card-title">{t("biography")}</h4>
                               </div>
                             </div>
                             <div className="iq-card-body">
@@ -918,179 +925,179 @@ if (token !== null) decoded = jwt_decode(token);
                             </div>
                           </div>
                         </div>
-                       
-                        <div className="col-lg-7" >
-                        <div className="iq-card align-items-center justify-content-center"  >
-                        <div className="iq-card-body" style={{minHeight:"200px"}}>
-                          <Box sx={{ width: "100%" }}>
-                                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                                      <Tabs
-                                        value={value}
-                                        onChange={handleChange}
-                                        allowScrollButtonsMobile
-                                        variant="scrollable"
-                                        aria-label="scrollable force tabs example"
-                                      >
-                                        <Tab wrapped label="Photos " {...a11yProps(0)} />
-                                        <Tab wrapped label="Albums" {...a11yProps(1)} />
-                                      </Tabs>
-                                    </Box>
-                                    <TabPanel value={value} index={0}>
-                                    <div className="friend-list-tab mt-2">
-                            <div className="tab-content">
-                              <div
-                                className="tab-pane fade active show"
-                                id="photosofyou"
-                                role="tabpanel"
-                              >
-                                <div className="iq-card-body p-0">
-                                  <div className="row">
-                                    {photos?.slice(0, 12)?.map((img) => (
-                                      <div className="col-md-6 col-lg-3 mb-3">
-                                        <div className="user-images position-relative overflow-hidden">
-                                          <a>
-                                            <ModalImage
-                                              small={img}
-                                              large={img}
-                                              className="img-fluid rounded"
-                                              alt="Responsive image"
-                                            />
-                                          </a>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-                                    </TabPanel>
-                                    <TabPanel  value={value} index={1}>
-                            <div className="tab-content">
-                              <div
-                                className="tab-pane fade active show"
-                                id="albums"
-                                role="tabpanel"
-                              >
-                                <div className="iq-card-body p-0">
-                                  <div className="row">
-                                    {!showAlbum ? (
-                                      
-                                      prof?.albums?.slice(0, 4)?.map((album) => (
-                                        <Card  className="ml-2 mr-2"  onClick={(e)=>handleAlbum(album._id)} style={{ maxWidth: 250 }} >
-                                         
-                                        <CardActionArea>
-                                          <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={"http://www.skiesbook.com:3000/uploads/"+album?.images[0]}
-                                            alt="album photo"
-                                          />
-                                          <CardContent>
-                                            <Typography className="d-flex justify-content-center" gutterBottom variant="h5" component="div">
-                                              {album.name}
-                                            </Typography>
-                                          
-                                          </CardContent>
-                                        </CardActionArea>
-                                      </Card>
-                                      
-                                      ))
-                                      ) : (
-                                          <>
-                            
-                                        
-                                       <div className="d-flex align-items-center m-2">   
-                                       <Button
-                                          variant="primary"
-                                          size="xs"
-                                          className="m-3"
-                                          onClick={(e) =>
-                                            setShowAlbum(false)
-                                          }
-                                        >
-                                          <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                                          Retour
-                                        </Button>   
-                                        <h4>{ prof?.albums?.find(x => x._id === albumId)?.name}</h4>
 
-                                          
-                                       </div>
-                                        <div className="row">
-                                         
-                                                                      
-                                            { prof?.albums?.find(x => x._id === albumId)?.images?.map((img) => (
+                        <div className="col-lg-7" >
+                          <div className="iq-card align-items-center justify-content-center"  >
+                            <div className="iq-card-body" style={{ minHeight: "200px" }}>
+                              <Box sx={{ width: "100%" }}>
+                                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                                  <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    allowScrollButtonsMobile
+                                    variant="scrollable"
+                                    aria-label="scrollable force tabs example"
+                                  >
+                                    <Tab wrapped label={t("photos")} {...a11yProps(0)} />
+                                    <Tab wrapped label={t("Albums")} {...a11yProps(1)} />
+                                  </Tabs>
+                                </Box>
+                                <TabPanel value={value} index={0}>
+                                  <div className="friend-list-tab mt-2">
+                                    <div className="tab-content">
+                                      <div
+                                        className="tab-pane fade active show"
+                                        id="photosofyou"
+                                        role="tabpanel"
+                                      >
+                                        <div className="iq-card-body p-0">
+                                          <div className="row">
+                                            {photos?.slice(0, 12)?.map((img) => (
                                               <div className="col-md-6 col-lg-3 mb-3">
                                                 <div className="user-images position-relative overflow-hidden">
                                                   <a>
                                                     <ModalImage
-                                                      small={"http://www.skiesbook.com:3000/uploads/"+img}
-                                                      large={"http://www.skiesbook.com:3000/uploads/"+img}
+                                                      small={img}
+                                                      large={img}
                                                       className="img-fluid rounded"
                                                       alt="Responsive image"
                                                     />
                                                   </a>
-
-                                                 
                                                 </div>
                                               </div>
-                                            ))} 
+                                            ))}
+                                          </div>
+                                        </div>
+                                      </div>
 
-
-                                            </div>
-                                            </>
-                                      )}
-                                      
+                                    </div>
                                   </div>
-                                </div>
+                                </TabPanel>
+                                <TabPanel value={value} index={1}>
+                                  <div className="tab-content">
+                                    <div
+                                      className="tab-pane fade active show"
+                                      id="albums"
+                                      role="tabpanel"
+                                    >
+                                      <div className="iq-card-body p-0">
+                                        <div className="row">
+                                          {!showAlbum ? (
+
+                                            prof?.albums?.slice(0, 4)?.map((album) => (
+                                              <Card className="ml-2 mr-2" onClick={(e) => handleAlbum(album._id)} style={{ maxWidth: 250 }} >
+
+                                                <CardActionArea>
+                                                  <CardMedia
+                                                    component="img"
+                                                    height="140"
+                                                    image={"http://www.skiesbook.com:3000/uploads/" + album?.images[0]}
+                                                    alt="album photo"
+                                                  />
+                                                  <CardContent>
+                                                    <Typography className="d-flex justify-content-center" gutterBottom variant="h5" component="div">
+                                                      {album.name}
+                                                    </Typography>
+
+                                                  </CardContent>
+                                                </CardActionArea>
+                                              </Card>
+
+                                            ))
+                                          ) : (
+                                            <>
+
+
+                                              <div className="d-flex align-items-center m-2">
+                                                <Button
+                                                  variant="primary"
+                                                  size="xs"
+                                                  className="m-3"
+                                                  onClick={(e) =>
+                                                    setShowAlbum(false)
+                                                  }
+                                                >
+                                                  <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
+                                                  {t('back')}
+                                                </Button>
+                                                <h4>{prof?.albums?.find(x => x._id === albumId)?.name}</h4>
+
+
+                                              </div>
+                                              <div className="row">
+
+
+                                                {prof?.albums?.find(x => x._id === albumId)?.images?.map((img) => (
+                                                  <div className="col-md-6 col-lg-3 mb-3">
+                                                    <div className="user-images position-relative overflow-hidden">
+                                                      <a>
+                                                        <ModalImage
+                                                          small={"http://www.skiesbook.com:3000/uploads/" + img}
+                                                          large={"http://www.skiesbook.com:3000/uploads/" + img}
+                                                          className="img-fluid rounded"
+                                                          alt="Responsive image"
+                                                        />
+                                                      </a>
+
+
+                                                    </div>
+                                                  </div>
+                                                ))}
+
+
+                                              </div>
+                                            </>
+                                          )}
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </TabPanel>
+                              </Box>
+                              <div className="card-footer">
+
+                                <Button
+                                  variant="primary"
+                                  size="xs"
+                                  className="me-2"
+                                  onClick={(e) => handleshow("photo")}
+
+                                >
+                                  <FontAwesomeIcon icon={faPlus} className="me-2" />
+                                  {t("show_more")}
+                                </Button>
+                              </div>
                             </div>
-                          </div>                    
-                        </TabPanel>
-                      </Box>
-                           <div className="card-footer"> 
 
-                          <Button
-                          variant="primary"
-                          size="xs"
-                          className="me-2"
-                          onClick={(e) => handleshow("photo")}
 
-                          >
-                          <FontAwesomeIcon icon={faPlus} className="me-2" />
-                          Afficher plus
-                          </Button>
                           </div>
-                    </div>
-                   
+                        </div>
 
-                  </div>
-                       </div>
-
-                       <div className="col-lg-5">
-                          <div className="iq-card" style={{minHeight:"200px"}}>
+                        <div className="col-lg-5">
+                          <div className="iq-card" style={{ minHeight: "200px" }}>
                             <div className="iq-card-header d-flex justify-content-between">
                               <div className="iq-header-title">
-                                <h4 className="card-title">Emplacement</h4>
+                                <h4 className="card-title">{t("location")}</h4>
                               </div>
                             </div>
                             <div className="iq-card-body">{prof?.cords}</div>
                           </div>
-                          
 
-                         
+
+
                         </div>
 
                         <div className="col-lg-7">
-                        <div className="iq-card">
+                          <div className="iq-card">
                             <div className="iq-card-header d-flex justify-content-between">
                               <div className="iq-header-title">
-                                <h4 className="card-title">Parenté</h4>
+                                <h4 className="card-title">{t("relationship")}</h4>
                               </div>
                               <div className="iq-card-header-toolbar d-flex align-items-center">
                                 <p className="m-0">
                                   <a onClick={() => setShowDefault2(true)}>
-                                    Ajouter{" "}
+                                    {t('add')}{" "}
                                   </a>
                                 </p>
                               </div>
@@ -1128,82 +1135,82 @@ if (token !== null) decoded = jwt_decode(token);
                           </div>
                         </div>
                         <div className="col-lg-12">
-                          <div  className="iq-card">
+                          <div className="iq-card">
 
-                          <div className="iq-card-header d-flex justify-content-between">
+                            <div className="iq-card-header d-flex justify-content-between">
                               <div className="iq-header-title">
-                                <h4 className="card-title">Timeline</h4>
+                                <h4 className="card-title">{t('Timeline')}</h4>
                               </div>
                               <div className="iq-card-header-toolbar d-flex align-items-center">
-                              <Button
-                                          variant="primary"
-                                          size="xs"
-                                          className="me-2"
-                                          onClick={(e) =>
-                                            setShowDefault3(true)
-                                          }
-                                        >
-                                          <FontAwesomeIcon icon={faPlus} className="me-2" />
-                                          Ajouter un évènement marquant
-                                        </Button>
+                                <Button
+                                  variant="primary"
+                                  size="xs"
+                                  className="me-2"
+                                  onClick={(e) =>
+                                    setShowDefault3(true)
+                                  }
+                                >
+                                  <FontAwesomeIcon icon={faPlus} className="me-2" />
+                                  {t("Add an important event")}
+                                </Button>
                               </div>
                             </div>
-                              <div className="iq-card-body" >
-                             
-                              <div className="timeline-list timeline-list-horizontal" style={{marginTop:"10%"}}>
-        <div className="scroll-area-x" >
-          <ul>
-          {prof?.timeline?.map((timeline) => (
+                            <div className="iq-card-body" >
 
-          <li className="timeline-item">
-              <div className="timeline-item--content">
-                <div className="timeline-item--icon bg-primary" />
-                <h4 className="timeline-item--label mb-2 font-weight-bold">
-                {timeline.message}
-                </h4>
-                <p> {moment(timeline.date).format( "YYYY-MM-DD")}</p>
-                
-                </div>
+                              <div className="timeline-list timeline-list-horizontal" style={{ marginTop: "10%" }}>
+                                <div className="scroll-area-x" >
+                                  <ul>
+                                    {prof?.timeline?.map((timeline) => (
 
-            </li>
-            ))
-          }
-          </ul>
-        </div>
-      </div>
-                                 
+                                      <li className="timeline-item">
+                                        <div className="timeline-item--content">
+                                          <div className="timeline-item--icon bg-primary" />
+                                          <h4 className="timeline-item--label mb-2 font-weight-bold">
+                                            {timeline.message}
+                                          </h4>
+                                          <p> {moment(timeline.date).format("YYYY-MM-DD")}</p>
+
+                                        </div>
+
+                                      </li>
+                                    ))
+                                    }
+                                  </ul>
+                                </div>
+                              </div>
+
                             </div>
 
-                            
+
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div hidden={!other.etat} className="iq-card">
-                          <div className="iq-card-header d-flex justify-content-between">
-                              <div className="iq-header-title">
-                                <h4 className="card-title">Timeline</h4>
-                              </div>
-                              <div className="iq-card-header-toolbar d-flex align-items-center">
-                                       <Button
-                                          variant="primary"
-                                          size="xs"
-                                          className="me-2"
-                                          onClick={() => setShowDefault2(true)}
-                                         
-                                 
-                                        >
-                                          <FontAwesomeIcon icon={faPlus} className="me-2" />
-                                          Ajouter un lien de parenté
-                                        </Button>
-                              </div>
+                      <div className="iq-card-header d-flex justify-content-between">
+                        <div className="iq-header-title">
+                          <h4 className="card-title">{t('Timeline')}</h4>
                         </div>
-                        <div className="iq-card-body" >
+                        <div className="iq-card-header-toolbar d-flex align-items-center">
+                          <Button
+                            variant="primary"
+                            size="xs"
+                            className="me-2"
+                            onClick={() => setShowDefault2(true)}
 
-                             
+
+                          >
+                            <FontAwesomeIcon icon={faPlus} className="me-2" />
+                            {t("Add relationship")}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="iq-card-body" >
+
+
                         {prof?.friends?.length > 0 ? (
-                            <div className="iq-card-body">
+                          <div className="iq-card-body">
                             <ul className="profile-img-gallary d-flex flex-wrap p-0 m-0">
                               {prof?.friends?.map((profile) => (
                                 <li className="col-md-4 col-6 pl-2 pr-0 pb-3">
@@ -1234,196 +1241,196 @@ if (token !== null) decoded = jwt_decode(token);
                             </ul>
                           </div>
                         ) : (
-                          <span>Aucune lien de parenté trouvée</span>
+                          <span>{t("no_relatives_found")}</span>
                         )}
                       </div>
-                      </div>
+                    </div>
 
-                  
-                    
 
-                    
+
+
+
                     <div hidden={!images.etat} id="photos" role="tabpanel">
                       <div className="iq-card">
                         <div className="iq-card-body">
-                               <Box sx={{ width: "100%" }}>
-                                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                                      <Tabs
-                                        value={value}
-                                        onChange={handleChange}
-                                        allowScrollButtonsMobile
-                                        variant="scrollable"
-                                        aria-label="scrollable force tabs example"
-                                      >
-                                        <Tab wrapped label="Photos " onClick={(e)=>setMedia(true)} {...a11yProps(0)} />
-                                        <Tab wrapped onClick={(e)=>setMedia(false)}  label={
-                                                    
-                                                      <span>
-                                                       Albums{" "}
-                                                     
-                                                      
-                                                      </span>
-                                                    } {...a11yProps(1)} />
-
-                                               {media ? <Button
-                                                          variant="primary"
-                                                            size="xs"
-                                                            className="m-3"
-                                                            onClick={(e) =>
-                                                              setShowDefault5(true)
-                                                            }
-                                                    >Ajouter des Photos/videos
-                                                    </Button>: 
-                                                    
-                                                    <Button
-                                                          variant="primary"
-                                                            size="xs"
-                                                            className="m-3"
-                                                            onClick={(e) =>
-                                                              setShowDefault4(true)
-                                                            }
-                                                    >Ajouter un album
-                                                    </Button>
-                                                    }
-
-                                                     
-                                      </Tabs>
-                                    </Box>
-                                    <TabPanel value={value} index={0}>
-                                    <div className="friend-list-tab mt-2">
-                            <div className="tab-content">
-                              <div
-                                className="tab-pane fade active show"
-                                id="photosofyou"
-                                role="tabpanel"
+                          <Box sx={{ width: "100%" }}>
+                            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                              <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                allowScrollButtonsMobile
+                                variant="scrollable"
+                                aria-label="scrollable force tabs example"
                               >
-                                <div className="iq-card-body p-0">
-                                <div className="row">
+                                <Tab wrapped label={t('photos')} onClick={(e) => setMedia(true)} {...a11yProps(0)} />
+                                <Tab wrapped onClick={(e) => setMedia(false)} label={
 
-                           
-                                  {photos?.map((img) => (
-                                    <div className="col-md-6 col-lg-3 mb-3">
-                                      <div className="user-images position-relative overflow-hidden">
-                                        <a>
-                                          <ModalImage
-                                            small={img}
-                                            large={img}
-                                            className="img-fluid rounded"
-                                            alt="Responsive image"
-                                          />
-                                        </a>
+                                  <span>
+                                    {t("Albums")}{" "}
 
-                                        <a
-                                          onClick={() => removeimage(img)}
-                                          className="image-edit-btn"
-                                          data-toggle="tooltip"
-                                          data-placement="top"
-                                          title=""
-                                          data-original-title="Edit or Remove"
-                                        >
-                                          <i className="ri-delete-bin-5-line" />
-                                        </a>
+
+                                  </span>
+                                } {...a11yProps(1)} />
+
+                                {media ? <Button
+                                  variant="primary"
+                                  size="xs"
+                                  className="m-3"
+                                  onClick={(e) =>
+                                    setShowDefault5(true)
+                                  }
+                                >{t("Add photos/videos")}
+                                </Button> :
+
+                                  <Button
+                                    variant="primary"
+                                    size="xs"
+                                    className="m-3"
+                                    onClick={(e) =>
+                                      setShowDefault4(true)
+                                    }
+                                  >{t("Add album")}
+                                  </Button>
+                                }
+
+
+                              </Tabs>
+                            </Box>
+                            <TabPanel value={value} index={0}>
+                              <div className="friend-list-tab mt-2">
+                                <div className="tab-content">
+                                  <div
+                                    className="tab-pane fade active show"
+                                    id="photosofyou"
+                                    role="tabpanel"
+                                  >
+                                    <div className="iq-card-body p-0">
+                                      <div className="row">
+
+
+                                        {photos?.map((img) => (
+                                          <div className="col-md-6 col-lg-3 mb-3">
+                                            <div className="user-images position-relative overflow-hidden">
+                                              <a>
+                                                <ModalImage
+                                                  small={img}
+                                                  large={img}
+                                                  className="img-fluid rounded"
+                                                  alt="Responsive image"
+                                                />
+                                              </a>
+
+                                              <a
+                                                onClick={() => removeimage(img)}
+                                                className="image-edit-btn"
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                title=""
+                                                data-original-title="Edit or Remove"
+                                              >
+                                                <i className="ri-delete-bin-5-line" />
+                                              </a>
+                                            </div>
+                                          </div>
+                                        ))}
+
+
                                       </div>
                                     </div>
-                                  ))} 
-                                 
-                                  
                                   </div>
+
                                 </div>
                               </div>
-                              
-                            </div>
-                          </div>
-                                    </TabPanel>
-                                    <TabPanel value={value} index={1}>
-                                    <div className="friend-list-tab mt-2">
-                            <div className="tab-content">
-                              <div
-                                className="tab-pane fade active show"
-                                id="photosofyou"
-                                role="tabpanel"
-                              >
-                                <div className="iq-card-body p-0">
-                                <div className="row">
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                              <div className="friend-list-tab mt-2">
+                                <div className="tab-content">
+                                  <div
+                                    className="tab-pane fade active show"
+                                    id="photosofyou"
+                                    role="tabpanel"
+                                  >
+                                    <div className="iq-card-body p-0">
+                                      <div className="row">
 
-                                    {!showAlbum ? (
-                                      
-                                      prof?.albums?.map((album) => (
-                                        <Card className="m-2" onClick={(e)=>handleAlbum(album._id)} style={{ maxWidth: 320 }} >
-                                         
-                                        <CardActionArea>
-                                          <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={"http://www.skiesbook.com:3000/uploads/"+album?.images[0]}
-                                            alt="album photo"
-                                          />
-                                          <CardContent>
-                                            <Typography className="d-flex justify-content-center" gutterBottom variant="h5" component="div">
-                                              {album.name}
-                                            </Typography>
-                                          
-                                          </CardContent>
-                                        </CardActionArea>
-                                      </Card>
-                                      
-                                      ))
-                                      ) : (
+                                        {!showAlbum ? (
+
+                                          prof?.albums?.map((album) => (
+                                            <Card className="m-2" onClick={(e) => handleAlbum(album._id)} style={{ maxWidth: 320 }} >
+
+                                              <CardActionArea>
+                                                <CardMedia
+                                                  component="img"
+                                                  height="140"
+                                                  image={"http://www.skiesbook.com:3000/uploads/" + album?.images[0]}
+                                                  alt="album photo"
+                                                />
+                                                <CardContent>
+                                                  <Typography className="d-flex justify-content-center" gutterBottom variant="h5" component="div">
+                                                    {album.name}
+                                                  </Typography>
+
+                                                </CardContent>
+                                              </CardActionArea>
+                                            </Card>
+
+                                          ))
+                                        ) : (
                                           <>
-                            
-                                        
-                                       <div className="d-flex align-items-center m-2">   
-                                       <Button
-                                          variant="primary"
-                                          size="xs"
-                                          className="m-3"
-                                          onClick={(e) =>
-                                            setShowAlbum(false)
-                                          }
-                                        >
-                                          <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                                          Retour
-                                        </Button>   
-                                        <h4>{ prof?.albums?.find(x => x._id === albumId)?.name}</h4>
 
-                                          
-                                       </div>
-                                        <div className="row">
-                                         
-                                                                      
-                                            { prof?.albums?.find(x => x._id === albumId)?.images?.map((img) => (
-                                              <div className="col-md-6 col-lg-3 mb-3">
-                                                <div className="user-images position-relative overflow-hidden">
-                                                  <a>
-                                                    <ModalImage
-                                                      small={"http://www.skiesbook.com:3000/uploads/"+img}
-                                                      large={"http://www.skiesbook.com:3000/uploads/"+img}
-                                                      className="img-fluid rounded"
-                                                      alt="Responsive image"
-                                                    />
-                                                  </a>
 
-                                                 
-                                                </div>
-                                              </div>
-                                            ))} 
+                                            <div className="d-flex align-items-center m-2">
+                                              <Button
+                                                variant="primary"
+                                                size="xs"
+                                                className="m-3"
+                                                onClick={(e) =>
+                                                  setShowAlbum(false)
+                                                }
+                                              >
+                                                <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
+                                                {t('back')}
+                                              </Button>
+                                              <h4>{prof?.albums?.find(x => x._id === albumId)?.name}</h4>
 
 
                                             </div>
-                                            </>
-                                      )}
-                                      
+                                            <div className="row">
+
+
+                                              {prof?.albums?.find(x => x._id === albumId)?.images?.map((img) => (
+                                                <div className="col-md-6 col-lg-3 mb-3">
+                                                  <div className="user-images position-relative overflow-hidden">
+                                                    <a>
+                                                      <ModalImage
+                                                        small={"http://www.skiesbook.com:3000/uploads/" + img}
+                                                        large={"http://www.skiesbook.com:3000/uploads/" + img}
+                                                        className="img-fluid rounded"
+                                                        alt="Responsive image"
+                                                      />
+                                                    </a>
+
+
+                                                  </div>
+                                                </div>
+                                              ))}
+
+
+                                            </div>
+                                          </>
+                                        )}
+
+                                      </div>
+                                    </div>
                                   </div>
+
                                 </div>
                               </div>
-                              
-                            </div>
-                          </div>
-                                        
-                                    </TabPanel>
-                                   
-                                  </Box>
-                         
+
+                            </TabPanel>
+
+                          </Box>
+
                         </div>
                       </div>
                     </div>
@@ -1436,7 +1443,7 @@ if (token !== null) decoded = jwt_decode(token);
                         {multi?.length > 0 ? (
                           <Test wow={multi} id={id} />
                         ) : (
-                          <span>Aucune vidéo trouvée</span>
+                          <span>{t("no_videos_found")}</span>
                         )}
                       </div>
                     </div>
@@ -1453,7 +1460,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   data-toggle="pill"
                                   href="/#basicinfo"
                                 >
-                                  Contact and Basic Info
+                                  {t("Contact and Basic Info")}
                                 </a>
                               </li>
                               <li>
@@ -1462,7 +1469,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   data-toggle="pill"
                                   href="/#family"
                                 >
-                                  Family and Relationship
+                                  {t("Family and Relationship")}
                                 </a>
                               </li>
                               <li>
@@ -1471,7 +1478,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   data-toggle="pill"
                                   href="/#work"
                                 >
-                                  Work and Education
+                                  {t("Work and Education")}
                                 </a>
                               </li>
                               <li>
@@ -1480,7 +1487,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   data-toggle="pill"
                                   href="/#lived"
                                 >
-                                  Places You've Lived
+                                  {t("Places You've Lived")}
                                 </a>
                               </li>
                               <li>
@@ -1489,7 +1496,7 @@ if (token !== null) decoded = jwt_decode(token);
                                   data-toggle="pill"
                                   href="/#details"
                                 >
-                                  Details About You
+                                  {t("Details About You")}
                                 </a>
                               </li>
                             </ul>
@@ -1501,23 +1508,23 @@ if (token !== null) decoded = jwt_decode(token);
                                 id="basicinfo"
                                 role="tabpanel"
                               >
-                                <h4>Contact Information</h4>
+                                <h4>{t("Contact information")}</h4>
                                 <hr />
                                 <div className="row">
                                   <div className="col-3">
-                                    <h6>Email</h6>
+                                    <h6>{t("email")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">Bnijohn@gmail.com</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>Mobile</h6>
+                                    <h6>{t("phone")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">(001) 4544 565 456</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>Address</h6>
+                                    <h6>{t("address")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">
@@ -1526,52 +1533,52 @@ if (token !== null) decoded = jwt_decode(token);
                                   </div>
                                 </div>
                                 <h4 className="mt-3">
-                                  Websites and Social Links
+                                  {t("Websites and Social Links")}
                                 </h4>
                                 <hr />
                                 <div className="row">
                                   <div className="col-3">
-                                    <h6>Website</h6>
+                                    <h6>{t("Website")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">www.bootstrap.com</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>Social Link</h6>
+                                    <h6>{t("Social Link")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">www.bootstrap.com</p>
                                   </div>
                                 </div>
-                                <h4 className="mt-3">Basic Information</h4>
+                                <h4 className="mt-3">{t("Basic Information")}</h4>
                                 <hr />
                                 <div className="row">
                                   <div className="col-3">
-                                    <h6>Birth Date</h6>
+                                    <h6>{t("date_of_birth")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">24 January</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>Birth Year</h6>
+                                    <h6>{t("year_of_birth")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">1994</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>Sexe</h6>
+                                    <h6>{t('gender')}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">Femme</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>interested in</h6>
+                                    <h6>{t("interested in")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">Designing</p>
                                   </div>
                                   <div className="col-3">
-                                    <h6>language</h6>
+                                    <h6>{t("language")}</h6>
                                   </div>
                                   <div className="col-9">
                                     <p className="mb-0">English, French</p>

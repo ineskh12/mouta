@@ -22,6 +22,7 @@ import Box from "@mui/material/Box";
 import Global from "./graveyard_dashboard"
 import Staff from "./AdminStaff"
 import Invoice from "./invoice"
+import { useTranslation } from "react-i18next";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -58,6 +59,7 @@ function a11yProps(index) {
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
+  const { t } = useTranslation();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -88,10 +90,10 @@ export default function BasicTabs() {
             variant="scrollable"
             aria-label="scrollable force tabs example"
           >
-            <Tab wrapped label="Dashboard global " {...a11yProps(0)} />
-            <Tab wrapped label="Dashboard Staff" {...a11yProps(1)} />
+            <Tab wrapped label={t('Dashboard global')} {...a11yProps(0)} />
+            <Tab wrapped label={t('Dashboard Staff')} {...a11yProps(1)} />
 
-            <Tab disabled wrapped label="Dashboard cimetière" {...a11yProps(2)} />
+            <Tab disabled wrapped label={t('Dashboard cemetery')} {...a11yProps(2)} />
 
           </Tabs>
         </Box>
