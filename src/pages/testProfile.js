@@ -53,6 +53,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Sticky from "react-sticky-el";
 import { useTranslation } from "react-i18next";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -126,6 +127,7 @@ function App() {
 
   const [photos, setphotos] = useState([]);
   const [prof, setprof] = useState(null);
+  const [position, setPosition] = useState(null);
   const [multi, setmultis] = useState(null);
   const [albumId, setAlbumId] = useState("");
   const [showAlbum, setShowAlbum] = useState(false);
@@ -201,6 +203,12 @@ function App() {
           "http://skiesbook.com:3000/uploads/" + element;
       });
       setprof(response.data);
+
+      if (response.data.position)
+        setPosition({
+          lat: parseFloat(response.data.position.lat),
+          lng: parseFloat(response.data.position.lng),
+        });
       setphotos(
         response.data.files.filter(
           (ext) =>
@@ -260,9 +268,9 @@ function App() {
       mydata.append("files", upload.files[i]);
     }
     Swal.fire({
-      title: t('add_tribute'),
+      title: t("add_tribute"),
       showCancelButton: true,
-      confirmButtonText: `${t('yes')} !`,
+      confirmButtonText: `${t("yes")} !`,
       showLoaderOnConfirm: true,
 
       preConfirm: async () => {
@@ -275,8 +283,9 @@ function App() {
             Swal.fire({
               position: "center",
               icon: "success",
-              title:
-                t('tribute_added_successfully_waiting_for_the_owner_to_accept_this_comment'),
+              title: t(
+                "tribute_added_successfully_waiting_for_the_owner_to_accept_this_comment"
+              ),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -285,7 +294,7 @@ function App() {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`${t('error')}: ${error}`);
+            Swal.showValidationMessage(`${t("error")}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -300,6 +309,11 @@ function App() {
     setVideoDisplay(video);
     setShowDefault4(true);
   }
+  const containerStyle = {
+    width: "100%",
+    height: "400px",
+  };
+
   return (
     <div className="app">
       <Modal
@@ -342,12 +356,12 @@ function App() {
       >
         <Modal.Header>
           <Modal.Title className="h6">
-            {t('sharing_on_social_networks')}
+            {t("sharing_on_social_networks")}
           </Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
         <Modal.Body className="align-items-center justify-content-center">
-          <p>{t('scan_qr_code')}</p>
+          <p>{t("scan_qr_code")}</p>
           <Qrcode myvalue={"http://www.skiesbook.com/prof/" + id}></Qrcode>
           <hr />
 
@@ -364,14 +378,14 @@ function App() {
                     Swal.fire({
                       position: "center",
                       icon: "success",
-                      title: t('link_copied'),
+                      title: t("link_copied"),
                       showConfirmButton: false,
                       timer: 1500,
                     });
                   }}
                 >
                   <ContentCopyIcon />
-                  {t('copy_link')}
+                  {t("copy_link")}
                 </span>
               ) : (
                 ""
@@ -380,9 +394,9 @@ function App() {
 
             <FacebookShareButton
               url={"www.skiesbook.com/prof/" + id}
-              quote={
-                `${t('sharing_the_profile_of')} ${prof?.profileName} ${t('on_skiesbook')}`
-              }
+              quote={`${t("sharing_the_profile_of")} ${prof?.profileName} ${t(
+                "on_skiesbook"
+              )}`}
               hashtag={"#restinpeace"}
               description={prof?.bio}
               className="Demo__some-network__share-button ml-3"
@@ -392,9 +406,9 @@ function App() {
 
             <TwitterShareButton
               className="ml-3"
-              title={
-                `${t('sharing_the_profile_of')} ${prof?.profileName} ${t('on_skiesbook')}`
-              }
+              title={`${t("sharing_the_profile_of")} ${prof?.profileName} ${t(
+                "on_skiesbook"
+              )}`}
               url={"www.skiesbook.com/prof/" + id}
               hashtags={["#restinpeace"]}
             >
@@ -404,14 +418,14 @@ function App() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            {t('i_got_it')}
+            {t("i_got_it")}
           </Button>
           <Button
             variant="link"
             className="text-gray ms-auto"
             onClick={handleClose}
           >
-            {t('close')}
+            {t("close")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -424,19 +438,19 @@ function App() {
       >
         <Form onSubmit={(e) => ajouterhommage(e)}>
           <Modal.Header>
-            <Modal.Title className="h6">{t('add_tribute')}</Modal.Title>
+            <Modal.Title className="h6">{t("add_tribute")}</Modal.Title>
             <Button variant="close" aria-label="Close" onClick={handleClose2} />
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>{t('full_name')}</Form.Label>
+                  <Form.Label>{t("full_name")}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileName"
-                    placeholder={t('enter_your_name')}
+                    placeholder={t("enter_your_name")}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -450,12 +464,12 @@ function App() {
             <Row className="align-items-center">
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>{t('mail_address')}</Form.Label>
+                  <Form.Label>{t("mail_address")}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileName"
-                    placeholder={t('enter_your_email_address')}
+                    placeholder={t("enter_your_email_address")}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -470,7 +484,7 @@ function App() {
             <Row className="align-items-center">
               <Col md={12} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>{t('tribute')}</Form.Label>
+                  <Form.Label>{t("tribute")}</Form.Label>
                   <textarea
                     class="form-control"
                     required
@@ -487,12 +501,14 @@ function App() {
               </Col>
               <Col md={12} className="mb-3">
                 <Form.Group id="Images">
-                  <Form.Label>{t('images')}</Form.Label>
+                  <Form.Label>{t("images")}</Form.Label>
                   <DropzoneArea
                     required
                     acceptedFiles={[".jpg", ".jpeg", ".png", ".gif"]}
                     filesLimit={3}
-                    dropzoneText={`${t('drop_your_images_here')} .jpg / .jepg / .png / .gif `}
+                    dropzoneText={`${t(
+                      "drop_your_images_here"
+                    )} .jpg / .jepg / .png / .gif `}
                     showFileNames={true}
                     maxFileSize={500000000}
                     onChange={(files) => setUpload({ ...upload, files })}
@@ -503,14 +519,14 @@ function App() {
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="secondary">
-              {t('add')}
+              {t("add")}
             </Button>
             <Button
               variant="link"
               className="text-gray ms-auto"
               onClick={handleClose2}
             >
-              {t('close')}
+              {t("close")}
             </Button>
           </Modal.Footer>
         </Form>
@@ -541,8 +557,10 @@ function App() {
                           prof?.profileImage
                         }
                         onClick={() => {
-                          displayImage("http://skiesbook.com:3000/uploads/" +
-                            prof?.profileImage);
+                          displayImage(
+                            "http://skiesbook.com:3000/uploads/" +
+                              prof?.profileImage
+                          );
                         }}
                         alt="profile-img"
                         className="avatar-130 img-fluid"
@@ -582,7 +600,7 @@ function App() {
                         className="mr-2 "
                         icon={faShareAlt}
                       ></FontAwesomeIcon>
-                      {t('share')}
+                      {t("share")}
                     </Button>
                   </div>
                 </div>
@@ -615,18 +633,44 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    {t('location')}
+                                    {t("location")}
                                   </h4>
                                 </div>
                               </div>
                               <div className="iq-card-body">
-                                <p> {t('address')} : {prof?.graveyard?.address} </p>
-                                <p>
-                                  {" "}
-                                  {t('contact_cemetery')}: {
-                                    prof?.graveyard?.phone
-                                  }{" "}
-                                </p>
+                                {position ? (
+                                  <LoadScript
+                                    googleMapsApiKey={
+                                      process.env.REACT_APP_GOOGLE_MAP
+                                    }
+                                  >
+                                    <GoogleMap
+                                      mapContainerStyle={containerStyle}
+                                      center={position}
+                                      zoom={20}
+                                      // satellite map with labels
+                                      mapTypeId="hybrid"
+                                    >
+                                      <Marker
+                                        position={position}
+                                        draggable={false}
+                                      />
+                                    </GoogleMap>
+                                  </LoadScript>
+                                ) : (
+                                  <>
+                                    <p>
+                                      {" "}
+                                      {t("address")} :{" "}
+                                      {prof?.graveyard?.address}{" "}
+                                    </p>
+                                    <p>
+                                      {" "}
+                                      {t("contact_cemetery")}:{" "}
+                                      {prof?.graveyard?.phone}{" "}
+                                    </p>
+                                  </>
+                                )}
                               </div>
                             </div>
                             <div className="iq-card p-2">
@@ -636,7 +680,7 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    {t('relationship')}
+                                    {t("relationship")}
                                   </h4>
                                 </div>
                                 <div className="iq-card-header-toolbar d-flex align-items-center">
@@ -656,7 +700,7 @@ function App() {
                                     <span className="mr-2">
                                       <Btn />
                                     </span>
-                                    {t('show_more')}
+                                    {t("show_more")}
                                   </Button>
                                 </div>
                               </div>
@@ -703,7 +747,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  {t('images')}
+                                  {t("images")}
                                 </h4>
                               </div>
 
@@ -751,7 +795,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  {t('biography')}
+                                  {t("biography")}
                                 </h4>
                               </div>
                               <span> {prof?.bio}</span>
@@ -764,7 +808,7 @@ function App() {
                                   style={{ color: "#525252" }}
                                   className="card-title"
                                 >
-                                  {t('tributes')}
+                                  {t("tributes")}
                                 </h4>
                                 <div className="iq-card-header-toolbar d-flex align-items-center">
                                   <Button
@@ -783,7 +827,7 @@ function App() {
                                     <span className="mr-2">
                                       <Btn />
                                     </span>
-                                    {t('add_tribute')}
+                                    {t("add_tribute")}
                                   </Button>
                                 </div>
                               </div>
@@ -877,7 +921,7 @@ function App() {
                                     style={{ color: "#525252" }}
                                     className="card-title"
                                   >
-                                    {t('journey')}
+                                    {t("journey")}
                                   </h4>
                                 </div>
                                 <div className="scroll-area-x">
@@ -925,7 +969,7 @@ function App() {
                               >
                                 <Tab
                                   wrapped
-                                  label={t('photos')}
+                                  label={t("photos")}
                                   {...a11yProps(0)}
                                 />
                                 <Tab wrapped label="Albums" {...a11yProps(1)} />
@@ -1018,7 +1062,7 @@ function App() {
                                                   icon={faArrowLeft}
                                                   className="me-2"
                                                 />
-                                                {t('back')}
+                                                {t("back")}
                                               </Button>
                                               <h4>
                                                 {
@@ -1072,7 +1116,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            {t('videos')}
+                            {t("videos")}
                           </h4>
                         </div>
 
@@ -1100,7 +1144,7 @@ function App() {
                             </div>
                           </div>
                         ) : (
-                          <span>{t('no_videos_found')}</span>
+                          <span>{t("no_videos_found")}</span>
                         )}
                       </div>
                     </div>
@@ -1111,7 +1155,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            {t('relationship')}
+                            {t("relationship")}
                           </h4>
                         </div>
                         {prof?.friends?.length > 0 ? (
@@ -1146,7 +1190,7 @@ function App() {
                             </ul>
                           </div>
                         ) : (
-                          <span>{t('no_relatives_found')}</span>
+                          <span>{t("no_relatives_found")}</span>
                         )}
                       </div>
                     </div>
@@ -1159,7 +1203,7 @@ function App() {
                               style={{ color: "#525252" }}
                               className="card-title"
                             >
-                              {t('tributes')}
+                              {t("tributes")}
                             </h4>
                             <div className="iq-card-header-toolbar d-flex align-items-center">
                               <Button
@@ -1178,7 +1222,7 @@ function App() {
                                 <span className="mr-2">
                                   <Btn />
                                 </span>
-                                {t('add_tribute')}
+                                {t("add_tribute")}
                               </Button>
                             </div>
                           </div>
@@ -1342,7 +1386,7 @@ function App() {
                           className="mr-2 "
                           icon={faShareAlt}
                         ></FontAwesomeIcon>
-                        {t('share')}
+                        {t("share")}
                       </Button>
                     </div>
                   </div>
@@ -1369,7 +1413,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                {t('images')}
+                                {t("images")}
                               </h4>
                             </div>
 
@@ -1378,9 +1422,12 @@ function App() {
                                 <div key={i}>
                                   {img.split(".").pop() === "mp4" ? (
                                     <>
-                                      <div className="okbb" onClick={() => {
-                                        displayVideo(img);
-                                      }}></div>
+                                      <div
+                                        className="okbb"
+                                        onClick={() => {
+                                          displayVideo(img);
+                                        }}
+                                      ></div>
                                       <video
                                         style={{ borderRadius: "10px" }}
                                         className="story "
@@ -1414,7 +1461,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                {t('biography')}
+                                {t("biography")}
                               </h4>
                             </div>
                             <span> {prof?.bio}</span>
@@ -1427,7 +1474,7 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                {t('tributes')}
+                                {t("tributes")}
                               </h4>
                               <div className="iq-card-header-toolbar d-flex align-items-center">
                                 <Button
@@ -1446,7 +1493,7 @@ function App() {
                                   <span className="mr-2">
                                     <Btn />
                                   </span>
-                                  {t('add_tribute')}
+                                  {t("add_tribute")}
                                 </Button>
                               </div>
                             </div>
@@ -1535,13 +1582,43 @@ function App() {
                                 style={{ color: "#525252" }}
                                 className="card-title"
                               >
-                                {t('location')}
+                                {t("location")}
                               </h4>
                             </div>
                           </div>
                           <div className="iq-card-body">
-                            <p> {t('address')} : {prof?.graveyard?.address} </p>
-                            <p> {t('contact_cemetery')}: {prof?.graveyard?.phone} </p>
+                            {position ? (
+                              <LoadScript
+                                googleMapsApiKey={
+                                  process.env.REACT_APP_GOOGLE_MAP
+                                }
+                              >
+                                <GoogleMap
+                                  mapContainerStyle={containerStyle}
+                                  center={position}
+                                  zoom={20}
+                                  // satellite map with labels
+                                  mapTypeId="hybrid"
+                                >
+                                  <Marker
+                                    position={position}
+                                    draggable={false}
+                                  />
+                                </GoogleMap>
+                              </LoadScript>
+                            ) : (
+                              <>
+                                <p>
+                                  {" "}
+                                  {t("address")} : {prof?.graveyard?.address}{" "}
+                                </p>
+                                <p>
+                                  {" "}
+                                  {t("contact_cemetery")}:{" "}
+                                  {prof?.graveyard?.phone}{" "}
+                                </p>
+                              </>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1560,7 +1637,7 @@ function App() {
                               style={{ color: "#525252" }}
                               className="card-title"
                             >
-                              {t('journey')}
+                              {t("journey")}
                             </h4>
                           </div>
                           <div className="scroll-area-x">
@@ -1593,7 +1670,7 @@ function App() {
                     <div className="iq-card-body">
                       <div className="iq-header-title">
                         <h4 style={{ color: "#525252" }} className="card-title">
-                          {t('relationship')}
+                          {t("relationship")}
                         </h4>
                       </div>
                       {prof?.friends?.length > 0 ? (
@@ -1626,7 +1703,7 @@ function App() {
                           </ul>
                         </div>
                       ) : (
-                        <span>{t('no_relatives_found')}</span>
+                        <span>{t("no_relatives_found")}</span>
                       )}
                     </div>
                   </div>
@@ -1638,7 +1715,7 @@ function App() {
                             style={{ color: "#525252" }}
                             className="card-title"
                           >
-                            {t('tributes')}
+                            {t("tributes")}
                           </h4>
                           <div className="iq-card-header-toolbar d-flex align-items-center">
                             <Button
@@ -1657,7 +1734,7 @@ function App() {
                               <span className="mr-2">
                                 <Btn />
                               </span>
-                              {t('add_tribute')}
+                              {t("add_tribute")}
                             </Button>
                           </div>
                         </div>
@@ -1753,22 +1830,22 @@ function App() {
                 }}
               >
                 <BottomNavigationAction
-                  label={t('home')}
+                  label={t("home")}
                   onClick={(e) => handleshow("parcours")}
                   icon={<AccountCircle />}
                 />
                 <BottomNavigationAction
-                  label={t('location')}
+                  label={t("location")}
                   onClick={(e) => handleshow("photo")}
                   icon={<PinDropIcon />}
                 />
                 <BottomNavigationAction
-                  label={t('journey')}
+                  label={t("journey")}
                   onClick={(e) => handleshow("videos")}
                   icon={<ViewTimelineIcon />}
                 />
                 <BottomNavigationAction
-                  label={t('relationship')}
+                  label={t("relationship")}
                   onClick={() => handleshow("parente")}
                   icon={<FamilyRestroomIcon />}
                 />

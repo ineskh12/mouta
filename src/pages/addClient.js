@@ -334,6 +334,8 @@ const AddClient = () => {
     const position = {
       lat: location?.lat,
       lng: location?.lng,
+      code: location?.code,
+      id : location?._id
     };
     handlePositionChange(position, "position", index);
     console.log(inputList);
