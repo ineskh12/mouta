@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import USstates from "./UsStates.json";
 import jwt_decode from "jwt-decode";
 import PhoneInput from "react-phone-input-2";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const Addadmin = () => {
   /*
@@ -43,7 +44,15 @@ const Addadmin = () => {
   const [country, setCountry] = useState("Canada");
   const [value, setValue] = useState();
   const [rep, setRep] = useState(false);
+  const containerStyle = {
+    width: "100%",
+    height: "400px",
+  };
 
+  const [center, setCenter] = useState({
+    lat: 45.424721,
+    lng: -75.695,
+  });
   const [region, setRegion] = useState([
     {
       name: "Alberta",
@@ -146,7 +155,29 @@ const Addadmin = () => {
     );
   }
 */
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [mapState, setMapState] = useState(false);
+  const [marker, setMarker] = React.useState({
+    lat: 45.424721,
+    lng: -75.695,
+  });
+
+  React.useEffect(() => {
+    console.log(marker.lat, marker.lng);
+  }, [marker]);
+
+  const onLoad = React.useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.setCenter(center);
+    map.fitBounds(bounds);
+  }, []);
+
+  const onUnmount = React.useCallback(function callback(map) {
+    setMarker({
+      lat: null,
+      lng: null,
+    });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -165,7 +196,10 @@ const [data, setData] = useState([]);
     latitude: "",
     funeral_home: "",
     profileImage: "avatar.jpg",
-    sub:""
+    sub: "",
+    plan: "",
+    Lat: "",
+    Lng: "",
   });
 
   useEffect(() => {
@@ -190,7 +224,9 @@ const [data, setData] = useState([]);
   };
   async function Submit() {
     const mydata = new FormData();
-    if (formData.sub === ""){ formData.sub = data[0]?._id}
+    if (formData.sub === "") {
+      formData.sub = data[0]?._id;
+    }
     mydata.append("name", formData.name);
     mydata.append("lastn", formData.lastn);
     mydata.append("Datebirth", formData.Datebirth);
@@ -205,7 +241,8 @@ const [data, setData] = useState([]);
     mydata.append("address", formData.address);
     mydata.append("vendor", decoded.userId);
     mydata.append("sub", formData.sub);
-
+    mydata.append("Lat", marker.lat);
+    mydata.append("Lng", marker.lng);
 
     /*     mydata.append("latitude", position.lat);
     mydata.append("logitude", position.lng); */
@@ -218,11 +255,7 @@ const [data, setData] = useState([]);
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
-          .post(
-            "http://www.skiesbook.com:3000/api/v1/users/addadmin",
-            mydata,
-            config
-          )
+          .post("http://skiesbook.com:3000/api/v1/users/addadmin", mydata, config)
           .then((result) => {
             Swal.fire({
               position: "center",
@@ -243,7 +276,6 @@ const [data, setData] = useState([]);
     });
   }
   function handleChange(val) {
-    console.log(val);
     setCountry(val);
     if (val === "Canada") {
       setRegion([
@@ -304,6 +336,19 @@ const [data, setData] = useState([]);
       setRegion(USstates);
     }
     setFormData({ ...formData, address: val });
+  }
+  function settingCord(e) {
+    setMarker({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    });
+  }
+  function toggleMap() {
+    setCenter({
+      lat: marker.lat,
+      lng: marker.lng,
+    });
+    setMapState(!mapState);
   }
   return (
     <Card border="light" className="bg-white shadow-sm mb-4">
@@ -481,7 +526,7 @@ const [data, setData] = useState([]);
                 </Form.Select>
               </Form.Group>
             </Col>
-          
+
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
                 <Form.Label>Email</Form.Label>
@@ -505,10 +550,10 @@ const [data, setData] = useState([]);
                 />
               </Form.Group>
             </Col>
-          
+
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Image</Form.Label>
+                <Form.Label>Plan du cimetière</Form.Label>
                 <Form.Control
                   required
                   type="file"
@@ -519,18 +564,29 @@ const [data, setData] = useState([]);
               </Form.Group>
             </Col>
           </Row>
+          <Button hidden = {mapState} onClick = {()=> toggleMap()} >Toggle map</Button>
 
-          {/*     <Card className="bg-white shadow-sm mb-4">
+          <div  hidden = {!mapState} className="bg-white shadow-sm mb-4">
             <Row>
-              <MapContainer center={center} zoom={13} scrollWheelZoom={true}>
-                <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <DraggableMarker />
-              </MapContainer>
+              <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP}>
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={center}
+                  zoom={20}
+                  // satellite map with labels
+                  mapTypeId="hybrid"
+                >
+                  <Marker
+                    position={marker}
+                    draggable={true}
+                    onDragEnd={(e) => {
+                      settingCord(e);
+                    }}
+                  />
+                </GoogleMap>
+              </LoadScript>
             </Row>
-          </Card> */}
+          </div>
           <div className="mt-3">
             <Button variant="primary" onClick={(e) => Submit()}>
               Sauvegrader

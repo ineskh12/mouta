@@ -54,6 +54,8 @@ import comments from "./comments/index";
 import welcome from "./password/welcomePassword";
 import requests from "./requests";
 import Language from "../components/language";
+import Map from "./map";
+import Emplacement from "./map/empalcement";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -205,6 +207,8 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/staff" component={Staff} />
           <RouteWithSidebar exact path="/addstaff" component={addStaff} />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithSidebar exact path="/emplacements" component={Emplacement} />
+
           <RouteWithSidebar
             exact
             path="/editclient/:id"
@@ -575,6 +579,8 @@ export default function Myroutes() {
             component={ProfileCardWidget}
           />
           <RouteWithLoader exact path="/signup" component={Signup} />
+          <RouteWithLoader exact path="/map" component={Map} />
+
           <RouteWithLoader exact path="/prof/:id" component={Test} />
           <Redirect to="/signin" />
         </Switch>

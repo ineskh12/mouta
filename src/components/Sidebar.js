@@ -485,6 +485,12 @@ export default (props = {}) => {
                     icon={faUsers}
                     eventKey="/adminprofiles"
                   />
+                   <NavItem
+                    title="Emplacements"
+                    link="/Emplacements"
+                    icon={faMap}
+                    eventKey="/Emplacements"
+                  />
                   {/* <CollapsableNavItem
                 eventKey="/admin"
                 title="Compte clients"

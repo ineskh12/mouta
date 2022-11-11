@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import {
   Col,
   Row,
@@ -27,10 +25,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import PhoneInput from "react-phone-input-2";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const AddClient = () => {
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
+  const [data, setData] = useState([]);
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
   const [formData, setFormData] = useState({
@@ -62,6 +62,10 @@ const AddClient = () => {
       graveyard: decoded.graveyardId,
       banner: "banner.jpg",
       profileImage: "avatar.jpg",
+      position: {
+        lat: null,
+        lng: null,
+      },
     },
   ]);
   const [value, setValue] = useState();
@@ -73,15 +77,21 @@ const AddClient = () => {
     setInputList(list);
   };
 
+  const handlePositionChange = (value, name, index) => {
+    const list = [...inputList];
+    list[index][name] = value;
+    setInputList(list);
+  };
+
   const handleInputChange2 = (e, index) => {
     const list = [...inputList];
-    list[index]['profileDatebirth'] = e;
+    list[index]["profileDatebirth"] = e;
     setInputList(list);
   };
 
   const handleInputChange3 = (e, index) => {
     const list = [...inputList];
-    list[index]['profileDatedeath'] = e;
+    list[index]["profileDatedeath"] = e;
     setInputList(list);
   };
 
@@ -107,10 +117,28 @@ const AddClient = () => {
         graveyard: decoded.graveyardId,
         banner: "banner.jpg",
         profileImage: "avatar.jpg",
+        position: {
+          lat: null,
+          lng: null,
+        },
       },
     ]);
   };
 
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get(
+          "http://localhost:3000/api/v1/users/getAdmin/" + decoded.userId
+        );
+        setData(response);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [birthday, setBirthday] = useState("05/05/2000");
   const config = {
@@ -138,32 +166,34 @@ const AddClient = () => {
     mydata.append("profiles", JSON.stringify(inputList));
     mydata.append("vendor", decoded.userId);
 
-    await axios
-      .post(
-        "http://www.skiesbook.com:3000/api/v1/users/addclient",
-        mydata,
-        config
-      )
-      .then((response) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Client ajouté avec succès",
-          showConfirmButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            history.push("/adminclients");
-          }
-        });
-      })
-      .catch((e) => {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Addresse mail existe déja",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+      Swal.fire({
+        title: "Are you sure you want to add this client?",
+        showCancelButton: true,
+        confirmButtonText: "Yes, add it!",
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+          return await axios
+          .post(
+            "http://localhost:3000/api/v1/users/addclient",
+            mydata,
+            config
+          ).then((result) => {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Client ajouté avec succès",
+                showConfirmButton: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  history.push("/adminclients");
+                }
+              });
+            })
+            .catch((error) => {
+              Swal.showValidationMessage(`Addresse mail existe déja`);
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
       });
   };
 
@@ -296,6 +326,18 @@ const AddClient = () => {
     }
     setFormData({ ...formData, address: val });
   }
+
+  function handlePlace(index, val) {
+    const location = data?.graveyard?.places.find(
+      (place) => place.code === val
+    );
+    const position = {
+      lat: location?.lat,
+      lng: location?.lng,
+    };
+    handlePositionChange(position, "position", index);
+    console.log(inputList);
+  }
   return (
     <Card border="light" className="bg-white shadow-sm mb-4">
       <Card.Body>
@@ -347,8 +389,7 @@ const AddClient = () => {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack spacing={3}>
                   <DatePicker
-                   inputFormat="dd/MM/yyyy"
-
+                    inputFormat="dd/MM/yyyy"
                     disableFuture
                     label="Date de naissance"
                     openTo="year"
@@ -438,7 +479,6 @@ const AddClient = () => {
             </Col>
           </Row>
           <Row>
-         
             <Col sm={3} className="mb-3">
               <Form.Group id="address">
                 <Form.Label>Ville</Form.Label>
@@ -473,12 +513,11 @@ const AddClient = () => {
                 />
               </Form.Group>
             </Col>
-          
+
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>Image</Form.Label>
                 <Form.Control
-                  
                   type="file"
                   onChange={(e) =>
                     setFormData({ ...formData, userimage: e.target.files[0] })
@@ -541,8 +580,7 @@ const AddClient = () => {
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack spacing={3}>
                           <DatePicker
-                                            inputFormat="dd/MM/yyyy"
-
+                            inputFormat="dd/MM/yyyy"
                             disableFuture
                             label="Date de naissance"
                             name="profileDatebirth"
@@ -561,8 +599,7 @@ const AddClient = () => {
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack spacing={3}>
                           <DatePicker
-                                            inputFormat="dd/MM/yyyy"
-
+                            inputFormat="dd/MM/yyyy"
                             disableFuture
                             label="Date de décés"
                             name="profileDatedeath"
@@ -639,6 +676,25 @@ const AddClient = () => {
                       />
                     </Form.Group>
                   </Col>
+
+                  <Col md={6} className="mb-3">
+                    <Form.Group id="ville">
+                      <Form.Label>Emplacement</Form.Label>
+                      {
+                        // free solo option with search
+                      }
+                      <Autocomplete
+                        id="position"
+                        options={data?.graveyard?.places.map(
+                          (option) => option?.code
+                        )}
+                        onChange={(e, value) => handlePlace(i, value)}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Emplacement" />
+                        )}
+                      />
+                    </Form.Group>
+                  </Col>
                 </Row>
                 <div className="ml-50" variant="primary">
                   {inputList.length !== 1 && (
@@ -647,7 +703,6 @@ const AddClient = () => {
                       className="text-danger ml-50"
                       variant="secondary"
                       onClick={() => handleRemoveClick(i)}
-                      
                     >
                       Supprimer
                     </Button>
