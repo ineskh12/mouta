@@ -647,9 +647,7 @@ function App() {
                                     <GoogleMap
                                       mapContainerStyle={containerStyle}
                                       center={position}
-                                      zoom={20}
-                                      // satellite map with labels
-                                      mapTypeId="hybrid"
+                                      zoom={15}
                                     >
                                       <Marker
                                         position={position}
@@ -1596,9 +1594,8 @@ function App() {
                                 <GoogleMap
                                   mapContainerStyle={containerStyle}
                                   center={position}
-                                  zoom={20}
+                                  zoom={15}
                                   // satellite map with labels
-                                  mapTypeId="hybrid"
                                 >
                                   <Marker
                                     position={position}

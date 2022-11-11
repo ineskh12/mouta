@@ -108,6 +108,7 @@ export default function AllProfiles() {
                 <th className="border-0">{t('Date of death')}</th>
                 <th className="border-0">{t('Contact information')}</th>
                 <th className="border-0">{t('reference_email')}</th>
+                <th className="border-0">{t('location')}</th>
                 <th className="border-0">{t('actions')}</th>
               </tr>
             </thead>
@@ -121,6 +122,7 @@ export default function AllProfiles() {
                   <td>{moment(dm?.profileDatebirth).format("YYYY-MM-DD")}</td>
                   <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
                   <td>{dm?.cords}</td>
+                  <td>{dm?.position?.code}</td>
                   <td>{dm?.profileEmail}</td>
                   <td>
                    
