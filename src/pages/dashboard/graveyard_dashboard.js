@@ -32,8 +32,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import { CSVLink } from "react-csv";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const history = useHistory();
@@ -101,7 +103,7 @@ export default function Dashboard() {
               size="sm"
               onClick={(e) => history.push("/singlereport/"+_id)}
             >
-              Detail
+              {t('Details')}
             </Button>
           </td>
         </tr>
@@ -113,11 +115,11 @@ export default function Dashboard() {
         <Card.Header>
           <Row className="align-items-center">
             <Col>
-              <h5>Les cimetières actifs</h5>
+              <h5>{t('Active cemeteries')}</h5>
             </Col>
             <Col className="text-end">
               <Button variant="secondary" size="sm">
-              <CSVLink {...csvReport}>Export to CSV</CSVLink>
+              <CSVLink {...csvReport}>{t('Export to CSV')}</CSVLink>
 
               </Button>
 
@@ -127,11 +129,11 @@ export default function Dashboard() {
         <Table responsive className="align-items-center table-flush">
           <thead className="thead-light">
             <tr>
-              <th scope="col">Nom du cimetière</th>
-              <th scope="col">Nombre profils Total</th>
-              <th scope="col">Nombre profils ajouté ce mois</th>
-              <th scope="col">Nombre clients total</th>
-              <th scope="col">Action</th>
+              <th scope="col">{t('cemetery_name')}</th>
+              <th scope="col">{t('total number of profiles')}</th>
+              <th scope="col">{t('Number of profiles added this month')}</th>
+              <th scope="col">{t('Total number of customers')}</th>
+              <th scope="col">{t('action')}</th>
             </tr>
           </thead>
           <tbody>
@@ -151,14 +153,14 @@ export default function Dashboard() {
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <h1>Dashboard</h1>
+        <h1>{t('Dashboard')}</h1>
       </div>
 
       <Row className="justify-content">
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="Nombre d'utilisateurs total"
-            period="cimetière,employés,clients cimetières,employés cimetières"
+            category={t('Total number of users')}
+            period={t("cemetery, employees, cemetery customers, cemetery employees")}
             title={data?.users}
             icon={faChartLine}
           />
@@ -166,7 +168,7 @@ export default function Dashboard() {
 
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="Nombre de profils total"
+            category={t('"total number of profiles"')}
             title={data?.profiles}
             icon={faChartLine}
           />
@@ -174,17 +176,17 @@ export default function Dashboard() {
 
         <Card border="light" className="shadow-sm m-3 p-3">
           <Row className="align-items-center">
-            <h5>Filter par date</h5>
+            <h5>{t('filter_by_date')}</h5>
             <Col md={3} className="mb-3">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label="De la date"
-                    openTo="year"
+                    label={t("from_date")}
+                    openTo={t("year")}
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
-                    views={["year", "month", "day"]}
+                    views={[t("year"), t("month"), t("day")]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, startDate: e });
                     }}
@@ -200,10 +202,10 @@ export default function Dashboard() {
                   <DatePicker
                     disableFuture
                     inputFormat="dd/MM/yyyy"
-                    label="A la date"
+                    label={t("until")}
                     value={formdata.endDate}
-                    openTo="year"
-                    views={["year", "month", "day"]}
+                    openTo={t("year")}
+                    views={[t("year"), t("month"), t("day")]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });
                     }}
@@ -213,14 +215,14 @@ export default function Dashboard() {
               </LocalizationProvider>
             </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Filter</Button>
+              <Button onClick={(e) => gofilter()}>{t('filter')}</Button>
             </Col>
           </Row>
         </Card>
 
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="Nombre de profils date filtré par mois"
+            category={t("Number of date profiles filtered by month")}
             title={data?.newCreatedProfiles?.length}
             icon={faChartLine}
           />
@@ -228,7 +230,7 @@ export default function Dashboard() {
 
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="Revenue filtré par mois"
+            category={t("Revenue filtered by month")}
             title={data?.newCreatedProfiles?.length * 20 + "$"}
             period={moment(d).format("YYYY/MM")}
             icon={faCashRegister}

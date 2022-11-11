@@ -220,6 +220,7 @@ export default function Myroutes() {
             path="/ticketdetail/:id"
             component={Ticketdetails}
           />
+          {/* A traduire a partir dici */}
           <RouteWithSidebar
             exact
             path="/dashboard"

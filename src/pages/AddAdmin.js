@@ -20,8 +20,10 @@ import USstates from "./UsStates.json";
 import jwt_decode from "jwt-decode";
 import PhoneInput from "react-phone-input-2";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { useTranslation } from "react-i18next";
 
 const Addadmin = () => {
+  const { t } = useTranslation();
   /*
   const center = {
     lat: 45.424721,
@@ -248,10 +250,10 @@ const Addadmin = () => {
     mydata.append("logitude", position.lng); */
 
     Swal.fire({
-      title: "Are you sure you want to add this admin?",
+      title: t("Are you sure you want to add this admin?"),
 
       showCancelButton: true,
-      confirmButtonText: "Yes, add it!",
+      confirmButtonText: t("Yes, add it!"),
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
@@ -260,7 +262,7 @@ const Addadmin = () => {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Client ajouté avec succès",
+              title: t("Customer added successfully"),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -269,7 +271,7 @@ const Addadmin = () => {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`Addresse mail existe déja`);
+            Swal.showValidationMessage(t("email_address_already_exists"));
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -384,14 +386,14 @@ const Addadmin = () => {
             </Col>
             <Col sm={6} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Country </Form.Label>
+                <Form.Label>{t('Country')}</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
                   onChange={(val) => handleChange(val.target.value)}
                   defaultValue="C"
                 >
-                  <option val="C">Canada</option>
-                  <option val="US">Etats Unis</option>
+                  <option val="C">{t("Canada")}</option>
+                  <option val="US">{t("United States")}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -411,7 +413,7 @@ const Addadmin = () => {
           </Row>
           <Row>
             <Col md={6} className="mb-3">
-              <Form.Label>Région</Form.Label>
+              <Form.Label>{t('Region')}</Form.Label>
               <Form.Group>
                 <Form.Select
                   onBlur={(region) =>
@@ -431,7 +433,7 @@ const Addadmin = () => {
             </Col>
             <Col sm={3} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Ville</Form.Label>
+                <Form.Label>{t('City')}</Form.Label>
                 <Form.Control
                   onBlur={(ville) =>
                     setFormData({
@@ -448,7 +450,7 @@ const Addadmin = () => {
             </Col>
             <Col sm={2} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Zip Code</Form.Label>
+                <Form.Label>{t("Zip Code")}</Form.Label>
                 <Form.Control
                   onBlur={(zipCode) =>
                     setFormData({
@@ -465,7 +467,7 @@ const Addadmin = () => {
             </Col>
             <Col sm={6} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Abonnement </Form.Label>
+                <Form.Label>{t('Subscription')}</Form.Label>
 
                 <Form.Control
                   as="select"
@@ -483,11 +485,11 @@ const Addadmin = () => {
             </Col>
           </Row>
           <Row>
-            <h5 className="mb-4">Information responsable cimetière </h5>
+            <h5 className="mb-4">{t("Cemetery responsible information")}</h5>
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Prénom</Form.Label>
+                <Form.Label>{t("firstname")}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -499,7 +501,7 @@ const Addadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Nom</Form.Label>
+                <Form.Label>{t("lastname")}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -513,23 +515,23 @@ const Addadmin = () => {
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
-                <Form.Label>Sexe</Form.Label>
+                <Form.Label>{t('gender')}</Form.Label>
                 <Form.Select
                   defaultValue="M"
                   onChange={(e) =>
                     setFormData({ ...formData, sex: e.target.value })
                   }
                 >
-                  <option value="0">Autre</option>
-                  <option value="F">Femme</option>
-                  <option value="M">Homme</option>
+                  <option value="0">{t('other')}</option>
+                  <option value="F">{t('women')}</option>
+                  <option value="M">{t('man')}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
 
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t('email')}</Form.Label>
                 <Form.Control
                   required
                   type="email"
@@ -541,7 +543,7 @@ const Addadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>Téléphone</Form.Label>
+                <Form.Label>{t('phone')}</Form.Label>
                 <PhoneInput
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
@@ -553,7 +555,7 @@ const Addadmin = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Plan du cimetière</Form.Label>
+                <Form.Label>{t('image')}</Form.Label>
                 <Form.Control
                   required
                   type="file"
@@ -589,7 +591,7 @@ const Addadmin = () => {
           </div>
           <div className="mt-3">
             <Button variant="primary" onClick={(e) => Submit()}>
-              Sauvegrader
+              {t('save')}
             </Button>
           </div>
         </Form>
