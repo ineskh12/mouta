@@ -8,7 +8,11 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import userEvent from "@testing-library/user-event";
 import moment from "moment-timezone";
+import { useTranslation } from "react-i18next";
 export const Histring = (props) => {
+
+  const { t } = useTranslation();
+  
   const [showDefault, setShowDefault] = useState(false);
   const handleClose = () => setShowDefault(false);
   const [message, setMessage] = useState("");
@@ -37,7 +41,7 @@ export const Histring = (props) => {
     <>
       <Modal show={showDefault} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title className="h6">Search for existing profile</Modal.Title>
+          <Modal.Title className="h6">{ t('Search for existing profile') }</Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
         <Modal.Body>
@@ -45,7 +49,7 @@ export const Histring = (props) => {
             <Row>
               <Col md={10} className="mb-3">
                 <Form.Group id="name">
-                  <Form.Label>Action</Form.Label>
+                  <Form.Label>{t('action')}</Form.Label>
 
                   <Form.Control
                     as="textarea"
@@ -59,7 +63,7 @@ export const Histring = (props) => {
             <Row>
               <div className="mt-3">
                 <Button type="submit" variant="primary">
-                  Ajouter
+                  {t('add')}
                 </Button>
               </div>
             </Row>
@@ -70,7 +74,7 @@ export const Histring = (props) => {
         <div className="col-md-12">
           <div className="card">
             <div className="card-header">
-              <h4 className="card-title">Historique d'actions</h4>
+              <h4 className="card-title">{t('Action history')}</h4>
               <Button
                 variant="primary"
                 size="xs"
@@ -78,7 +82,7 @@ export const Histring = (props) => {
                 onClick={(e) => setShowDefault(true)}
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
-                Ajouter un action
+                {t('add action')}
               </Button>
             </div>
             <div className="card-body">
@@ -86,8 +90,8 @@ export const Histring = (props) => {
                 <table className="table">
                   <thead className=" text-primary">
                     <tr>
-                      <th>action</th>
-                      <th>date</th>
+                      <th>{t('action')}</th>
+                      <th>{t('Date')}</th>
                     </tr>
                   </thead>
                   <tbody>
