@@ -33,13 +33,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import { CSVLink } from "react-csv";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const history = useHistory();
   const d = new Date();
-
+  const { t } = useTranslation();
   const [formdata, setFormdata] = useState({
     startDate: moment(d).format("YYYY-MM"),
     endDate: moment(d).format("YYYY-MM-DD"),
@@ -182,8 +183,8 @@ export default function Dashboard() {
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label="De la date"
-                    openTo="year"
+                    label={t('from_date')}
+                    openTo="day"
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     views={["year", "month", "day"]}
@@ -203,9 +204,9 @@ export default function Dashboard() {
                   <DatePicker
                     disableFuture
                     inputFormat="dd/MM/yyyy"
-                    label="A la date"
+                    label={t('until')}
                     value={formdata.endDate}
-                    openTo="year"
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });
@@ -237,7 +238,7 @@ export default function Dashboard() {
                       
               </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Filter</Button>
+              <Button onClick={(e) => gofilter()}> Appliquer</Button>
             </Col>
           </Row>
         </Card>

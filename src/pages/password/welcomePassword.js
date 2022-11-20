@@ -20,11 +20,11 @@ import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal } from "@themesberg/react-bootstrap";
-
+import { useTranslation } from "react-i18next";
 export default () => {
   let { id } = useParams();
   let { timeStamp } = useParams();
-
+  let {t} = useTranslation();
   const [open, setOpen] = useState(false);
 
   const [passwordType, setPasswordType] = useState("password");
@@ -59,7 +59,10 @@ export default () => {
       password: Password,
     };
     await axios
-      .post("http://www.skiesbook.com:3000/api/v1/users/resetpasswordrequest", mydata)
+      .post(
+        "http://www.skiesbook.com:3000/api/v1/users/resetpasswordrequest",
+        mydata
+      )
       .then((response) => {
         Swal.fire({
           position: "center",
@@ -85,7 +88,7 @@ export default () => {
 
   return (
     <main>
-      <Modal size="lg"  as={Modal.Dialog} show={open}>
+      <Modal size="lg" as={Modal.Dialog} show={open}>
         <Modal.Header>
           <Modal.Title className="h6">Terms and conditions</Modal.Title>
           <Button
@@ -109,58 +112,54 @@ export default () => {
       <section className="bg-soft d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
           <Row className="justify-content-center">
-            <p className="text-center">
-              <Card.Link
-                as={Link}
-                to={Routes.Signin.path}
-                className="text-gray-700"
-              >
-                <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-                sign in
-              </Card.Link>
-            </p>
             <Col
               xs={12}
               className="d-flex align-items-center justify-content-center"
             >
               <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <h3 className="mb-4">Veuillez saisir votre mot de passe </h3>
+                <h3 className="mb-4">{t('Please enter your password')} </h3>
 
                 <Form.Group id="firstName" className="mb-4">
-                  <Form.Label>Mot de passe</Form.Label>
+                  <Form.Label>{t('password')}</Form.Label>
                   <InputGroup>
-                    <Button
-                      size="sm"
-                      style={{
-                        borderColor: "transparent",
-                        marginRight: 5,
-                        backgroundColor: "#d7dce4",
-                      }}
-                      onClick={() => togglePassword()}
-                    >
-                      {passwordType === "password" ? (
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faEye} />
-                        </InputGroup.Text>
-                      ) : (
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faEyeSlash} />
-                        </InputGroup.Text>
-                      )}
-                    </Button>
+                   
                     <Form.Control
                       type={passwordType}
                       required
-                      placeholder="Entrer votre mot de passe"
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
                     ></Form.Control>
+                     <Button
+                      size="sm"
+                      style={{
+                        borderColor: "transparent",
+                        marginRight: 5,
+                        backgroundColor: "#d7dce4",
+                      }}
+                      onClick={() => togglePassword()}
+                    >
+                      {passwordType === "password" ? (
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faEye} />
+                        </InputGroup.Text>
+                      ) : (
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faEyeSlash} />
+                        </InputGroup.Text>
+                      )}
+                    </Button>
                   </InputGroup>
                 </Form.Group>
                 <Form.Group id="firstName" className="mb-4">
-                  <Form.Label> Confirmer votre mot de passe</Form.Label>
+                  <Form.Label> {t('confirm_your_password')}</Form.Label>
                   <InputGroup>
+                    
+                    <Form.Control
+                      type={passwordType}
+                      required
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    ></Form.Control>
                     <Button
                       size="sm"
                       style={{
@@ -180,47 +179,49 @@ export default () => {
                         </InputGroup.Text>
                       )}
                     </Button>
-                    <Form.Control
-                      type={passwordType}
-                      required
-                      placeholder="Confirmer votre mot de passe"
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    ></Form.Control>
                   </InputGroup>
                   {confirmPassword !== Password && confirmPassword !== "" ? (
                     <MuiAlert severity="warning">
-                      Mot de passe ne correspond pas
+                      {t('password_does_not_match')}
                     </MuiAlert>
                   ) : (
                     <span></span>
                   )}
-                  <Button
-                  onClick={()=>setOpen(true)}
+
+                  <Form.Check
                     style={{
                       marginTop: "20px",
+                      marginLeft: "20px",
                       backgroundColor: "transparent",
                       color: "black",
                       borderColor: "transparent",
                     }}
-                  >
-                    termes et conditions
-                  </Button>
-                  <Form.Check
-                    className="mt-3"
                     type="checkbox"
-                    label="J'accepte les termes et conditions"
-                    onChange={(e) => setCheckBox(e.target.checked)}
-                  />
+                  >
+                    <Form.Check.Input
+                      onChange={(e) => setCheckBox(e.target.checked)}
+                      type="checkbox"
+                    />
+                    <Form.Check.Label
+                      style={{ marginLeft: "10px" , cursor: "pointer" , textDecoration: "underline" }}
+                      onClick={() => setOpen(true)}
+                    >
+                     {t("I accept the terms and conditions")}
+                    </Form.Check.Label>
+                  </Form.Check>
                 </Form.Group>
-                {console.log(checkBox)}
 
                 <Button
                   variant="primary"
                   className="w-100"
-                  disabled={Password !== confirmPassword || checkBox === false || Password === ""}
+                  disabled={
+                    Password !== confirmPassword ||
+                    checkBox === false ||
+                    Password === ""
+                  }
                   onClick={() => Submit()}
                 >
-                  Confirmer mon mot de passe
+                  {t('confirm_my_password')}
                 </Button>
               </div>
             </Col>

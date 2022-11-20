@@ -11,7 +11,6 @@ import {
   Nav,
   Card,
   Table,
-  Pagination,
   Breadcrumb,
   Form,
   Button,
@@ -27,6 +26,10 @@ import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import "./pagination.css";
+import Pagination from "./pagination";
+
+
 import {
   CDropdown,
   CDropdownItem,
@@ -49,6 +52,9 @@ export default function AllProfiles() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -109,7 +115,12 @@ export default function AllProfiles() {
       allowOutsideClick: () => !Swal.isLoading(),
     });
   }
-
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+  //console.log(currentPosts);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -216,7 +227,7 @@ export default function AllProfiles() {
             <tbody>
               {data?.map((dm, index) => (
                 <tr>
-                  <td className="fw-bold">{dm?._id}</td>
+                  <td className="fw-bold">{index}</td>
                   <td className="fw-bold">{dm.subject}</td>
                   <td>
                     <>
@@ -257,19 +268,13 @@ export default function AllProfiles() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-              <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>{t("Previous")}</Pagination.Prev>
-                <Pagination.Item active>1</Pagination.Item>
-                <Pagination.Item>2</Pagination.Item>
-                <Pagination.Item>3</Pagination.Item>
-                <Pagination.Item>4</Pagination.Item>
-                <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>{t("Next")}</Pagination.Next>
-              </Pagination>
+              <Pagination
+                className="pagination"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-            <small className="fw-bold">
-            {t("Display of")} <b>{2}</b> {t("on")} <b>25</b> {t("entries")}
-            </small>
           </Card.Footer>
         </Card.Body>
       </Card>

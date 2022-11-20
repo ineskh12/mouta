@@ -322,5 +322,7 @@
     "Enter Subject": "Enter Subject",
     "Object": "Object",
     "Your support tickets": "Your support tickets",
-    "New ticket": "New ticket"
+    "New ticket": "New ticket",
+    "I accept the terms and conditions" : "I accept the terms and conditions",
+    "Send message" : "Send message"
 }

@@ -153,7 +153,7 @@ const Addsuperadmin = () => {
                       label={t('date_of_birth')}
                       inputFormat="dd/MM/yyyy"
 
-                      openTo="year"
+                      openTo="day"
                       views={["year", "month", "day"]}
                       value={formData.Datebirth}
                       onChange={(e) =>

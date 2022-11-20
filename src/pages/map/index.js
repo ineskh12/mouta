@@ -1,64 +1,73 @@
-import React from "react";
-//make a google map and place marker on it and get the location
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-//make a google map and place marker on it and get the location
+import * as React from "react";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import AddEmp from "./profiling";
 
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-};
-
-const center = {
-  lat: -3.745,
-  lng: -38.523,
-};
-
-function Map() {
-  const [marker, setMarker] = React.useState({
-    lat: -3.745,
-    lng: -38.523,
-  });
-
-  React.useEffect(() => {
-    console.log(marker.lat, marker.lng);
-  }, [marker]);
-
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-    map.setCenter(center);
-  }, []);
-
-  const onUnmount = React.useCallback(function callback(map) {
-    setMarker({
-      lat: null,
-      lng: null,
-    });
-  }, []);
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAP}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        // satellite map with labels
-        mapTypeId="hybrid"
-      >
-        <Marker
-          position={marker}
-          draggable={true}
-          onDragEnd={(e) => {
-            setMarker({
-              lat: e.latLng.lat(),
-              lng: e.latLng.lng(),
-            });
-          }}
-        />
-      </GoogleMap>
-    </LoadScript>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
   );
 }
-export default Map;
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+export default function MapTabs() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Mon plan" {...a11yProps(0)} />
+          <Tab label="Ajouter des emplacements" {...a11yProps(1)} />
+          <Tab label="Mes emplacements" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        Item One
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <AddEmp/>
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        Item Three
+      </TabPanel>
+    </Box>
+  );
+}

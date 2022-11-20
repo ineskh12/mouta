@@ -2,7 +2,7 @@
   "name": "skiesbook",
   "description": "skiesbook",
   "author": "Aziz",
-  "homepage": "http://www.skiesbook.com/",
+  "homepage": "http://www.localhost/",
   "keywords": [
     "Skiesbook",
     "Profile"
@@ -78,6 +78,7 @@
     "react-helmet": "^6.1.0",
     "react-i18next": "^12.0.0",
     "react-image-gallery": "^1.2.7",
+    "react-image-zoom": "^1.3.1",
     "react-leaflet": "^3.2.5",
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-live": "^2.2.3",

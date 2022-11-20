@@ -459,12 +459,12 @@ function App() {
             <Modal.Body>
               <p>{t("scan_qr_code")}</p>
               <Qrcode
-                myvalue={"http://www.skiesbook.com/graveyard/prof/" + id}
+                myvalue={"http://www.localhost/graveyard/prof/" + id}
               ></Qrcode>
               <hr />
 
               <FacebookShareButton
-                url={"www.skiesbook.com/prof/" + id}
+                url={"www.localhost/prof/" + id}
                 quote={
                   "sharing the profile of " +
                   prof?.profileName +
@@ -484,7 +484,7 @@ function App() {
                   prof?.profileName +
                   " on skiesbook"
                 }
-                url={"www.skiesbook.com/prof/" + id}
+                url={"www.localhost/prof/" + id}
                 hashtags={["#restinpeace"]}
               >
                 <TwitterIcon size={32} round />

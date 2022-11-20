@@ -129,7 +129,7 @@ const AddClient = () => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://localhost:3000/api/v1/users/getAdmin/" + decoded.userId
+          "http://skiesbook.com:3000/api/v1/users/getAdmin/" + decoded.userId
         );
         setData(response);
       } catch (error) {
@@ -174,7 +174,7 @@ const AddClient = () => {
         preConfirm: async () => {
           return await axios
           .post(
-            "http://localhost:3000/api/v1/users/addclient",
+            "http://skiesbook.com:3000/api/v1/users/addclient",
             mydata,
             config
           ).then((result) => {
@@ -394,7 +394,7 @@ const AddClient = () => {
                     inputFormat="dd/MM/yyyy"
                     disableFuture
                     label="Date de naissance"
-                    openTo="year"
+                    openTo="day"
                     views={["year", "month", "day"]}
                     value={formData.Datebirth}
                     onChange={(e) => setFormData({ ...formData, Datebirth: e })}
@@ -416,7 +416,7 @@ const AddClient = () => {
                   <option value="0">Sexe</option>
                   <option value="F">Femme</option>
                   <option value="M">Homme</option>
-                  <option value="I">Indéterminé</option>
+                  <option value="I">Autre</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -587,6 +587,7 @@ const AddClient = () => {
                             label="Date de naissance"
                             name="profileDatebirth"
                             open={false}
+                            openTo="day"
                             views={["year", "month", "day"]}
                             value={formData.Datebirth}
                             onChange={(e) => handleInputChange2(e, i)}
@@ -606,6 +607,7 @@ const AddClient = () => {
                             label="Date de décés"
                             name="profileDatedeath"
                             open={false}
+                            openTo="day"
                             views={["year", "month", "day"]}
                             value={formData.Datebirth}
                             onChange={(e) => handleInputChange3(e, i)}
@@ -626,7 +628,7 @@ const AddClient = () => {
                       >
                         <option value="F">Femme</option>
                         <option value="M">Homme</option>
-                        <option value="I">Indéterminé</option>
+                        <option value="I">Autre</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>

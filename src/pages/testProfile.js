@@ -362,7 +362,7 @@ function App() {
         </Modal.Header>
         <Modal.Body className="align-items-center justify-content-center">
           <p>{t("scan_qr_code")}</p>
-          <Qrcode myvalue={"http://www.skiesbook.com/prof/" + id}></Qrcode>
+          <Qrcode myvalue={"http://www.localhost/prof/" + id}></Qrcode>
           <hr />
 
           <div className="d-flex flex-row align-items-center justify-content-center">
@@ -373,7 +373,7 @@ function App() {
                   className="btn btn-primary btn-sm"
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      "http://www.skiesbook.com/prof/" + id
+                      "http://www.localhost/prof/" + id
                     );
                     Swal.fire({
                       position: "center",
@@ -393,7 +393,7 @@ function App() {
             }
 
             <FacebookShareButton
-              url={"www.skiesbook.com/prof/" + id}
+              url={"www.localhost/prof/" + id}
               quote={`${t("sharing_the_profile_of")} ${prof?.profileName} ${t(
                 "on_skiesbook"
               )}`}
@@ -409,7 +409,7 @@ function App() {
               title={`${t("sharing_the_profile_of")} ${prof?.profileName} ${t(
                 "on_skiesbook"
               )}`}
-              url={"www.skiesbook.com/prof/" + id}
+              url={"www.localhost/prof/" + id}
               hashtags={["#restinpeace"]}
             >
               <TwitterIcon size={32} round />

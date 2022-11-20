@@ -55,7 +55,9 @@ import welcome from "./password/welcomePassword";
 import requests from "./requests";
 import Language from "../components/language";
 import Map from "./map";
-import Emplacement from "./map/empalcement";
+import Emplacement from "./map";
+import EditStaff from "./staff/editGStaff";
+import EditStaffSupperAdmin from "./staff/editAStaff";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -162,6 +164,7 @@ export default function Myroutes() {
             path="/ticketdetail/:id"
             component={Ticketdetails}
           />
+          <RouteWithSidebar exact path="/editstaff/:id" component={EditStaffSupperAdmin} />
 
           <RouteWithSidebar exact path="/editgrave/:id" component={EditGrave} />
           <RouteWithSidebar
@@ -208,6 +211,7 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/addstaff" component={addStaff} />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
           <RouteWithSidebar exact path="/emplacements" component={Emplacement} />
+          <RouteWithSidebar exact path="/editstaff/:id" component={EditStaff} />
 
           <RouteWithSidebar
             exact

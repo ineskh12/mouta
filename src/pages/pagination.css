@@ -3,3 +3,10 @@
     vertical-align: middle;
     margin-left: 4px;
   }
+
+  .img-wrapper{
+    overflow:hidden;
+  }
+  img.hover-zoom:hover {
+    transform: scale(1.25);
+  }

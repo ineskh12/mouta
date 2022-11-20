@@ -144,8 +144,8 @@ export default function AllProfiles() {
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label={t("De la date")}
-                    openTo={t("year")}
+                    label={t("from_date")}
+                    openTo='day'
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     views={[t("year"), t("month"), t("day")]}
@@ -166,7 +166,7 @@ export default function AllProfiles() {
                     inputFormat="dd/MM/yyyy"
                     label={t("until")}
                     value={formdata.endDate}
-                    openTo={t("year")}
+                    openTo='day'
                     views={[t("year"), t("month"), t("day")]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });

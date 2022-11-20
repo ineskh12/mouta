@@ -214,7 +214,6 @@ const GetClient = () => {
                     required
                     type="text"
                     name="profileName"
-                    placeholder={t('enter_your_name')}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -306,7 +305,6 @@ const GetClient = () => {
                   <Form.Control
                     required
                     type="text"
-                    placeholder={t('Enter coordinates')}
                     name="cords"
                     onChange={(e) =>
                       setInputList({ ...inputList, cords: e.target.value })
@@ -317,7 +315,7 @@ const GetClient = () => {
 
               <Col md={6} className="mb-3">
                 <Form.Group id="funérailles">
-                  <Form.Label>{t('"Funeral arrangements"')}</Form.Label>
+                  <Form.Label>{t('Funeral arrangements')}</Form.Label>
                   <Form.Select
                     defaultValue="I"
                     name="modeDeath"
@@ -338,7 +336,6 @@ const GetClient = () => {
                     name="profileEmail"
                     type="email"
                     value={clientMail}
-                    placeholder="name@profile.com"
                   />
                 </Form.Group>
               </Col>
@@ -349,7 +346,6 @@ const GetClient = () => {
                     required
                     name="hometown"
                     type="text"
-                    placeholder={t('hometown')}
                     onChange={(e) =>
                       setInputList({ ...inputList, hometown: e.target.value })
                     }

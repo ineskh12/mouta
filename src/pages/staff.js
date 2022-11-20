@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-
   faEdit,
   faEllipsisH,
   faTrashAlt,
@@ -14,7 +13,6 @@ import {
   Nav,
   Card,
   Table,
-  Pagination,
   Row,
   Form,
   Button,
@@ -32,22 +30,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../routes";
 import axios from "axios";
-import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle } from "@coreui/bootstrap-react";
+import {
+  CDropdown,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+} from "@coreui/bootstrap-react";
 import { useTranslation } from "react-i18next";
+import Pagination from "./pagination";
+import "./pagination.css";
+import Swal from "sweetalert2";
+
 
 export default function AllSuperAdmins() {
   const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
-  let decoded = null
-  if (token !== null)
-    decoded= jwt_decode(token); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+  let decoded = null;
+  if (token !== null) decoded = jwt_decode(token);
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data: response } = await axios.get(
-          "http://www.skiesbook.com:3000/api/v1/users/getstaff/"+decoded.graveyardId
+          "http://www.skiesbook.com:3000/api/v1/users/getstaff/" +
+            decoded.graveyardId
         );
         setData(response);
         console.log(response);
@@ -58,6 +67,39 @@ export default function AllSuperAdmins() {
 
     fetchData();
   }, []);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+
+  
+  //console.log(currentPosts);
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  async function deleteStaff(id) {
+    try {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await axios.delete(
+            "http://www.skiesbook.com:3000/api/v1/users/" + id
+          );
+          Swal.fire("Deleted!", "Your file has been deleted.", "success");
+          history.push("/staff");
+          history.go(0);
+        }
+      }
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
@@ -75,7 +117,6 @@ export default function AllSuperAdmins() {
         </div>
 
         <div className="btn-toolbar mb-2 mb-md-0">
-
           <ButtonGroup>
             <Dropdown.Toggle
               onClick={(e) => history.push("/addstaff")}
@@ -98,7 +139,7 @@ export default function AllSuperAdmins() {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder={t('search')} />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           <Col xs={4} md={2} xl={1}>
@@ -115,7 +156,7 @@ export default function AllSuperAdmins() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  {t('show')}
+                  {t("show")}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -136,15 +177,15 @@ export default function AllSuperAdmins() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">{t('full_name')}</th>
+                <th className="border-bottom">{t("full_name")}</th>
                 <th className="border-bottom">{t("reference_email")}</th>
                 <th className="border-bottom">{t("phone")}</th>
-                <th className="border-bottom">{t('role')}</th>
-                <th className="border-bottom">{t('actions')}</th>
+                <th className="border-bottom">{t("role")}</th>
+                <th className="border-bottom">{t("actions")}</th>
               </tr>
             </thead>
             <tbody>
-              {data?.map((dm, index) => (
+              {currentPosts?.map((dm, index) => (
                 <tr>
                   <td>
                     <div className="user-avatar lg-avatar me-4">
@@ -155,7 +196,9 @@ export default function AllSuperAdmins() {
                           height: "50px",
                           resizeMode: "contain",
                         }}
-                        src={"http://www.skiesbook.com:3000/uploads/" + dm.userimage}
+                        src={
+                          "http://www.skiesbook.com:3000/uploads/" + dm.userimage
+                        }
                         className="card-img-top rounded-circle border-white"
                       />
                     </div>
@@ -168,24 +211,32 @@ export default function AllSuperAdmins() {
                   <td>
                     {" "}
                     <>
-                      {dm?.role ==="gstaff"
-                        ?   <Badge bg="primary" className="me-1">{t("seller")}</Badge>
-                        : dm?.role ==="gadmin"
-                        ? <Badge bg="success" className="me-1">{t("admin")}</Badge>
-                        :  dm?.role ==="admin"
-                        ?   <Badge bg="dark" className="me-1">{t("super_admin")}</Badge>
-                        :  dm?.role ==="gcompta"
-                        ? <Badge bg="warning" className="me-1">{t("Accounting")}</Badge> : "none"}
-                      
+                      {dm?.role === "gstaff" ? (
+                        <Badge bg="primary" className="me-1">
+                          {t("seller")}
+                        </Badge>
+                      ) : dm?.role === "gadmin" ? (
+                        <Badge bg="success" className="me-1">
+                          {t("admin")}
+                        </Badge>
+                      ) : dm?.role === "admin" ? (
+                        <Badge bg="dark" className="me-1">
+                          {t("super_admin")}
+                        </Badge>
+                      ) : dm?.role === "gcompta" ? (
+                        <Badge bg="warning" className="me-1">
+                          {t("Accounting")}
+                        </Badge>
+                      ) : (
+                        "none"
+                      )}
                     </>
                   </td>
-
 
                   <td>
                     {" "}
                     <CDropdown className="dropleft" direction="dropstart">
-                        
-                        <CDropdownToggle color="transparant">
+                      <CDropdownToggle color="transparant">
                         <span className="icon icon-sm">
                           <FontAwesomeIcon
                             icon={faEllipsisH}
@@ -198,16 +249,18 @@ export default function AllSuperAdmins() {
                         className="float-left"
                       >
                         <CDropdownItem
-                          onClick={() =>
-                            history.push("/editsuperadmin/" + dm?._id)
-                          }
+                          onClick={() => history.push("/editstaff/" + dm?._id)}
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
                           {t("Edit")}{" "}
                         </CDropdownItem>
-                        <CDropdownItem>
+                        <CDropdownItem
+                          onClick={() => {
+                            deleteStaff(dm?._id);
+                          }}
+                        >
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          {t('delete')}
+                          {t("delete")}
                         </CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
@@ -218,19 +271,13 @@ export default function AllSuperAdmins() {
           </Table>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
-              <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>{t("Previous")}</Pagination.Prev>
-                <Pagination.Item active>1</Pagination.Item>
-                <Pagination.Item>2</Pagination.Item>
-                <Pagination.Item>3</Pagination.Item>
-                <Pagination.Item>4</Pagination.Item>
-                <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>{t("Next")}</Pagination.Next>
-              </Pagination>
+              <Pagination
+                className="pagination"
+                postsPerPage={postsPerPage}
+                totalPosts={data.length}
+                paginate={paginate}
+              />
             </Nav>
-            <small className="fw-bold">
-              {t("Display of")} <b>{2}</b> {t("on")} <b>25</b> {t("entries")}
-            </small>
           </Card.Footer>
         </Card.Body>
       </Card>

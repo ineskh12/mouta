@@ -305,7 +305,7 @@ const AddProfile = () => {
         <Col md={6} className="mb-3 mt-2">
         <h5 className="mb-4">Parcours</h5>
           <Qrcode
-            myvalue={"http://www.skiesbook.com/graveyard/defun/" + id}
+            myvalue={"http://www.localhost/graveyard/defun/" + id}
           ></Qrcode>
         </Col>
       </Card.Body>

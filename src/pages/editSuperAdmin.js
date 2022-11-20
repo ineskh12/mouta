@@ -70,8 +70,6 @@ const Addadmin = () => {
     Datebirth: user?.Datebirth,
     email: user?.email,
     sex: user?.sex,
-    password: "",
-    confirmPassword: "",
     userimage: user?.userimage,
     phone: user?.phone,
   });
@@ -139,7 +137,7 @@ const Addadmin = () => {
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">{t('Update du super admin')} {user?.name}</h5>
+        <h5 className="mb-4">{t('Update')} {user?.name}</h5>
 
         <h5 className="mb-4">{t('General informations')}</h5>
         <Form onSubmit={(e) => Submit(e)}>
@@ -229,69 +227,13 @@ const Addadmin = () => {
                 <PhoneInput
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
-                  value={value}
+                  value={user?.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e })}
                 />
               </Form.Group>
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>{t('password')}</Form.Label>
-                <Form.Control
-                  disabled
-                  type="password"
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label>{t('confirm_your_password')}</Form.Label>
-                <InputGroup>
-                  <Button
-                    size="sm"
-                    style={{
-                      borderColor: "transparent",
-                      marginRight: 5,
-                      backgroundColor: "#d7dce4",
-                    }}
-                    onClick={() => togglePassword()}
-                  >
-                    {passwordType === "password" ? (
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEye} />
-                      </InputGroup.Text>
-                    ) : (
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEyeSlash} />
-                      </InputGroup.Text>
-                    )}
-                  </Button>
-                  <Form.Control
-                    type={passwordType}
-                    disabled
-                    placeholder={t('confirm_your_password')}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                  ></Form.Control>
-                </InputGroup>
-                {formData.confirmPassword !== formData.password &&
-                formData.confirmPassword !== "" ? (
-                  <MuiAlert severity="warning">{t('password_does_not_match')}</MuiAlert>
-                ) : (
-                  <span></span>
-                )}
-              </Form.Group>
-            </Col>
-
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label>{t('image')}</Form.Label>

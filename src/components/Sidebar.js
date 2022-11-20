@@ -152,11 +152,10 @@ export default (props = {}) => {
           id: decoded.userId,
         }
       );
-      setCount(response?.data?.inv);  
+      setCount(response?.data?.inv);
       setComments(response?.data?.comments);
       localStorage.setItem("invs", JSON.stringify(response?.data?.inv));
       localStorage.setItem("com", JSON.stringify(response?.data?.comments));
-
     }
   }
   useEffect(() => {
@@ -246,7 +245,7 @@ export default (props = {}) => {
                   <img alt="logo" src={logo_white} width="20%" />
 
                   <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                    {"Welcome " + decoded?.name}
+                    Welcome <br></br> {decoded?.name}
                   </h6>
                 </div>
                 <NavItem
@@ -382,7 +381,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
 
@@ -453,17 +452,19 @@ export default (props = {}) => {
                 <Nav className="flex-column pt-3 pt-md-0">
                   <div className="d-flex flex-row align-items-center pb-3">
                     <img alt="logo" src={logo_white} width="20%" />
-
-                    <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
-                    </h6>
+                    <div style={{ maxWidth: "100px" }}>
+                      <h6
+                        style={{
+                          paddingTop: "15px",
+                          paddingLeft: "15px",
+                          maxWidth: "100px",
+                        }}
+                      >
+                        Welcome <br></br> {decoded?.name}
+                      </h6>
+                    </div>
                   </div>
-                  <NavItem
-                    title="Rapports"
-                    link={"/dashboard"}
-                    eventKey="/dashboard"
-                    icon={faChartPie}
-                  />
+
                   <NavItem
                     title="Mon compte"
                     link={"/me/" + decoded.userId}
@@ -485,7 +486,7 @@ export default (props = {}) => {
                     icon={faUsers}
                     eventKey="/adminprofiles"
                   />
-                   <NavItem
+                  <NavItem
                     title="Emplacements"
                     link="/Emplacements"
                     icon={faMap}
@@ -515,6 +516,12 @@ export default (props = {}) => {
                     icon={faTicketAlt}
                     eventKey="/mytickets"
                   />
+                  <NavItem
+                    title="Rapports"
+                    link={"/dashboard"}
+                    eventKey="/dashboard"
+                    icon={faChartPie}
+                  />
                 </Nav>
               </>
             ) : decoded.role === "gstaff" ? (
@@ -524,7 +531,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
@@ -562,7 +569,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
@@ -608,7 +615,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
@@ -652,7 +659,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
 
@@ -690,7 +697,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
 
@@ -730,7 +737,7 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      {"Welcome " + decoded?.name}
+                      Welcome <br></br> {decoded?.name}
                     </h6>
                   </div>
 
