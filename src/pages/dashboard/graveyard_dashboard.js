@@ -183,7 +183,7 @@ export default function Dashboard() {
                   <DatePicker
                     disableFuture
                     label={t("from_date")}
-                    openTo={t("year")}
+                    openTo='day'
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     views={[t("year"), t("month"), t("day")]}
