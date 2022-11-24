@@ -33,12 +33,14 @@ import {
 } from "@coreui/bootstrap-react";
 import Swal from "sweetalert2";
 import { faFilter } from "@fortawesome/fontawesome-free-solid";
+import { useTranslation } from "react-i18next";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+  const { t } = useTranslation();
   const history = useHistory();
   const [show, setShow] = useState(false);
 
@@ -52,7 +54,7 @@ export default function AllProfiles() {
       try {
         const { data: response } = await axios.get(
           "http://www.skiesbook.com:3000/api/v1/profile/stafftickets/" +
-            decoded?.userId
+          decoded?.userId
         );
         setData(response);
         setfiltredData(response);
@@ -98,15 +100,15 @@ export default function AllProfiles() {
   async function submit(e) {
     e.preventDefault();
     Swal.fire({
-      title: "Are you sure you want to add this ticket?",
+      title: t("Are you sure you want to add this ticket?"),
       showCancelButton: true,
-      confirmButtonText: "Yes, add it!",
+      confirmButtonText: t("Yes, add it!"),
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
           .post(
             "http://www.skiesbook.com:3000/api/v1/profile/addticket/" +
-              decoded.userId,
+            decoded.userId,
             formData,
             config
           )
@@ -114,7 +116,7 @@ export default function AllProfiles() {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Ticket ajouté avec succès",
+              title: t("Ticket added successfully"),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -123,7 +125,7 @@ export default function AllProfiles() {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`Error: ${error}`);
+            Swal.showValidationMessage(`${t('error')}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -135,9 +137,9 @@ export default function AllProfiles() {
       assigne: decoded.userId,
     };
     Swal.fire({
-      title: "étes vous sure de prendre en charge ce ticket?",
+      title: t("Are you sure to support this ticket?"),
       showCancelButton: true,
-      confirmButtonText: "Oui, prendre en charge!",
+      confirmButtonText: t("Yes, take charge!"),
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
@@ -150,7 +152,7 @@ export default function AllProfiles() {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Ticket assignié avec succès",
+              title: t("Ticket assigned successfully"),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -159,7 +161,7 @@ export default function AllProfiles() {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`Error: ${error}`);
+            Swal.showValidationMessage(`${t('error')}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -174,17 +176,17 @@ export default function AllProfiles() {
           }}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Création d'un nouvel ticket</Modal.Title>
+            <Modal.Title>{t("Create a new ticket")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col md={8} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>Sujet</Form.Label>
+                  <Form.Label>{t('Topic')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder="Enter Subject"
+                    placeholder={t("Enter Subject")}
                     onChange={(e) =>
                       setFormData({ ...formData, subject: e.target.value })
                     }
@@ -195,13 +197,13 @@ export default function AllProfiles() {
             <Row>
               <Col md={12} className="mb-3">
                 <Form.Group id="lastName">
-                  <Form.Label>Objet</Form.Label>
+                  <Form.Label>{t("Object")}</Form.Label>
                   <textarea
                     className="form-control"
                     required
                     rows={8}
                     type="textarea"
-                    placeholder="Subject"
+                    placeholder={t("write here...")}
                     onChange={(e) =>
                       setFormData({ ...formData, message: e.target.value })
                     }
@@ -212,10 +214,10 @@ export default function AllProfiles() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Fermer
+              {t('close')}
             </Button>
             <Button type="submit" variant="primary" onClick={handleClose}>
-              Sauvegarder
+              {t('save')}
             </Button>
           </Modal.Footer>
         </Form>
@@ -229,7 +231,7 @@ export default function AllProfiles() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Vos tickets support</h4>
+          <h4>{t("Your support tickets")}</h4>
         </div>
       </div>
       <div className="d-block mb-4 mb-md-2">
@@ -242,7 +244,7 @@ export default function AllProfiles() {
               <Form.Control
                 onChange={(e) => searchKeyword(e.target.value)}
                 type="text"
-                placeholder="Search"
+                placeholder={t('search')}
               />
             </InputGroup>
           </Col>
@@ -256,10 +258,10 @@ export default function AllProfiles() {
                 onChange={(val) => filterdata(val.target.value)}
                 defaultValue="C"
               >
-                <option value="all">Tous</option>
-                <option value="open">Ouvert</option>
-                <option value="progress">En cours</option>
-                <option value="closed">Fermé</option>
+                <option value="all">{t('all')}</option>
+                <option value="open">{t('open')}</option>
+                <option value="progress">{t('progress')}</option>
+                <option value="closed">{t('closed')}</option>
               </Form.Select>
             </InputGroup>
           </Col>
@@ -270,13 +272,13 @@ export default function AllProfiles() {
           <Table className="table-centered table-nowrap rounded mb-0">
             <thead className="thead-light">
               <tr>
-                <th className="border-0">#id</th>
-                <th className="border-0">Expéditeur</th>
-                <th className="border-0">cimetière</th>
-                <th className="border-0">Sujet</th>
-                <th className="border-0">Etat </th>
-                <th className="border-0">Date de réalisation</th>
-                <th className="border-0">Actions</th>
+                <th className="border-0">#{t('id')}</th>
+                <th className="border-0">{t('Sender')}</th>
+                <th className="border-0">{t('cemetery')}</th>
+                <th className="border-0">{t('Topic')}</th>
+                <th className="border-0">{t('State')}</th>
+                <th className="border-0">{t("Date of completion")}</th>
+                <th className="border-0">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -294,18 +296,18 @@ export default function AllProfiles() {
                     <>
                       {dm?.status === "open" ? (
                         <Badge bg="primary" className="me-1">
-                          Ouvert
+                          {t('open')}
                         </Badge>
                       ) : dm?.status === "progress" ? (
                         <Badge bg="success" className="me-1">
-                          En cours
+                          {t('progress')}
                         </Badge>
                       ) : dm?.status === "closed" ? (
                         <Badge bg="danger" className="me-1">
-                          Fermer
+                          {t('close')}
                         </Badge>
                       ) : (
-                        "none"
+                        t("none")
                       )}
                     </>
                   </td>
@@ -321,18 +323,18 @@ export default function AllProfiles() {
                     </Button>
 
                     {dm?.status === "open" ? (
-                           <Button
-                           className="m-1"
-                           onClick={() => assignToMe(dm?._id)}
-                           variant="primary"
-                           size="sm"
-                         >
-                           <FontAwesomeIcon icon={faEdit} />{" "}
-                         </Button>
-                        ) : (
-                          <></>
-                        )}
-                 
+                      <Button
+                        className="m-1"
+                        onClick={() => assignToMe(dm?._id)}
+                        variant="primary"
+                        size="sm"
+                      >
+                        <FontAwesomeIcon icon={faEdit} />{" "}
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+
                   </td>
                 </tr>
               ))}
@@ -341,17 +343,17 @@ export default function AllProfiles() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Précédent</Pagination.Prev>
+                <Pagination.Prev>{t('Previous')}</Pagination.Prev>
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
                 <Pagination.Item>4</Pagination.Item>
                 <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>Suivant</Pagination.Next>
+                <Pagination.Next>{t('Next')}</Pagination.Next>
               </Pagination>
             </Nav>
             <small className="fw-bold">
-              Affichage de <b>{2}</b> sur <b>25</b> entrées
+              {t("Display of")} <b>{2}</b> {t('on')} <b>25</b> {t('entries')}
             </small>
           </Card.Footer>
         </Card.Body>

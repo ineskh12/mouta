@@ -33,11 +33,14 @@ import { Link, useHistory } from "react-router-dom";
 import { Routes } from "../routes";
 import axios from "axios";
 import { SendSharp } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function Myprofiles() {
+  
+  const { t } = useTranslation();
   const history = useHistory();
 
   const [data, setData] = useState([]);
@@ -76,11 +79,11 @@ export default function Myprofiles() {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                Retour
+                {t('back')}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h4>Liste des profils</h4>
+          <h4>{t('list_of_profiles')}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
@@ -111,7 +114,7 @@ export default function Myprofiles() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t('show')}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -132,12 +135,12 @@ export default function Myprofiles() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Nom Prénom</th>
-                <th className="border-bottom">Date de naissance </th>
-                <th className="border-bottom">Date de décés</th>
-                <th className="border-bottom">Coordonnées</th>
-                <th className="border-bottom">Email de référence</th>
-                <th className="border-bottom">Actions</th>
+                <th className="border-bottom">{t('full_name')}</th>
+                <th className="border-bottom">{t('date_of_birth')}</th>
+                <th className="border-bottom">{t('Date of death')}</th>
+                <th className="border-bottom">{t('Contact information')}</th>
+                <th className="border-bottom">{t('reference_email')}</th>
+                <th className="border-bottom">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -212,13 +215,13 @@ export default function Myprofiles() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Précédent</Pagination.Prev>
+                <Pagination.Prev>{t('Previous')}</Pagination.Prev>
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
                 <Pagination.Item>4</Pagination.Item>
                 <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>Suivant</Pagination.Next>
+                <Pagination.Next>{t('Next')}</Pagination.Next>
               </Pagination>
             </Nav>
           

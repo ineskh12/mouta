@@ -144,9 +144,9 @@ export default function AllProfiles() {
                   <DatePicker
                     disableFuture
                     label={t('from_date')}
-                    openTo="day"
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, startDate: e });

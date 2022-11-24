@@ -21,9 +21,11 @@ import {
 import Qrcode from "./QrCode";
 import { DropzoneArea } from "material-ui-dropzone";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 
 const AddProfile = () => {
+  const { t } = useTranslation();
   const token = JSON.parse(localStorage.getItem("token"));
   const [timer, setTimer] = useState(0);
 
@@ -51,8 +53,8 @@ const AddProfile = () => {
       onUploadProgress: progressEvent => {
 
           Swal.fire({
-          title: 'Your Profile is being Created',
-          html: 'Your files are uploading remaining <b></b> milliseconds.',
+          title: t("Your Profile is being Created"),
+          html: t('Your files are uploading remaining <b></b> milliseconds.'),
           timer: progressEvent.loaded/100,
           timerProgressBar: true,
           didOpen: () => {
@@ -132,7 +134,7 @@ const AddProfile = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Nom</Form.Label>
+                <Form.Label>{t('lastname')}</Form.Label>
                 <Form.Control
                   disabled
                   defaultValue={data.profileName}
@@ -145,7 +147,7 @@ const AddProfile = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Prénom</Form.Label>
+                <Form.Label>{t('firstname')}</Form.Label>
                 <Form.Control
                   disabled
                   defaultValue={data.profileLastName}
@@ -160,7 +162,7 @@ const AddProfile = () => {
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
-                <Form.Label>Date de naissance</Form.Label>
+                <Form.Label>{t('date_of_birth')}</Form.Label>
                 <Datetime
                   timeFormat={false}
                   onChange={setBirthday}
@@ -187,7 +189,7 @@ const AddProfile = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
-                <Form.Label>Date de décès</Form.Label>
+                <Form.Label>{t('Date of death')}</Form.Label>
                 <Datetime
                   timeFormat={false}
                   onChange={setBirthday}
@@ -216,7 +218,7 @@ const AddProfile = () => {
           <Row>
             <Col md={12} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>Bio </Form.Label>
+                <Form.Label>{t('biography')}</Form.Label>
                 <textarea
                   className="form-control"
                   required
@@ -233,7 +235,7 @@ const AddProfile = () => {
 
           <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Email de référence</Form.Label>
+                <Form.Label>{t('reference_email')}</Form.Label>
                 <Form.Control
                 required
                   defaultValue={data.profileEmail}
@@ -249,11 +251,11 @@ const AddProfile = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName" >
-                <Form.Label>Banner</Form.Label>
+                <Form.Label>{t('Banner')}</Form.Label>
                 <DropzoneArea
                 required
                   acceptedFiles={[".jpg", ".jpeg", ".png", ".gif"]}
-                  dropzoneText="Déposez votre Banner ici"
+                  dropzoneText={t("Drop your banner here")}
                   filesLimit={1}
                   showFileNames={true}
                   maxFileSize={2000000}
@@ -265,12 +267,12 @@ const AddProfile = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Profile image</Form.Label>
+                <Form.Label>{t('Profile')} {t('image')}</Form.Label>
                 <DropzoneArea
                 required
                   acceptedFiles={[".jpg", ".jpeg", ".png", ".gif"]}
                   filesLimit={1}
-                  dropzoneText="Déposez votre photo de profile ici"
+                  dropzoneText={t("Put your profile picture here")}
                   showFileNames={true}
                   maxFileSize={2000000}
                   onChange={(files) =>
@@ -281,13 +283,13 @@ const AddProfile = () => {
             </Col>
           </Row>
           <Row>
-          <Form.Label>Upload your files here</Form.Label>
+          <Form.Label>{t('Upload your files here')}</Form.Label>
 
           <DropzoneArea
           required
             acceptedFiles={[".jpg", ".jpeg", ".png", ".gif", ".mp4"]}
             filesLimit={20}
-            dropzoneText="Déposez le reste de vos fichiers multimédia ici"
+            dropzoneText={t("Drop the rest of your media files here")}
 
             showFileNames={true}
             maxFileSize={500000000}
@@ -297,13 +299,13 @@ const AddProfile = () => {
 
           <div className="mt-3">
             <Button type="submit" variant="primary">
-              Sauvegarder
+              {t('save')}
             </Button>
           </div>
         </Form>
 
         <Col md={6} className="mb-3 mt-2">
-        <h5 className="mb-4">Parcours</h5>
+        <h5 className="mb-4">{t('journey')}</h5>
           <Qrcode
             myvalue={"http://www.localhost/graveyard/defun/" + id}
           ></Qrcode>

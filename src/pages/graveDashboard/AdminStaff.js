@@ -63,8 +63,8 @@ export default function Dashboard() {
   async function getstaff() {
     try {
       const { data: response } = await axios.get(
-        "http://www.skiesbook.com:3000/api/v1/users/getstaff/"+id
-        
+        "http://www.skiesbook.com:3000/api/v1/users/getstaff/" + id
+
       );
       setData2(response);
       setfirst(response[0]);
@@ -75,15 +75,15 @@ export default function Dashboard() {
   }
   const [formData1, setFormData1] = useState({
     name: "",
-});
+  });
   async function getData() {
     try {
       let id = formData1.name
       if (formData1.name === "") {
-      id = first._id;
+        id = first._id;
       }
       const { data: response } = await axios.post(
-        "http://www.skiesbook.com:3000/api/v1/users/gravestaffreporting/"+id,
+        "http://www.skiesbook.com:3000/api/v1/users/gravestaffreporting/" + id,
         formdata
       );
       setData(response);
@@ -107,7 +107,7 @@ export default function Dashboard() {
   const PageVisitsTable = () => {
     const TableRow = (props) => {
       const { profileName, profileLastName, createdAt, _id } = props;
-     
+
 
       return (
         <tr>
@@ -119,9 +119,9 @@ export default function Dashboard() {
             <Button
               variant="secondary"
               size="sm"
-              onClick={(e) => history.push("/prof/"+_id)}
+              onClick={(e) => history.push("/prof/" + _id)}
             >
-              Detail
+              {t('Details')}
             </Button>
           </td>
         </tr>
@@ -133,11 +133,11 @@ export default function Dashboard() {
         <Card.Header>
           <Row className="align-items-center">
             <Col>
-              <h5>Profils ajoutés</h5>
+              <h5>{t('Profiles added')}</h5>
             </Col>
             <Col className="text-end">
               <Button variant="secondary" size="sm">
-              <CSVLink {...csvReport}>Export to CSV</CSVLink>
+                <CSVLink {...csvReport}>{t('Export to CSV')}</CSVLink>
 
               </Button>
 
@@ -147,11 +147,11 @@ export default function Dashboard() {
         <Table responsive className="align-items-center table-flush">
           <thead className="thead-light">
             <tr>
-            <th scope="col">#Id</th>
+              <th scope="col">#{t('id')}</th>
 
-              <th scope="col">Profile</th>
-              <th scope="col">Creation</th>
-              <th scope="col">Action</th>
+              <th scope="col">{t('Profile')}</th>
+              <th scope="col">{t('Creation')}</th>
+              <th scope="col">{t('action')}</th>
             </tr>
           </thead>
           <tbody>
@@ -170,14 +170,14 @@ export default function Dashboard() {
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <h1>Dashboard vente staff</h1>
+        <h1>{t('Staff sales dashboard')}</h1>
       </div>
 
       <Row className="justify-content">
-       
+
         <Card border="light" className="shadow-sm m-3 p-3">
           <Row className="align-items-center">
-            <h5>Filter par date et employé</h5>
+            <h5>{t('filter_by_date_and_employee')}</h5>
             <Col md={3} className="mb-3">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack spacing={3}>
@@ -196,7 +196,7 @@ export default function Dashboard() {
                 </Stack>
               </LocalizationProvider>
             </Col>
-            
+
 
             <Col md={3} className="mb-3">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -217,35 +217,35 @@ export default function Dashboard() {
               </LocalizationProvider>
             </Col>
             <Col md={3} className="mb-3">
-                <Form.Group id="name">
-                  <Form.Label>Employé</Form.Label>
+              <Form.Group id="name">
+                <Form.Label>{t('Employee')}</Form.Label>
 
-                  <Form.Control
-                    as="select"
-                    name="searchId"
-                 
-                    onChange={(e) =>
-                      setFormData1({ ...formData1, name: e.target.value })
-                    }
-                  >
-                    {data2?.map((account) => (
-                      <option key={account?._id} value={account?._id}>
-                        {account?.name} {account?.lastn}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-                      
-              </Col>
+                <Form.Control
+                  as="select"
+                  name="searchId"
+
+                  onChange={(e) =>
+                    setFormData1({ ...formData1, name: e.target.value })
+                  }
+                >
+                  {data2?.map((account) => (
+                    <option key={account?._id} value={account?._id}>
+                      {account?.name} {account?.lastn}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+
+            </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Appliquer</Button>
+              <Button onClick={(e) => gofilter()}> {t('Apply')}</Button>
             </Col>
           </Row>
         </Card>
 
         <Col xs={12} sm={6} xl={4} className="mb-4">
           <CounterWidget
-            category="Nombre de clients date filtré par mois"
+            category={t('Number of date customers filtered by month')}
             title={data?.profiles?.length}
             icon={faChartLine}
             period={moment(d).format("YYYY/MM")}
