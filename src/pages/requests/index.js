@@ -29,6 +29,7 @@ import { faCheck, faComment } from "@fortawesome/fontawesome-free-solid";
 import ReactTooltip from "react-tooltip";
 import { faFilter } from "@fortawesome/fontawesome-free-solid";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 export default function AllProfiles() {
   const history = useHistory();
@@ -237,115 +238,117 @@ export default function AllProfiles() {
       </div>
 
       <Card border="light" className="table-wrapper shadow-sm">
-        <Card.Body className="pt-0">
-          <Table
-            style={{ overflow: "auto", display: "block", tableLayout: "auto" }}
-            className="table-centered table-nowrap rounded mb-0"
-          >
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0">Nom cimetière</th>
-                <th className="border-0">Nom et prenom</th>
-                <th className="border-0">Pays</th>
-                <th className="border-0">Adresse</th>
-                <th className="border-0">Télephone</th>
-                <th className="border-0">Email</th>
-                <th className="border-0">Date de réalisation</th>
-                <th className="border-0">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPosts?.map((dm, index) => (
-                <>
-                  <ReactTooltip />
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table
+              style={{ overflow: "auto", display: "block", tableLayout: "auto" }}
+              className="table-centered table-nowrap rounded mb-0"
+            >
+              <thead className="thead-light">
+                <tr>
+                  <th className="border-0">Nom cimetière</th>
+                  <th className="border-0">Nom et prenom</th>
+                  <th className="border-0">Pays</th>
+                  <th className="border-0">Adresse</th>
+                  <th className="border-0">Télephone</th>
+                  <th className="border-0">Email</th>
+                  <th className="border-0">Date de réalisation</th>
+                  <th className="border-0">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentPosts?.map((dm, index) => (
+                  <>
+                    <ReactTooltip />
 
-                  <tr
-                    style={{
-                      // if state declined then background color is red else if state is accepted then background color is green else if state is pending then background color is yellow
-                      backgroundColor:
-                        dm.state === "declined"
-                          ? "#ff6a45"
-                          : dm.state === "accepted"
-                          ? "#59ff59"
-                          : "",
-                    }}
-                  >
-                    <td className="fw-bold">{dm?.graveyardName}</td>
-                    <td className="fw-bold">
-                      {dm?.name} {dm.lastn}
-                    </td>
-
-                    <td className="fw-bold">{dm?.country}</td>
-                    <td
-                      data-tip={
-                        dm?.address +
-                        ", " +
-                        dm?.ville +
-                        ", " +
-                        dm?.region +
-                        ", " +
-                        dm?.zip
-                      }
-                      className="fw-bold"
+                    <tr
+                      style={{
+                        // if state declined then background color is red else if state is accepted then background color is green else if state is pending then background color is yellow
+                        backgroundColor:
+                          dm.state === "declined"
+                            ? "#ff6a45"
+                            : dm.state === "accepted"
+                              ? "#59ff59"
+                              : "",
+                      }}
                     >
-                      {(
-                        dm?.address +
-                        " " +
-                        dm?.ville +
-                        " " +
-                        dm?.region +
-                        " " +
-                        dm?.zip
-                      ).substring(0, 25) + "..."}
-                    </td>
+                      <td className="fw-bold">{dm?.graveyardName}</td>
+                      <td className="fw-bold">
+                        {dm?.name} {dm.lastn}
+                      </td>
 
-                    <td className="fw-bold">{dm?.phone}</td>
+                      <td className="fw-bold">{dm?.country}</td>
+                      <td
+                        data-tip={
+                          dm?.address +
+                          ", " +
+                          dm?.ville +
+                          ", " +
+                          dm?.region +
+                          ", " +
+                          dm?.zip
+                        }
+                        className="fw-bold"
+                      >
+                        {(
+                          dm?.address +
+                          " " +
+                          dm?.ville +
+                          " " +
+                          dm?.region +
+                          " " +
+                          dm?.zip
+                        ).substring(0, 25) + "..."}
+                      </td>
 
-                    <td>
-                      <span className="fw-bold">{dm?.email}</span>
-                    </td>
-                    <td>{moment(dm?.createdAt).format("DD/MM/YYYY HH:mm")}</td>
-                    <td>
-                      {dm.state === "pending" ? (
-                        <>
-                          <Button
-                            className="m-1"
-                            onClick={() => accept(dm._id)}
-                            size="sm"
-                            style={{ backgroundColor: "green" }}
-                          >
-                            <FontAwesomeIcon icon={faCheck} />{" "}
-                          </Button>
-                          <Button
-                            className="m-1"
-                            onClick={() => {
-                              reject(dm._id);
-                            }}
-                            style={{ backgroundColor: "red" }}
-                            size="sm"
-                          >
-                            <FontAwesomeIcon icon={faTrashAlt} />{" "}
-                          </Button>
+                      <td className="fw-bold">{dm?.phone}</td>
 
-                          <Button
-                            className="m-1"
-                            onClick={(e) => {
-                              handleShow(dm?._id, dm?.note);
-                            }}
-                            size="sm"
-                          >
-                            <FontAwesomeIcon icon={faComment} />{" "}
-                          </Button>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-                  </tr>
-                </>
-              ))}
-            </tbody>
-          </Table>
+                      <td>
+                        <span className="fw-bold">{dm?.email}</span>
+                      </td>
+                      <td>{moment(dm?.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                      <td>
+                        {dm.state === "pending" ? (
+                          <>
+                            <Button
+                              className="m-1"
+                              onClick={() => accept(dm._id)}
+                              size="sm"
+                              style={{ backgroundColor: "green" }}
+                            >
+                              <FontAwesomeIcon icon={faCheck} />{" "}
+                            </Button>
+                            <Button
+                              className="m-1"
+                              onClick={() => {
+                                reject(dm._id);
+                              }}
+                              style={{ backgroundColor: "red" }}
+                              size="sm"
+                            >
+                              <FontAwesomeIcon icon={faTrashAlt} />{" "}
+                            </Button>
+
+                            <Button
+                              className="m-1"
+                              onClick={(e) => {
+                                handleShow(dm?._id, dm?.note);
+                              }}
+                              size="sm"
+                            >
+                              <FontAwesomeIcon icon={faComment} />{" "}
+                            </Button>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination

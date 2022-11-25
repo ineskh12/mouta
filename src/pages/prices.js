@@ -40,6 +40,7 @@ import {
 } from "@coreui/bootstrap-react";
 import { Badge } from "@themesberg/react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 export default function AllSuperAdmins() {
   const { t } = useTranslation();
@@ -144,62 +145,64 @@ export default function AllSuperAdmins() {
         </Row>
       </div>
       <Card border="light" className="table-wrapper table-responsive shadow-sm">
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                <th className="border-bottom">#</th>
-                <th className="border-bottom">{t("Tag")}</th>
-                <th className="border-bottom">{t("formula")}</th>
-                <th className="border-bottom">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPosts?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table hover className="user-table align-items-center">
+              <thead>
                 <tr>
-                  <td>{index + 1}</td>
-
-                  <td>{dm?.tag}</td>
-                  <td>{dm?.price}</td>
-
-                  <td>
-                    {" "}
-                    <CDropdown className="dropleft" direction="dropstart">
-                      <CDropdownToggle color="transparant">
-                        <span className="icon icon-sm">
-                          <FontAwesomeIcon
-                            icon={faEllipsisH}
-                            className="icon-dark"
-                          />
-                        </span>
-                      </CDropdownToggle>
-                      <CDropdownMenu
-                        style={{ left: "50px;" }}
-                        className="float-left"
-                      >
-                        <CDropdownItem
-                          onClick={
-                            () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
-                          }
-                        >
-                          <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          {t("Edit")}{" "}
-                        </CDropdownItem>
-                        <CDropdownItem
-                          onClick={
-                            () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
-                          }
-                        >
-                          <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          {t("delete")}
-                        </CDropdownItem>
-                      </CDropdownMenu>
-                    </CDropdown>
-                  </td>
+                  <th className="border-bottom">#</th>
+                  <th className="border-bottom">{t("Tag")}</th>
+                  <th className="border-bottom">{t("formula")}</th>
+                  <th className="border-bottom">{t("actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {currentPosts?.map((dm, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+
+                    <td>{dm?.tag}</td>
+                    <td>{dm?.price}</td>
+
+                    <td>
+                      {" "}
+                      <CDropdown className="dropleft" direction="dropstart">
+                        <CDropdownToggle color="transparant">
+                          <span className="icon icon-sm">
+                            <FontAwesomeIcon
+                              icon={faEllipsisH}
+                              className="icon-dark"
+                            />
+                          </span>
+                        </CDropdownToggle>
+                        <CDropdownMenu
+                          style={{ left: "50px;" }}
+                          className="float-left"
+                        >
+                          <CDropdownItem
+                            onClick={
+                              () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
+                            }
+                          >
+                            <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
+                            {t("Edit")}{" "}
+                          </CDropdownItem>
+                          <CDropdownItem
+                            onClick={
+                              () => console.log("clicked") //history.push("/editsuperadmin/" + dm?._id)
+                            }
+                          >
+                            <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
+                            {t("delete")}
+                          </CDropdownItem>
+                        </CDropdownMenu>
+                      </CDropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination

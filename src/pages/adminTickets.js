@@ -38,6 +38,7 @@ import {
 } from "@coreui/bootstrap-react";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
@@ -213,59 +214,61 @@ export default function AllProfiles() {
         </Col>
       </div>
       <Card border="light" className="table-wrapper shadow-sm">
-        <Card.Body className="pt-0">
-          <Table className="table-centered table-nowrap rounded mb-0">
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0">#</th>
-                <th className="border-0">{t("Topic")}</th>
-                <th className="border-0">{t('Status')} </th>
-                <th className="border-0">{t("Date of completion")}</th>
-                <th className="border-0">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table className="table-centered table-nowrap rounded mb-0">
+              <thead className="thead-light">
                 <tr>
-                  <td className="fw-bold">{index}</td>
-                  <td className="fw-bold">{dm.subject}</td>
-                  <td>
-                    <>
-                      {dm?.status === "open" ? (
-                        <Badge bg="primary" className="me-1">
-                          {t("open")}
-                        </Badge>
-                      ) : dm?.status === "progress" ? (
-                        <Badge bg="success" className="me-1">
-                          {t("progress")}
-                        </Badge>
-                      ) : dm?.status === "closed" ? (
-                        <Badge bg="danger" className="me-1">
-                          {t('close')}
-                        </Badge>
-                      ) : (
-                        t("none")
-                      )}
-                    </>
-                  </td>
-                  <td>{moment(dm.createdAt).format("DD/MM/YYYY HH:mm")}</td>
-                  <td>
-                    {" "}
-                    <Button
-                      onClick={() => history.push("/ticketdetail/" + dm._id)}
-                      color="primary"
-                      size="sm"
-                      className="m-1"
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </Button>
-
-
-                  </td>
+                  <th className="border-0">#</th>
+                  <th className="border-0">{t("Topic")}</th>
+                  <th className="border-0">{t('Status')} </th>
+                  <th className="border-0">{t("Date of completion")}</th>
+                  <th className="border-0">{t("actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {data?.map((dm, index) => (
+                  <tr>
+                    <td className="fw-bold">{index}</td>
+                    <td className="fw-bold">{dm.subject}</td>
+                    <td>
+                      <>
+                        {dm?.status === "open" ? (
+                          <Badge bg="primary" className="me-1">
+                            {t("open")}
+                          </Badge>
+                        ) : dm?.status === "progress" ? (
+                          <Badge bg="success" className="me-1">
+                            {t("progress")}
+                          </Badge>
+                        ) : dm?.status === "closed" ? (
+                          <Badge bg="danger" className="me-1">
+                            {t('close')}
+                          </Badge>
+                        ) : (
+                          t("none")
+                        )}
+                      </>
+                    </td>
+                    <td>{moment(dm.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                    <td>
+                      {" "}
+                      <Button
+                        onClick={() => history.push("/ticketdetail/" + dm._id)}
+                        color="primary"
+                        size="sm"
+                        className="m-1"
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </Button>
+
+
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination

@@ -34,12 +34,13 @@ import { Routes } from "../routes";
 import axios from "axios";
 import { SendSharp } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function Myprofiles() {
-  
+
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -69,7 +70,7 @@ export default function Myprofiles() {
             }}
           ></Breadcrumb>
 
-<div className="btn-toolbar mb-2 mb-md-2">
+          <div className="btn-toolbar mb-2 mb-md-2">
             <ButtonGroup>
               <Dropdown.Toggle
                 onClick={(e) => history.goBack()}
@@ -130,35 +131,36 @@ export default function Myprofiles() {
         </Row>
       </div>
       <Card border="light" className="table-wrapper table-responsive shadow-sm">
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                <th className="border-bottom">#</th>
-                <th className="border-bottom">{t('full_name')}</th>
-                <th className="border-bottom">{t('date_of_birth')}</th>
-                <th className="border-bottom">{t('Date of death')}</th>
-                <th className="border-bottom">{t('Contact information')}</th>
-                <th className="border-bottom">{t('reference_email')}</th>
-                <th className="border-bottom">{t('actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.profiles?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table hover className="user-table align-items-center">
+              <thead>
                 <tr>
-                  <td>{index + 1}</td>
-                  <td className="fw-bold">
-                    {dm.profileName} {dm.profileLastName}
-                  </td>
-                  <td>{moment(dm.profileDatebirth).format("DD/MM/YYYY")}</td>
-                  <td>{moment(dm.profileDatebirth).format("DD/MM/YYYY")}</td>
-                  <td>{dm.cords}</td>
-                  <td>{dm.profileEmail}</td>
-                  <td>
-                    {" "}
+                  <th className="border-bottom">#</th>
+                  <th className="border-bottom">{t('full_name')}</th>
+                  <th className="border-bottom">{t('date_of_birth')}</th>
+                  <th className="border-bottom">{t('Date of death')}</th>
+                  <th className="border-bottom">{t('Contact information')}</th>
+                  <th className="border-bottom">{t('reference_email')}</th>
+                  <th className="border-bottom">{t('actions')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.profiles?.map((dm, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td className="fw-bold">
+                      {dm.profileName} {dm.profileLastName}
+                    </td>
+                    <td>{moment(dm.profileDatebirth).format("DD/MM/YYYY")}</td>
+                    <td>{moment(dm.profileDatebirth).format("DD/MM/YYYY")}</td>
+                    <td>{dm.cords}</td>
+                    <td>{dm.profileEmail}</td>
+                    <td>
+                      {" "}
 
-                     
-                    <Button
+
+                      <Button
                         onClick={() => history.push("/prof/" + dm._id)}
                         color="primary"
                         size="sm"
@@ -174,8 +176,8 @@ export default function Myprofiles() {
                       >
                         <FontAwesomeIcon icon={faEdit} />
                       </Button>
-                  
-                    {/*   <Dropdown as={ButtonGroup}>
+
+                      {/*   <Dropdown as={ButtonGroup}>
                       <Dropdown.Toggle
                         as={Button}
                         split
@@ -207,11 +209,12 @@ export default function Myprofiles() {
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown> */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
@@ -224,7 +227,7 @@ export default function Myprofiles() {
                 <Pagination.Next>{t('Next')}</Pagination.Next>
               </Pagination>
             </Nav>
-          
+
           </Card.Footer>
         </Card.Body>
       </Card>
