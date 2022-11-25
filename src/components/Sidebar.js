@@ -42,10 +42,11 @@ import moment from "moment-timezone";
 
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 //eslint-disable-next-line
 export default (props = {}) => {
   const currentYear = moment().get("year");
-
+  const { t } = useTranslation();
   const location = useLocation();
   const { pathname } = location;
   const [show, setShow] = useState(false);
@@ -245,7 +246,7 @@ export default (props = {}) => {
                   <img alt="logo" src={logo_white} width="20%" />
 
                   <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                    Welcome <br></br> {decoded?.name}
+                    {t('Welcome')} <br></br> {decoded?.name}
                   </h6>
                 </div>
                 <NavItem
@@ -255,23 +256,23 @@ export default (props = {}) => {
                 />
 
                 <NavItem
-                  title="Parenté"
+                  title={t('relationship')}
                   icon={faHouseUser}
                   badgeText={count?.toString()}
                   link={"/parente/" + decoded?.userId}
                   eventKey="parente"
 
-                  //  link={Routes.Settings.path}
+                //  link={Routes.Settings.path}
                 />
 
                 <NavItem
-                  title="Commentaires"
+                  title={t('Comments')}
                   icon={faHouseUser}
                   badgeText={comments?.toString()}
                   link={"/comments"}
                   eventKey="comments"
 
-                  //  link={Routes.Settings.path}
+                //  link={Routes.Settings.path}
                 />
 
                 {/*  <NavItem
@@ -381,46 +382,46 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t('Welcome')} <br></br> {decoded?.name}
                     </h6>
                   </div>
 
                   <NavItem
                     external
-                    title="Supers Admins"
+                    title={t('super_admins')}
                     link="/admin/superadmins"
                     icon={faUser}
                     eventKey="/admin/superadmins"
                   />
 
                   <NavItem
-                    title="Mon compte"
+                    title={t('My account')}
                     link={"/me/" + decoded.userId}
                     icon={faUser}
                   />
                   <NavItem
                     external
-                    title="Liste des profils"
+                    title={t("list_of_profiles")}
                     link="/profiles"
                     icon={faChurch}
                     eventKey="/profiles"
                   />
                   <NavItem
                     external
-                    title="Liste des cimetières"
+                    title={t("list_of_cemeteries")}
                     link="/AdminClients"
                     icon={faUsers}
                     eventKey="/Admin"
                   />
                   <NavItem
-                    title="Employés"
+                    title={t("Employees")}
                     icon={faSuitcase}
                     link="/mystaff"
                     eventKey="/mystaff"
                   />
 
                   <NavItem
-                    title="Gérer les prix"
+                    title={t("Manage prices")}
                     icon={faDollarSign}
                     link="/prices"
                     disabled
@@ -428,20 +429,20 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tickets"
+                    title={t("Tickets")}
                     link="/alltickets"
                     icon={faTicketAlt}
                     eventKey="/alltickets"
                   />
                   <NavItem
                     external
-                    title="Partnership requests"
+                    title={t("Partnership requests")}
                     link="/requests"
                     icon={faTicketAlt}
                   />
                   <NavItem
                     external
-                    title="Rapports"
+                    title={t("Reports")}
                     link="/graveyard_dashboard"
                     icon={faChartPie}
                   />
@@ -460,20 +461,20 @@ export default (props = {}) => {
                           maxWidth: "100px",
                         }}
                       >
-                        Welcome <br></br> {decoded?.name}
+                        {t('Welcome')} <br></br> {decoded?.name}
                       </h6>
                     </div>
                   </div>
 
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     eventKey="/me"
                     icon={faUser}
                   />
                   <NavItem
                     external
-                    title="Liste des Clients"
+                    title={t("Client List")}
                     link="/adminclients"
                     icon={faUsers}
                     eventKey="/admin"
@@ -481,13 +482,13 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tous les profils"
+                    title={t("All profiles")}
                     link="/adminprofiles"
                     icon={faUsers}
                     eventKey="/adminprofiles"
                   />
                   <NavItem
-                    title="Emplacements"
+                    title={t("locations")}
                     link="/Emplacements"
                     icon={faMap}
                     eventKey="/Emplacements"
@@ -502,22 +503,22 @@ export default (props = {}) => {
                 <NavItem title="Liste des profiles" link="/adminprofiles" />
               </CollapsableNavItem> */}
                   <NavItem
-                    title="Employés"
+                    title={t("Employees")}
                     icon={faSuitcase}
                     link="/staff"
                     eventKey="/staff"
 
-                    // link={Routes.Transactions.path}
+                  // link={Routes.Transactions.path}
                   />
                   <NavItem
                     external
-                    title="Support"
+                    title={t("Support")}
                     link="/mytickets"
                     icon={faTicketAlt}
                     eventKey="/mytickets"
                   />
                   <NavItem
-                    title="Rapports"
+                    title={t("Reports")}
                     link={"/dashboard"}
                     eventKey="/dashboard"
                     icon={faChartPie}
@@ -531,11 +532,11 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t('Welcome')} <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     eventKey="/me"
                     icon={faUser}
@@ -543,7 +544,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Liste des Clients"
+                    title={t("Client List")}
                     link="/Staffclient"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -553,7 +554,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tous les profils"
+                    title={t("All profiles")}
                     link="/staffprofile"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -569,11 +570,11 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t('Welcome')} <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     eventKey="/me"
                     icon={faUser}
@@ -581,7 +582,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Liste des Clients"
+                    title={t("Client List")}
                     link="/adminclients"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -591,7 +592,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tous les profils"
+                    title={t("All profiles")}
                     link="/adminprofiles"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -599,12 +600,12 @@ export default (props = {}) => {
                     eventKey="/adminprofiles"
                   />
                   <NavItem
-                    title="Employés"
+                    title={t("Employees")}
                     icon={faSuitcase}
                     link="/staff"
                     eventKey="/staff"
 
-                    // link={Routes.Transactions.path}
+                  // link={Routes.Transactions.path}
                   />
                 </Nav>
               </>
@@ -615,17 +616,17 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t('Welcome')} <br></br> {decoded?.name}
                     </h6>
                   </div>
                   <NavItem
-                    title="Rapports"
+                    title={t("Reports")}
                     link={"/dashboard"}
                     eventKey="/dashboard"
                     icon={faChartPie}
                   />
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     eventKey="/me"
                     icon={faUser}
@@ -633,7 +634,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Liste des Clients"
+                    title={t("Client List")}
                     link="/Staffclient"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -643,7 +644,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tous les profils"
+                    title={t("All profiles")}
                     link="/staffprofile"
                     // link="https://demo.themesberg.com/volt-pro-react/#/messages"
                     //target="_blank"
@@ -659,31 +660,31 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t("Welcome")} <br></br> {decoded?.name}
                     </h6>
                   </div>
 
                   <NavItem
                     external
-                    title="Rapports"
+                    title={t("Reports")}
                     link="/graveyard_dashboard"
                     icon={faHome}
                   />
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     icon={faUser}
                   />
                   <NavItem
                     external
-                    title="Liste des profils"
+                    title={t("list_of_profiles")}
                     link="/profiles"
                     icon={faChurch}
                     eventKey="/profiles"
                   />
                   <NavItem
                     external
-                    title="Liste des cimetières"
+                    title={t("list_of_cemeteries")}
                     link="/AdminClients"
                     icon={faUsers}
                     eventKey="/Admin"
@@ -697,25 +698,25 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {toString('Welcome')} <br></br> {decoded?.name}
                     </h6>
                   </div>
 
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     icon={faUser}
                   />
                   <NavItem
                     external
-                    title="Liste des profils"
+                    title={t("list_of_profiles")}
                     link="/profiles"
                     icon={faChurch}
                     eventKey="/profiles"
                   />
                   <NavItem
                     external
-                    title="Liste des cimetières"
+                    title={t("list_of_cemeteries")}
                     link="/AdminClients"
                     icon={faUsers}
                     eventKey="/Admin"
@@ -723,7 +724,7 @@ export default (props = {}) => {
 
                   <NavItem
                     external
-                    title="Tickets"
+                    title={t("Tickets")}
                     link="/alltickets"
                     icon={faTicketAlt}
                     eventKey="/alltickets"
@@ -737,55 +738,55 @@ export default (props = {}) => {
                     <img alt="logo" src={logo_white} width="20%" />
 
                     <h6 style={{ paddingTop: "15px", paddingLeft: "15px" }}>
-                      Welcome <br></br> {decoded?.name}
+                      {t("Welcome")} <br></br> {decoded?.name}
                     </h6>
                   </div>
 
                   <NavItem
                     external
-                    title="Rapports"
+                    title={t("Reports")}
                     link="/graveyard_dashboard"
                     icon={faHome}
                   />
                   <NavItem
                     external
-                    title="Supers Admins"
+                    title={t("Super Admins")}
                     link="/admin/superadmins"
                     icon={faUser}
                     eventKey="/admin/superadmins"
                   />
 
                   <NavItem
-                    title="Mon compte"
+                    title={t("My account")}
                     link={"/me/" + decoded.userId}
                     icon={faUser}
                   />
                   <NavItem
                     external
-                    title="Liste des profils"
+                    title={t("list_of_profiles")}
                     link="/profiles"
                     icon={faChurch}
                     eventKey="/profiles"
                   />
                   <NavItem
                     external
-                    title="Liste des cimetières"
+                    title={t("list_of_cemeteries")}
                     link="/AdminClients"
                     icon={faUsers}
                     eventKey="/Admin"
                   />
                   <NavItem
-                    title="Employés"
+                    title={t("Employees")}
                     icon={faSuitcase}
                     link="/mystaff"
                     eventKey="/mystaff"
 
-                    // link={Routes.Transactions.path}
+                  // link={Routes.Transactions.path}
                   />
                 </Nav>
               </>
             ) : (
-              <h1>NotFoundPage</h1>
+              <h1>{t("Not Found Page")}</h1>
             )}
           </div>
         </SimpleBar>
