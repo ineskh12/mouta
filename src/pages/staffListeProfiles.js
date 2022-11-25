@@ -33,6 +33,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
@@ -60,7 +61,7 @@ export default function AllProfiles() {
   }, []);
   return (
     <>
-       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb
             className="d-none d-md-inline-block"
@@ -69,96 +70,98 @@ export default function AllProfiles() {
             }}
           ></Breadcrumb>
           <h4>{t("list_of_cemeteries")}</h4>
-{/*           <p className="mb-0">Your web analytics dashboard template.</p>
+          {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
- */}       
+ */}
 
-  </div>
-  
+        </div>
+
         <div className="btn-toolbar mb-2 mb-md-0">
           <ButtonGroup>
-            <Dropdown.Toggle onClick={(e)=>history.push('/AdminAdd')} as={Button} variant="primary" size="sm" className="me-2">
-            <FontAwesomeIcon icon={faPlus} className="me-2" />{t("new_cemetery")}
-          </Dropdown.Toggle>
+            <Dropdown.Toggle onClick={(e) => history.push('/AdminAdd')} as={Button} variant="primary" size="sm" className="me-2">
+              <FontAwesomeIcon icon={faPlus} className="me-2" />{t("new_cemetery")}
+            </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        
+
       </div>
       <div className="d-block mb-4 mb-md-2">
-      <Col xs={8} md={6} lg={3} xl={4} >
-            <InputGroup>
-              <InputGroup.Text>
-                <FontAwesomeIcon icon={faSearch} />
-              </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
-            </InputGroup>
-          </Col>
-          </div>
+        <Col xs={8} md={6} lg={3} xl={4} >
+          <InputGroup>
+            <InputGroup.Text>
+              <FontAwesomeIcon icon={faSearch} />
+            </InputGroup.Text>
+            <Form.Control type="text" placeholder="Search" />
+          </InputGroup>
+        </Col>
+      </div>
       <Card border="light" className="table-wrapper table-responsive shadow-sm">
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                <th className="border-bottom">#</th>
-                <th className="border-bottom">{t('full_name')}</th>
-                <th className="border-bottom">{t("date_of_birth")} </th>
-                <th className="border-bottom">{t("Date of death")}</th>
-                <th className="border-bottom">{t("Contact information")}</th>
-                <th className="border-bottom">{t("reference_email")}</th>
-                <th className="border-bottom">{t('action')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.profiles?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table hover className="user-table align-items-center">
+              <thead>
                 <tr>
-                  <td>{index + 1}</td>
-                  <td className="fw-bold">
-                    {dm.profileName} {dm.profileLastName}
-                  </td>
-                  <td>{dm.profileDatebirth}</td>
-                  <td>{dm.profileDatedeath}</td>
-                  <td>{dm.cords}</td>
-                  <td>{dm.profileEmail}</td>
-                  <td>
-                    {" "}
-                    <Dropdown as={ButtonGroup}>
-                      <Dropdown.Toggle
-                        as={Button}
-                        split
-                        variant="link"
-                        className="text-dark m-0 p-0"
-                      >
-                        <span className="icon icon-sm">
-                          <FontAwesomeIcon
-                            icon={faEllipsisH}
-                            className="icon-dark"
-                          />
-                        </span>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item
-                          onClick={() => history.push("/defun/" + dm._id)}
-                        >
-                          <FontAwesomeIcon icon={faEye} className="me-2" /> 
-                          {t('Details')}
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          onClick={() => history.push("/profile/" + dm._id)}
-                        >
-                          <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          {t('Edit')}
-                        </Dropdown.Item>
-                        <Dropdown.Item className="text-danger">
-                          <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          {t('delete')}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </td>
+                  <th className="border-bottom">#</th>
+                  <th className="border-bottom">{t('full_name')}</th>
+                  <th className="border-bottom">{t("date_of_birth")} </th>
+                  <th className="border-bottom">{t("Date of death")}</th>
+                  <th className="border-bottom">{t("Contact information")}</th>
+                  <th className="border-bottom">{t("reference_email")}</th>
+                  <th className="border-bottom">{t('action')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {data?.profiles?.map((dm, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td className="fw-bold">
+                      {dm.profileName} {dm.profileLastName}
+                    </td>
+                    <td>{dm.profileDatebirth}</td>
+                    <td>{dm.profileDatedeath}</td>
+                    <td>{dm.cords}</td>
+                    <td>{dm.profileEmail}</td>
+                    <td>
+                      {" "}
+                      <Dropdown as={ButtonGroup}>
+                        <Dropdown.Toggle
+                          as={Button}
+                          split
+                          variant="link"
+                          className="text-dark m-0 p-0"
+                        >
+                          <span className="icon icon-sm">
+                            <FontAwesomeIcon
+                              icon={faEllipsisH}
+                              className="icon-dark"
+                            />
+                          </span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            onClick={() => history.push("/defun/" + dm._id)}
+                          >
+                            <FontAwesomeIcon icon={faEye} className="me-2" />
+                            {t('Details')}
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            onClick={() => history.push("/profile/" + dm._id)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
+                            {t('Edit')}
+                          </Dropdown.Item>
+                          <Dropdown.Item className="text-danger">
+                            <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
+                            {t('delete')}
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">

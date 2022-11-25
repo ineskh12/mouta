@@ -36,7 +36,9 @@ import {
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
 import TextField from "@material-ui/core/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
@@ -44,18 +46,29 @@ import { CounterWidget } from "../../components/Widgets";
 import logo_colored from "../../assets/img/logo_colored.png";
 import { useReactToPrint } from "react-to-print";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
+import { Paper, TableContainer } from "@mui/material";
+
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
+
   const { t } = useTranslation();
   const history = useHistory();
   const [selectedDate, handleDateChange] = React.useState([null, null]);
   const d = new Date();
 
   const [formdata, setFormdata] = useState({
-    startDate: moment(d).format("YYYY-MM"),
+    startDate: moment(d).format("YYYY-MM-DD"),
     endDate: moment(d).format("YYYY-MM-DD"),
   });
   async function gofilter() {
@@ -140,7 +153,7 @@ export default function AllProfiles() {
           <Row className="align-items-center">
             <h5>{t("filter_by_date")}</h5>
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
@@ -159,7 +172,7 @@ export default function AllProfiles() {
             </Col>
 
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
@@ -196,61 +209,63 @@ export default function AllProfiles() {
       </div>
 
       <Card border="light" className="table-wrapper shadow-sm">
-        <Card.Body className="pt-0">
-          <Table className="table-centered table-nowrap rounded mb-0">
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0">#</th>
-                <th className="border-0">{t('full_name')}</th>
-                <th className="border-0">{t('Profile creation date')}</th>
-                <th className="border-0">{t('Date of death')}</th>
-                <th className="border-0">{t('Contact information')}</th>
-                <th className="border-0">{t('reference_email')}</th>
-                <th className="border-0">{t('actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table className="table-centered table-nowrap rounded mb-0">
+              <thead className="thead-light">
                 <tr>
-                  <td>{index + 1}</td>
-                  <td className="fw-bold">
-                    {dm?.profileName} {dm?.profileLastName}
-                  </td>
-                  <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
-                  <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
-                  <td>{dm?.cords}</td>
-                  <td>{dm?.profileEmail}</td>
-                  <td>
-                    {" "}
-                    <CDropdown className="dropleft" direction="dropstart">
-                      <CDropdownToggle color="transparant">
-                        <span className="icon icon-sm">
-                          <FontAwesomeIcon
-                            icon={faEllipsisH}
-                            className="icon-dark"
-                          />
-                        </span>
-                      </CDropdownToggle>
-                      <CDropdownMenu style={{ left: "50px;" }}>
-                        <CDropdownItem
-                          onClick={() => history.push("/prof/" + dm._id)}
-                        >
-                          <FontAwesomeIcon icon={faEye} className="me-2" />{" "}
-                          {t('Details')}
-                        </CDropdownItem>
-                        <CDropdownItem
-                          onClick={() => history.push("/editprof/" + dm._id)}
-                        >
-                          <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          {t('Edit')}{" "}
-                        </CDropdownItem>
-                      </CDropdownMenu>
-                    </CDropdown>
-                  </td>
+                  <th className="border-0">#</th>
+                  <th className="border-0">{t('full_name')}</th>
+                  <th className="border-0">{t('Profile creation date')}</th>
+                  <th className="border-0">{t('Date of death')}</th>
+                  <th className="border-0">{t('Contact information')}</th>
+                  <th className="border-0">{t('reference_email')}</th>
+                  <th className="border-0">{t('actions')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {data?.map((dm, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td className="fw-bold">
+                      {dm?.profileName} {dm?.profileLastName}
+                    </td>
+                    <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
+                    <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
+                    <td>{dm?.cords}</td>
+                    <td>{dm?.profileEmail}</td>
+                    <td>
+                      {" "}
+                      <CDropdown className="dropleft" direction="dropstart">
+                        <CDropdownToggle color="transparant">
+                          <span className="icon icon-sm">
+                            <FontAwesomeIcon
+                              icon={faEllipsisH}
+                              className="icon-dark"
+                            />
+                          </span>
+                        </CDropdownToggle>
+                        <CDropdownMenu style={{ left: "50px;" }}>
+                          <CDropdownItem
+                            onClick={() => history.push("/prof/" + dm._id)}
+                          >
+                            <FontAwesomeIcon icon={faEye} className="me-2" />{" "}
+                            {t('Details')}
+                          </CDropdownItem>
+                          <CDropdownItem
+                            onClick={() => history.push("/editprof/" + dm._id)}
+                          >
+                            <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
+                            {t('Edit')}{" "}
+                          </CDropdownItem>
+                        </CDropdownMenu>
+                      </CDropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
 
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
@@ -315,35 +330,35 @@ export default function AllProfiles() {
                   </div>
                   <Card border="light" className="table-wrapper shadow-sm">
                     <Card.Body className="">
-                      <Table className="table-centered">
-                        <thead className="thead-light">
-                          <tr>
-                            <th className="border-0">#</th>
-                            <th className="border-0">{t('full_name')}</th>
-                            <th className="border-0">{t('Profile creation date')}</th>
-                            <th className="border-0">{t('Date of death')}</th>
-                            <th className="border-0">{t('reference_email')}</th>
-                            <th className="border-0">{t('price')}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data?.map((dm, index) => (
+                      <TableContainer component={Paper}>
+                        <Table className="table-centered">
+                          <thead className="thead-light">
                             <tr>
-                              <td>{index + 1}</td>
-                              <td className="fw-bold">
-                                {dm?.profileName} {dm?.profileLastName}
-                              </td>
-                              <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
-                              <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
-                              <td>{dm?.profileEmail}</td>
-                              <td> 20 $ </td>
-
+                              <th className="border-0">#</th>
+                              <th className="border-0">{t('full_name')}</th>
+                              <th className="border-0">{t('Profile creation date')}</th>
+                              <th className="border-0">{t('Date of death')}</th>
+                              <th className="border-0">{t('reference_email')}</th>
+                              <th className="border-0">{t('price')}</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </Table>
+                          </thead>
+                          <tbody>
+                            {data?.map((dm, index) => (
+                              <tr>
+                                <td>{index + 1}</td>
+                                <td className="fw-bold">
+                                  {dm?.profileName} {dm?.profileLastName}
+                                </td>
+                                <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
+                                <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
+                                <td>{dm?.profileEmail}</td>
+                                <td> 20 $ </td>
 
-
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </TableContainer>
                     </Card.Body>
                   </Card>
                   <div className="row">

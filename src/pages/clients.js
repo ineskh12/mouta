@@ -31,6 +31,7 @@ import { useHistory } from "react-router-dom";
 
 import jwt_decode from "jwt-decode";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 const Getadmins = () => {
   const { t } = useTranslation();
@@ -52,7 +53,7 @@ const Getadmins = () => {
       try {
         const { data: response } = await axios.get(
           "http://skiesbook.com:3000/api/v1/users/getadminsstaff/" +
-            decoded.userId
+          decoded.userId
         );
         setData(response);
       } catch (error) {
@@ -145,108 +146,110 @@ const Getadmins = () => {
         </Col>
       </div>
       <Card border="light" className="shadow-sm mb-4">
-        <Card.Body className="pb-0">
-          <Table
-            responsive
-            className="table-centered table-nowrap rounded mb-0"
-          >
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0"></th>
-                <th className="border-0">{t("cemetery_name")}</th>
-                <th className="border-0">{t("responsible")}</th>
-                <th className="border-0">{t("phone")}</th>
-                <th className="border-0">{t("address")}</th>
-                <th className="border-0">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPosts?.map((dm, index) => (
-                <>
-                  <ReactTooltip />
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table
+              responsive
+              className="table-centered table-nowrap rounded mb-0"
+            >
+              <thead className="thead-light">
+                <tr>
+                  <th className="border-0"></th>
+                  <th className="border-0">{t("cemetery_name")}</th>
+                  <th className="border-0">{t("responsible")}</th>
+                  <th className="border-0">{t("phone")}</th>
+                  <th className="border-0">{t("address")}</th>
+                  <th className="border-0">{t("actions")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentPosts?.map((dm, index) => (
+                  <>
+                    <ReactTooltip />
 
-                  <tr>
-                    <td>
-                      <Card.Link href="#" className="text-primary fw-bold">
-                        <div className="user-avatar lg-avatar me-4">
-                          <Image
-                            style={{
-                              flex: 1,
-                              width: "50px",
-                              height: "50px",
-                              resizeMode: "contain",
-                            }}
-                            src={
-                              "http://skiesbook.com:3000/uploads/" +
-                              dm.userimage
-                            }
-                            className="card-img-top rounded-circle border-white"
-                            onClick={() =>
-                              history.push(
-                                "/GraveyardsProfiles/" + dm?.graveyard?._id
-                              )
-                            }
-                          />
-                        </div>
-                      </Card.Link>
-                    </td>
-                    <td>
-                      <h6
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          history.push(
-                            "/GraveyardsProfiles/" + dm?.graveyard?._id
-                          )
-                        }
-                      >
-                        {dm?.graveyard?.name}
-                      </h6>
-                    </td>
+                    <tr>
+                      <td>
+                        <Card.Link href="#" className="text-primary fw-bold">
+                          <div className="user-avatar lg-avatar me-4">
+                            <Image
+                              style={{
+                                flex: 1,
+                                width: "50px",
+                                height: "50px",
+                                resizeMode: "contain",
+                              }}
+                              src={
+                                "http://skiesbook.com:3000/uploads/" +
+                                dm.userimage
+                              }
+                              className="card-img-top rounded-circle border-white"
+                              onClick={() =>
+                                history.push(
+                                  "/GraveyardsProfiles/" + dm?.graveyard?._id
+                                )
+                              }
+                            />
+                          </div>
+                        </Card.Link>
+                      </td>
+                      <td>
+                        <h6
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            history.push(
+                              "/GraveyardsProfiles/" + dm?.graveyard?._id
+                            )
+                          }
+                        >
+                          {dm?.graveyard?.name}
+                        </h6>
+                      </td>
 
-                    <td className="fw-bold">
-                      {dm.name + " "} {dm.lastn}
-                    </td>
-                    <td>{dm?.phone}</td>
-                    <td data-tip={dm?.graveyard?.address}>
-                      {dm?.graveyard?.address.substring(0, 30)}...
-                    </td>
-                    <td>
-                      <Button
-                        className="m-1"
-                        onClick={() =>
-                          history.push(
-                            "/GraveyardsProfiles/" + dm?.graveyard?._id
-                          )
-                        }
-                        variant="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon={faEye} />{" "}
-                      </Button>
-                      <Button
-                        className="m-1"
-                        onClick={() => history.push("/editgrave/" + dm?._id)}
-                        variant="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon={faEdit} />{" "}
-                      </Button>
-                      <Button
-                        className="m-1"
-                        onClick={(e) => {
-                          deleteClient(dm);
-                        }}
-                        variant="primary"
-                        size="sm"
-                      >
-                        <FontAwesomeIcon icon={faTrashAlt} />{" "}
-                      </Button>
-                    </td>
-                  </tr>
-                </>
-              ))}
-            </tbody>
-          </Table>
+                      <td className="fw-bold">
+                        {dm.name + " "} {dm.lastn}
+                      </td>
+                      <td>{dm?.phone}</td>
+                      <td data-tip={dm?.graveyard?.address}>
+                        {dm?.graveyard?.address.substring(0, 30)}...
+                      </td>
+                      <td>
+                        <Button
+                          className="m-1"
+                          onClick={() =>
+                            history.push(
+                              "/GraveyardsProfiles/" + dm?.graveyard?._id
+                            )
+                          }
+                          variant="primary"
+                          size="sm"
+                        >
+                          <FontAwesomeIcon icon={faEye} />{" "}
+                        </Button>
+                        <Button
+                          className="m-1"
+                          onClick={() => history.push("/editgrave/" + dm?._id)}
+                          variant="primary"
+                          size="sm"
+                        >
+                          <FontAwesomeIcon icon={faEdit} />{" "}
+                        </Button>
+                        <Button
+                          className="m-1"
+                          onClick={(e) => {
+                            deleteClient(dm);
+                          }}
+                          variant="primary"
+                          size="sm"
+                        >
+                          <FontAwesomeIcon icon={faTrashAlt} />{" "}
+                        </Button>
+                      </td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
         </Card.Body>
         <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
           <Nav>

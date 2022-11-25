@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useEffect,
 } from "react";
 import { faEye, faEyeSlash, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -17,17 +18,29 @@ import {
 } from "@themesberg/react-bootstrap";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
+import moment from "moment-timezone";
 
 const Addsuperadmin = () => {
 
   const { t } = useTranslation();
+
+  
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
 
   const history = useHistory();
   const [value, setValue] = useState();
@@ -35,7 +48,7 @@ const Addsuperadmin = () => {
   const [formData, setFormData] = useState({
     name: "",
     lastn: "",
-    Datebirth: new Date(),
+    Datebirth: new Date(moment().format("YYYY-MM-DD")),
     email: "",
     sex: "M",
     password: "",
@@ -145,14 +158,13 @@ const Addsuperadmin = () => {
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                   <br></br>
                   <Stack spacing={3}>
                     <DatePicker
                       disableFuture
                       label={t('date_of_birth')}
-                      inputFormat="dd/MM/yyyy"
-
+                      // inputFormat="dd/MM/yyyy"
                       openTo="day"
                       views={["year", "month", "day"]}
                       value={formData.Datebirth}

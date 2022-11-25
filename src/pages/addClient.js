@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment-timezone";
 import Datetime from "react-datetime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,7 +19,9 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import USstates from "./UsStates.json";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
@@ -27,18 +29,28 @@ import Stack from "@mui/material/Stack";
 import PhoneInput from "react-phone-input-2";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
 
 const AddClient = () => {
   const { t } = useTranslation();
+
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
+
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   const [data, setData] = useState([]);
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
+  const d = new Date();
   const [formData, setFormData] = useState({
     name: "",
     lastn: "",
-    Datebirth: new Date(),
+    Datebirth: moment(d).format("YYYY-MM-DD"),
     email: "",
     sex: "",
     password: "",
@@ -168,35 +180,35 @@ const AddClient = () => {
     mydata.append("profiles", JSON.stringify(inputList));
     mydata.append("vendor", decoded.userId);
 
-      Swal.fire({
-        title: "Are you sure you want to add this client?",
-        showCancelButton: true,
-        confirmButtonText: "Yes, add it!",
-        showLoaderOnConfirm: true,
-        preConfirm: async () => {
-          return await axios
+    Swal.fire({
+      title: "Are you sure you want to add this client?",
+      showCancelButton: true,
+      confirmButtonText: "Yes, add it!",
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        return await axios
           .post(
             "http://skiesbook.com:3000/api/v1/users/addclient",
             mydata,
             config
           ).then((result) => {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: t("Customer added successfully"),
-                showConfirmButton: true,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  history.push("/adminclients");
-                }
-              });
-            })
-            .catch((error) => {
-              Swal.showValidationMessage(t('email_address_already_exists'));
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: t("Customer added successfully"),
+              showConfirmButton: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.push("/adminclients");
+              }
             });
-        },
-        allowOutsideClick: () => !Swal.isLoading(),
-      });
+          })
+          .catch((error) => {
+            Swal.showValidationMessage(t('email_address_already_exists'));
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    });
   };
 
   const [passwordType, setPasswordType] = useState("password");
@@ -337,7 +349,7 @@ const AddClient = () => {
       lat: location?.lat,
       lng: location?.lng,
       code: location?.code,
-      id : location?._id
+      id: location?._id
     };
     handlePositionChange(position, "position", index);
     console.log(inputList);
@@ -390,10 +402,10 @@ const AddClient = () => {
 
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                 <Stack spacing={3}>
                   <DatePicker
-                    inputFormat="dd/MM/yyyy"
+                    // inputFormat="dd/MM/yyyy"
                     disableFuture
                     label={t('date_of_birth')}
                     openTo={"day"}
@@ -581,10 +593,10 @@ const AddClient = () => {
                 <Row className="align-items-center">
                   <Col md={6} className="mb-3">
                     <Form.Group id="birthday">
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                         <Stack spacing={3}>
                           <DatePicker
-                            inputFormat="dd/MM/yyyy"
+                            // inputFormat="dd/MM/yyyy"
                             disableFuture
                             label={t('date_of_birth')}
                             name="profileDatebirth"
@@ -601,10 +613,10 @@ const AddClient = () => {
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="birthday">
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                         <Stack spacing={3}>
                           <DatePicker
-                            inputFormat="dd/MM/yyyy"
+                            // inputFormat="dd/MM/yyyy"
                             disableFuture
                             label={t('Date of death')}
                             name="profileDatedeath"

@@ -45,6 +45,7 @@ import { Badge } from "@themesberg/react-bootstrap";
 import Pagination from "./pagination";
 import "./pagination.css";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 export default function AllSuperAdmins() {
   const { t } = useTranslation();
 
@@ -148,79 +149,81 @@ export default function AllSuperAdmins() {
         </Row>
       </div>
       <Card border="light" className="table-wrapper table-responsive shadow-sm">
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                <th className="border-bottom">#</th>
-                <th className="border-bottom">{t("full_name")}</th>
-                <th className="border-bottom">{t("reference_email")}</th>
-                <th className="border-bottom">{t("phone")}</th>
-                <th className="border-bottom">{t("sales")}</th>
-                <th className="border-bottom">{t("membership")}</th>
-                <th className="border-bottom">{t("actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPosts?.map((dm, index) => (
+        <Card.Body className="p-0">
+          <TableContainer component={Paper}>
+            <Table hover className="user-table align-items-center">
+              <thead>
                 <tr>
-                  <td>
-                    <div className="user-avatar lg-avatar me-4">
-                      <Image
-                        style={{
-                          flex: 1,
-                          width: "50px",
-                          height: "50px",
-                          resizeMode: "contain",
-                        }}
-                        src={
-                          "http://skiesbook.com:3000/uploads/" + dm.userimage
-                        }
-                        className="card-img-top rounded-circle border-white"
-                      />
-                    </div>
-                  </td>
-                  <td className="fw-bold">
-                    {dm.name} {dm.lastn}
-                  </td>
-                  <td>{dm.email}</td>
-                  <td>{dm?.phone}</td>
-                  <td>{dm?.clients.length}</td>
-                  <td>
-                    {" "}
-                    <>
-                      {dm?.role === "help" ? (
-                        <Badge bg="primary" className="me-1">
-                          {t("help_desk")}
-                        </Badge>
-                      ) : dm?.role === "sales" ? (
-                        <Badge bg="success" className="me-1">
-                          {t("sales")}
-                        </Badge>
-                      ) : dm?.role === "sadmin" ? (
-                        <Badge bg="warning" className="me-1">
-                          {t("admin")}
-                        </Badge>
-                      ) : (
-                        t("none")
-                      )}
-                    </>
-                  </td>
-
-                  <td>
-                    <Button
-                      className="m-1"
-                      onClick={() => history.push("/editstaff/" + dm?._id)}
-                      variant="primary"
-                      size="sm"
-                    >
-                      <FontAwesomeIcon icon={faEdit} />{" "}
-                    </Button>
-                  </td>
+                  <th className="border-bottom">#</th>
+                  <th className="border-bottom">{t("full_name")}</th>
+                  <th className="border-bottom">{t("reference_email")}</th>
+                  <th className="border-bottom">{t("phone")}</th>
+                  <th className="border-bottom">{t("sales")}</th>
+                  <th className="border-bottom">{t("membership")}</th>
+                  <th className="border-bottom">{t("actions")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {currentPosts?.map((dm, index) => (
+                  <tr>
+                    <td>
+                      <div className="user-avatar lg-avatar me-4">
+                        <Image
+                          style={{
+                            flex: 1,
+                            width: "50px",
+                            height: "50px",
+                            resizeMode: "contain",
+                          }}
+                          src={
+                            "http://skiesbook.com:3000/uploads/" + dm.userimage
+                          }
+                          className="card-img-top rounded-circle border-white"
+                        />
+                      </div>
+                    </td>
+                    <td className="fw-bold">
+                      {dm.name} {dm.lastn}
+                    </td>
+                    <td>{dm.email}</td>
+                    <td>{dm?.phone}</td>
+                    <td>{dm?.clients.length}</td>
+                    <td>
+                      {" "}
+                      <>
+                        {dm?.role === "help" ? (
+                          <Badge bg="primary" className="me-1">
+                            {t("help_desk")}
+                          </Badge>
+                        ) : dm?.role === "sales" ? (
+                          <Badge bg="success" className="me-1">
+                            {t("sales")}
+                          </Badge>
+                        ) : dm?.role === "sadmin" ? (
+                          <Badge bg="warning" className="me-1">
+                            {t("admin")}
+                          </Badge>
+                        ) : (
+                          t("none")
+                        )}
+                      </>
+                    </td>
+
+                    <td>
+                      <Button
+                        className="m-1"
+                        onClick={() => history.push("/editstaff/" + dm?._id)}
+                        variant="primary"
+                        size="sm"
+                      >
+                        <FontAwesomeIcon icon={faEdit} />{" "}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableContainer>
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination
