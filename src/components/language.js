@@ -75,6 +75,12 @@ const Language = () => {
                       currentLanguageCode === code ? "#e9ecef" : "white",
                   }}
                 >
+                  <span
+                    className={`flag-icon flag-icon-${country_code} mx-2`}
+                    style={{
+                      opacity: currentLanguageCode === code ? 0.5 : 1,
+                    }}
+                  ></span>
                   {name}
                 </Dropdown.Item>
                 {i !== languages.length - 1 ? <Dropdown.Divider /> : null}
