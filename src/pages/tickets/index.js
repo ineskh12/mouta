@@ -63,7 +63,6 @@ export default function App(props) {
 <>
       
         <h5 className="mb-4">{ticket?.subject}</h5>
-          
         <Paper className={classes.paper} zDepth={2}>
           <Paper id="style-1" className={classes.messagesBody}>
             {props?.ticket &&

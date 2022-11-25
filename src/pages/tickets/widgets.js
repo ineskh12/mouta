@@ -24,7 +24,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Discution from "./index.js";
 import History from "./history";
-
+import { useTranslation } from "react-i18next";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -59,6 +59,7 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
+  const { t } = useTranslation();
   const [value, setValue] = React.useState(0);
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
@@ -79,8 +80,7 @@ export default function BasicTabs() {
       console.error(error.message);
     }
   }
-  useEffect(() => {
-  }, [
+  useEffect(() => {}, [
     setTimeout(() => {
       getTicket();
     }, 2500),
@@ -98,7 +98,7 @@ export default function BasicTabs() {
             className="me-2"
           >
             <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-            Retour
+            {t("back")}
           </Dropdown.Toggle>
         </ButtonGroup>
       </div>
@@ -109,20 +109,23 @@ export default function BasicTabs() {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Discussion" {...a11yProps(0)} />
-            <Tab label="Historique" {...a11yProps(1)} />
+            <Tab
+              label={t("Discussion")}
+              {...a11yProps(0)}
+              style={{ margin: "10px" }}
+            />
+            {decoded.role === "superadmin" ? (
+              <Tab label={t("historic")} {...a11yProps(1)} />
+            ) : (
+              <></>
+            )}
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <>
-            <Discution ticket={ticket} />
-          </>
+          <Discution ticket={ticket} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <>
           <History ticket={ticket} />
-
-          </>
         </TabPanel>
       </Box>
     </>

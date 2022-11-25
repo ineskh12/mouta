@@ -54,6 +54,10 @@ import comments from "./comments/index";
 import welcome from "./password/welcomePassword";
 import requests from "./requests";
 import Language from "../components/language";
+import Map from "./map";
+import Emplacement from "./map";
+import EditStaff from "./staff/editGStaff";
+import EditStaffSupperAdmin from "./staff/editAStaff";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -160,6 +164,7 @@ export default function Myroutes() {
             path="/ticketdetail/:id"
             component={Ticketdetails}
           />
+          <RouteWithSidebar exact path="/editstaff/:id" component={EditStaffSupperAdmin} />
 
           <RouteWithSidebar exact path="/editgrave/:id" component={EditGrave} />
           <RouteWithSidebar
@@ -187,7 +192,8 @@ export default function Myroutes() {
           />
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
-
+          
+          {/* a traduire cette page */}
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
           <RouteWithLoader
             exact
@@ -205,6 +211,9 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/staff" component={Staff} />
           <RouteWithSidebar exact path="/addstaff" component={addStaff} />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithSidebar exact path="/emplacements" component={Emplacement} />
+          <RouteWithSidebar exact path="/editstaff/:id" component={EditStaff} />
+
           <RouteWithSidebar
             exact
             path="/editclient/:id"
@@ -220,7 +229,7 @@ export default function Myroutes() {
             exact
             path="/dashboard"
             component={graveyard_dashboard_cim}
-          />
+            />
 
           <RouteWithSidebar exact path="/me/:id" component={Me} />
 
@@ -229,7 +238,7 @@ export default function Myroutes() {
             exact
             path="/adminaddclient"
             component={AddClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/adminclients" component={GetClient} />
 
@@ -237,7 +246,7 @@ export default function Myroutes() {
             exact
             path="/adminprofiles"
             component={AllProfiles}
-          />
+            />
 
           <RouteWithSidebar exact path="/clients" component={clients} />
 
@@ -246,7 +255,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "client" ? (
@@ -258,18 +267,18 @@ export default function Myroutes() {
             exact
             path="/invi/:id/:nom/:prenom"
             component={Invi}
-          />
+            />
           <RouteWithSidebar exact path="/invi/:id/:fullname" component={Invi} />
           <RouteWithSidebar
             exact
             path="/invitationsout/:id"
             component={InviOut}
-          />
+            />
           <RouteWithSidebar
             exact
             path="/invitationsin/:id"
             component={InviIn}
-          />
+            />
           <RouteWithSidebar exact path="/parente/:id" component={Parente} />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
           <RouteWithSidebar exact path="/prof/:id" component={Test} />
@@ -281,7 +290,7 @@ export default function Myroutes() {
             exact
             path="/defunt/:id"
             component={ProfileCardWidget}
-          />{" "}
+            />{" "}
           <RouteWithSidebar exact path="/comments" component={comments} />
           <RouteWithSidebar exact path="/myProfiles" component={Myprofiles} />
           <RouteWithSidebar exact path="/AddAdmin" component={Addadmin} />
@@ -290,7 +299,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "gstaff" ? (
@@ -305,7 +314,7 @@ export default function Myroutes() {
             exact
             path="/adminaddclient"
             component={AddClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/Staffclient" component={Staffclient} />
 
@@ -313,7 +322,7 @@ export default function Myroutes() {
             exact
             path="/staffprofile"
             component={StaffProfile}
-          />
+            />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
 
           <RouteWithSidebar exact path="/clients" component={clients} />
@@ -321,7 +330,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "gadmin" ? (
@@ -340,7 +349,7 @@ export default function Myroutes() {
             exact
             path="/adminaddclient"
             component={AddClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/adminclients" component={GetClient} />
 
@@ -348,13 +357,13 @@ export default function Myroutes() {
             exact
             path="/adminprofiles"
             component={AllProfiles}
-          />
+            />
 
           <RouteWithSidebar
             exact
             path={Routes.Gaveyarddashboard.path}
             component={graveyard_dashboard}
-          />
+            />
           <RouteWithSidebar exact path="/clients" component={clients} />
 
           <RouteWithSidebar exact path="/AddAdmin" component={Addadmin} />
@@ -362,7 +371,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "gcompta" ? (
@@ -372,7 +381,7 @@ export default function Myroutes() {
             exact
             path="/dashboard"
             component={graveyard_dashboard_cim}
-          />
+            />
 
           <RouteWithSidebar exact path="/" component={Staffclient} />
           <RouteWithSidebar exact path="/prof/:id" component={Test} />
@@ -383,7 +392,7 @@ export default function Myroutes() {
             exact
             path="/adminaddclient"
             component={AddClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/Staffclient" component={Staffclient} />
 
@@ -391,20 +400,20 @@ export default function Myroutes() {
             exact
             path="/staffprofile"
             component={StaffProfile}
-          />
+            />
           <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
 
           <RouteWithSidebar
             exact
             path={Routes.Gaveyarddashboard.path}
             component={graveyard_dashboard}
-          />
+            />
           <RouteWithSidebar exact path="/clients" component={clients} />
           <RouteWithLoader
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "help" ? (
@@ -415,19 +424,19 @@ export default function Myroutes() {
             exact
             path="/addsuperadmin"
             component={Addsuperadmin}
-          />
+            />
 
           <RouteWithSidebar exact path="/alltickets" component={StaffTickets} />
           <RouteWithSidebar
             exact
             path="/ticketdetail/:id"
             component={Ticketdetails}
-          />
+            />
           <RouteWithSidebar
             exact
             path="/addadmingstaff"
             component={Addastaff}
-          />
+            />
           <RouteWithSidebar exact path="/mystaff" component={Superadminstaff} />
 
           <RouteWithSidebar exact path="/me/:id" component={Me} />
@@ -441,25 +450,25 @@ export default function Myroutes() {
             exact
             path="/admin/superadmins"
             component={AllSuperAdmins}
-          />
+            />
           <RouteWithSidebar
             exact
             path="/editsuperadmin/:id"
             component={EditSuperAdmin}
-          />
+            />
 
           {/* pages */}
           <RouteWithSidebar
             exact
             path={Routes.Gaveyarddashboard.path}
             component={graveyard_dashboard}
-          />
+            />
           <RouteWithSidebar exact path="/AdminClients" component={clients} />
           <RouteWithSidebar
             exact
             path="/GraveyardsProfiles/:id"
             component={GetClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
@@ -468,7 +477,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "sales" ? (
@@ -488,13 +497,13 @@ export default function Myroutes() {
             exact
             path={Routes.Gaveyarddashboard.path}
             component={graveyard_dashboard}
-          />
+            />
           <RouteWithSidebar exact path="/AdminClients" component={clients} />
           <RouteWithSidebar
             exact
             path="/GraveyardsProfiles/:id"
             component={GetClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
@@ -503,7 +512,7 @@ export default function Myroutes() {
             exact
             path={Routes.NotFound.path}
             component={NotFoundPage}
-          />
+            />
           <Redirect to={Routes.NotFound.path} />
         </Switch>
       ) : decoded !== null && decoded.role === "sadmin" ? (
@@ -514,12 +523,12 @@ export default function Myroutes() {
             exact
             path="/addsuperadmin"
             component={Addsuperadmin}
-          />
+            />
           <RouteWithSidebar
             exact
             path="/addadmingstaff"
             component={Addastaff}
-          />
+            />
           <RouteWithSidebar exact path="/mystaff" component={Superadminstaff} />
           <RouteWithSidebar exact path="/me/:id" component={Me} />
           <RouteWithSidebar exact path="/profiles" component={AllProfiles} />
@@ -532,13 +541,13 @@ export default function Myroutes() {
             exact
             path={Routes.Gaveyarddashboard.path}
             component={graveyard_dashboard}
-          />
+            />
           <RouteWithSidebar exact path="/AdminClients" component={clients} />
           <RouteWithSidebar
             exact
             path="/GraveyardsProfiles/:id"
             component={GetClient}
-          />
+            />
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
@@ -575,6 +584,8 @@ export default function Myroutes() {
             component={ProfileCardWidget}
           />
           <RouteWithLoader exact path="/signup" component={Signup} />
+          <RouteWithLoader exact path="/map" component={Map} />
+
           <RouteWithLoader exact path="/prof/:id" component={Test} />
           <Redirect to="/signin" />
         </Switch>

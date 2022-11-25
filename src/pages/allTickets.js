@@ -256,7 +256,7 @@ export default function AllProfiles() {
             <tbody>
               {currentPosts?.map((dm, index) => (
                 <tr>
-                  <td>{dm?._id}</td>
+                  <td>{index}</td>
                   <td className="fw-bold">{dm?.prop?.graveyard?.name}</td>
 
                   <td className="fw-bold">{dm?.subject}</td>

@@ -27,6 +27,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { faCheck, faComment } from "@fortawesome/fontawesome-free-solid";
 import ReactTooltip from "react-tooltip";
+import { faFilter } from "@fortawesome/fontawesome-free-solid";
+import { useTranslation } from "react-i18next";
 
 export default function AllProfiles() {
   const history = useHistory();
@@ -34,6 +36,7 @@ export default function AllProfiles() {
   const [filtreddata, setfiltredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +73,7 @@ export default function AllProfiles() {
       }).then(async (result) => {
         if (result.isConfirmed) {
           const { data: response } = await axios.post(
-            `http://localhost:3000/api/v1/request/accept/${id}`
+            `http://skiesbook.com:3000/api/v1/request/accept/${id}`
           );
           console.log(response);
           Swal.fire("Accepted!", "Request has been accepted.", "success");
@@ -81,7 +84,30 @@ export default function AllProfiles() {
       console.error(error.message);
     }
   }
-  async function reject(id) {}
+  async function reject(id) {
+    try {
+      Swal.fire({
+        title: "Are you sure you want to reject this request?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, reject it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const { data: response } = await axios.post(
+            `http://skiesbook.com:3000/api/v1/request/reject/${id}`
+          );
+          console.log(response);
+          Swal.fire("Rejected!", "Request has been rejected.", "success");
+          window.location.reload();
+        }
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
   async function addNote(e) {
     e.preventDefault();
     try {
@@ -92,7 +118,7 @@ export default function AllProfiles() {
         showLoaderOnConfirm: true,
         preConfirm: async () => {
           return await axios
-            .post("http://localhost:3000/api/v1/request/note/" + id, {
+            .post("http://skiesbook.com:3000/api/v1/request/note/" + id, {
               note: text,
             })
             .then((result) => {
@@ -127,6 +153,14 @@ export default function AllProfiles() {
     setShow(true);
     setText(text);
     setId(id);
+  }
+
+  async function filterdata(e) {
+    const filtredData = data.filter((item) => item?.state === e);
+    setfiltredData(filtredData);
+    if (e === "all") {
+      setfiltredData(data);
+    }
   }
 
   return (
@@ -179,6 +213,27 @@ export default function AllProfiles() {
           ></Breadcrumb>
           <h4>Partner ship requests </h4>
         </div>
+      </div>
+      <div className="d-block mb-4 mb-md-2">
+        <Row>
+          <Col xs={8} md={6} lg={3} xl={2}>
+            <InputGroup>
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faFilter} />
+              </InputGroup.Text>
+              <Form.Select
+                aria-label={t("Default select example")}
+                onChange={(val) => filterdata(val.target.value)}
+                defaultValue="C"
+              >
+                <option value="all">{t("All")}</option>
+                <option value="pending">{t("Pending")}</option>
+                <option value="accepted">{t("Accepted")}</option>
+                <option value="declined">{t("Declined")}</option>
+              </Form.Select>
+            </InputGroup>
+          </Col>
+        </Row>
       </div>
 
       <Card border="light" className="table-wrapper shadow-sm">
@@ -263,7 +318,7 @@ export default function AllProfiles() {
                           </Button>
                           <Button
                             className="m-1"
-                            onClick={(e) => {
+                            onClick={() => {
                               reject(dm._id);
                             }}
                             style={{ backgroundColor: "red" }}

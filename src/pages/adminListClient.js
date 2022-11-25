@@ -57,8 +57,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const GetClient = () => {
+  const { t } = useTranslation();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const token = JSON.parse(localStorage.getItem("token"));
@@ -144,10 +147,10 @@ const GetClient = () => {
     inputList.profileEmail = clientMail;
 
     Swal.fire({
-      title: "Ajouter un nouveau profil",
+      title: t('Add a new profile'),
 
       showCancelButton: true,
-      confirmButtonText: "Oui !",
+      confirmButtonText: `${t('yes')} !`,
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
@@ -156,7 +159,7 @@ const GetClient = () => {
             Swal.fire({
               position: "center",
               icon: "success",
-              title: "Profil ajouté avec succès",
+              title: t('profile_added_successfully'),
               showConfirmButton: true,
             }).then((result) => {
               if (result.isConfirmed) {
@@ -165,7 +168,7 @@ const GetClient = () => {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(`erreur: ${error}`);
+            Swal.showValidationMessage(`${t('error')}: ${error}`);
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -206,12 +209,11 @@ const GetClient = () => {
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>Nom</Form.Label>
+                  <Form.Label>{t('lastname')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileName"
-                    placeholder="Entrer votre Nom"
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -223,12 +225,12 @@ const GetClient = () => {
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="lastName">
-                  <Form.Label>Prénom</Form.Label>
+                  <Form.Label>{t('firstname')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
                     name="profileLastName"
-                    placeholder="Entrer votre prénom"
+                    placeholder={t("Enter your first name")}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -247,7 +249,7 @@ const GetClient = () => {
                       <DatePicker
                         inputFormat="dd/MM/yyyy"
                         disableFuture
-                        label="Date de naissance"
+                        label={t('date_of_birth')}
                         open={false}
                         views={["year", "month", "day"]}
                         value={inputList.profileDatebirth}
@@ -267,7 +269,7 @@ const GetClient = () => {
                       <DatePicker
                         inputFormat="dd/MM/yyyy"
                         disableFuture
-                        label="Date de décès"
+                        label={t("Date of death")}
                         open={false}
                         views={["year", "month", "day"]}
                         value={inputList.profileDatedeath}
@@ -283,7 +285,7 @@ const GetClient = () => {
 
               <Col md={6} className="mb-3">
                 <Form.Group id="gender">
-                  <Form.Label>Sexe</Form.Label>
+                  <Form.Label>{t('gender')}</Form.Label>
                   <Form.Select
                     defaultValue="F"
                     name="gender"
@@ -291,19 +293,18 @@ const GetClient = () => {
                       setInputList({ ...inputList, gender: e.target.value })
                     }
                   >
-                    <option value="F">Femme</option>
-                    <option value="M">Homme</option>
-                    <option value="I">Indéterminé</option>
+                    <option value="F">{t('women')}</option>
+                    <option value="M">{t('man')}</option>
+                    <option value="I">{t('Undetermined')}</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="Emplacement du funérailles">
-                  <Form.Label>Emplacement du funérailles</Form.Label>
+                  <Form.Label>{t('Location of funeral')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder="Entrer les cordonnées"
                     name="cords"
                     onChange={(e) =>
                       setInputList({ ...inputList, cords: e.target.value })
@@ -314,7 +315,7 @@ const GetClient = () => {
 
               <Col md={6} className="mb-3">
                 <Form.Group id="funérailles">
-                  <Form.Label>Modes de funérailles</Form.Label>
+                  <Form.Label>{t('Funeral arrangements')}</Form.Label>
                   <Form.Select
                     defaultValue="I"
                     name="modeDeath"
@@ -322,31 +323,29 @@ const GetClient = () => {
                       setInputList({ ...inputList, modeDeath: e.target.value })
                     }
                   >
-                    <option value="I">Inhumation (Enterrement) </option>
-                    <option value="C">Crémation (Incinération)</option>
+                    <option value="I">{t('Burial')}</option>
+                    <option value="C">{t('Cremation')}</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="emal">
-                  <Form.Label>Email de référence</Form.Label>
+                  <Form.Label>{t('reference_email')}</Form.Label>
                   <Form.Control
                     required
                     name="profileEmail"
                     type="email"
                     value={clientMail}
-                    placeholder="name@profile.com"
                   />
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="ville">
-                  <Form.Label>ville natale</Form.Label>
+                  <Form.Label>{t('hometown')}</Form.Label>
                   <Form.Control
                     required
                     name="hometown"
                     type="text"
-                    placeholder="ville natale"
                     onChange={(e) =>
                       setInputList({ ...inputList, hometown: e.target.value })
                     }
@@ -357,14 +356,14 @@ const GetClient = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit">
-              Ajouter{" "}
+              {t('add')}{" "}
             </Button>
             <Button
               variant="secondary"
               className="text-gray ms-auto"
               onClick={handleClose}
             >
-              Fermer
+              {t('close')}
             </Button>
           </Modal.Footer>
         </Form>
@@ -389,11 +388,11 @@ const GetClient = () => {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                Retour
+                {t('back')}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h4>Liste des Clients du cimetière {grave?.name}</h4>
+          <h4>{t('List of Cemetery Clients')} {grave?.name}</h4>
 
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
@@ -410,7 +409,7 @@ const GetClient = () => {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
-                Nouveau Client
+                {t("New customer")}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
@@ -425,7 +424,7 @@ const GetClient = () => {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t("search")} />
             </InputGroup>
           </Col>
           <Col>
@@ -442,7 +441,7 @@ const GetClient = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t('show')}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -553,8 +552,8 @@ const GetClient = () => {
                 </CDropdownItem>
 
                 <Dropdown.Item onClick={() => setModal(row?.email, row?._id)}>
-                  <FontAwesomeIcon icon={faPlus} className="me-2" /> Ajouter un
-                  profil
+                  <FontAwesomeIcon icon={faPlus} className="me-2" />
+                  {t('Add a profile')}
                 </Dropdown.Item>
               </CDropdownMenu>
             </CDropdown>
@@ -565,16 +564,16 @@ const GetClient = () => {
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
-                  Profiles
+                  {t('Profils')}
                 </Typography>
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Photo</TableCell>
-                      <TableCell>Nom et prenom</TableCell>
-                      <TableCell align="Left">date de décès</TableCell>
-                      <TableCell align="right">Création du profil</TableCell>
-                      <TableCell align="right">Actions</TableCell>
+                      <TableCell>{t('photo')}</TableCell>
+                      <TableCell>{t('full_name')}</TableCell>
+                      <TableCell align="Left">{t('Date of death')}</TableCell>
+                      <TableCell align="right">{t("Profile creation")}</TableCell>
+                      <TableCell align="right">{t('actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

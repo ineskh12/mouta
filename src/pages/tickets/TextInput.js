@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { useHistory, useParams } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -29,6 +30,7 @@ export const TextInput = () => {
   const { id } = useParams();
   const [message, setMessage] = React.useState("");
   const history = useHistory();
+  const {t} = useTranslation();
   async function send(e){
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem("token"));
@@ -51,7 +53,7 @@ export const TextInput = () => {
       <form onSubmit={(e)=> send(e)} className={classes.wrapForm} noValidate autoComplete="off">
         <TextField
           id="standard-text"
-          label="send your message"
+          label={t('Send message')}
           className={classes.wrapText}
           value={message}
           onChange={(e) => setMessage(e.target.value)}

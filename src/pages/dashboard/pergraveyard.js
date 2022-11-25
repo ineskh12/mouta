@@ -43,6 +43,7 @@ import Stack from "@mui/material/Stack";
 import { CounterWidget } from "../../components/Widgets";
 import logo_colored from "../../assets/img/logo_colored.png";
 import { useReactToPrint } from "react-to-print";
+import { useTranslation } from "react-i18next";
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
@@ -51,7 +52,7 @@ export default function AllProfiles() {
   const history = useHistory();
   const [selectedDate, handleDateChange] = React.useState([null, null]);
   const d = new Date();
-
+  const {t} = useTranslation();
   const [formdata, setFormdata] = useState({
     startDate: moment(d).format("YYYY-MM"),
     endDate: moment(d).format("YYYY-MM-DD"),
@@ -142,10 +143,10 @@ export default function AllProfiles() {
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label="De la date"
-                    openTo="year"
+                    label={t('from_date')}
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, startDate: e });
@@ -162,9 +163,9 @@ export default function AllProfiles() {
                   <DatePicker
                     disableFuture
                     inputFormat="dd/MM/yyyy"
-                    label="A la date"
+                    label={t('until')}
                     value={formdata.endDate}
-                    openTo="year"
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });

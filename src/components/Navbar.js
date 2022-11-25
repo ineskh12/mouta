@@ -26,7 +26,6 @@ import Language from "./language";
 import { useTranslation } from "react-i18next";
 
 export default (props) => {
-
   const { t } = useTranslation();
 
   const history = useHistory();
@@ -43,9 +42,12 @@ export default (props) => {
     <Navbar variant="dark" expanded className="ps-0 pe-2 pb-0">
       <Container fluid className="px-0">
         <div className="d-flex justify-content-between w-100">
-          <Language />
           <div className="d-flex align-items-center"></div>
           <Nav className="align-items-center">
+            <Dropdown as={Nav.Item}>
+              <Language />
+            </Dropdown>
+
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">

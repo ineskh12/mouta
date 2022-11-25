@@ -23,6 +23,7 @@ import Box from "@mui/material/Box";
 import Out from "./invitationsOut";
 import In from "./invitationsIn";
 import Frnd from "./friends";
+import { useTranslation } from "react-i18next";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,6 +59,7 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
+  const { t } = useTranslation();
   const [value, setValue] = React.useState(0);
   const [data, setData] = useState([]);
   const [first, setfirst] = useState({});
@@ -102,7 +104,7 @@ export default function BasicTabs() {
     }
     const matches = searchval.match(/\b[^\d\s]+\b/g);
     if (matches?.length === 1) {
-      searchval = searchval+" "
+      searchval = searchval + " "
     }
     history.push("/invi/" + searchval + "/" + formData1.fullname);
   }
@@ -118,7 +120,7 @@ export default function BasicTabs() {
     <>
       <Modal show={showDefault2} onHide={handleClose2}>
         <Modal.Header>
-          <Modal.Title className="h6">Search for existing profile</Modal.Title>
+          <Modal.Title className="h6">{t("Search for existing profile")}</Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose2} />
         </Modal.Header>
         <Modal.Body>
@@ -126,7 +128,7 @@ export default function BasicTabs() {
             <Row>
               <Col md={8} className="mb-3">
                 <Form.Group id="name">
-                  <Form.Label>Account</Form.Label>
+                  <Form.Label>{t('Account')}</Form.Label>
 
                   <Form.Control
                     as="select"
@@ -146,11 +148,11 @@ export default function BasicTabs() {
               </Col>
               <Col md={8} className="mb-3">
                 <Form.Group id="name">
-                  <Form.Label>Full name</Form.Label>
+                  <Form.Label>{t('full_name')}</Form.Label>
                   <Form.Control
                     required
                     type="text"
-                    placeholder="name & lastname"
+                    placeholder={t('full_name')}
                     onChange={(e) =>
                       setFormData1({ ...formData1, fullname: e.target.value })
                     }
@@ -161,7 +163,7 @@ export default function BasicTabs() {
             <Row>
               <div className="mt-3">
                 <Button type="submit" variant="primary">
-                  Search
+                  {t('search')}
                 </Button>
               </div>
             </Row>
@@ -177,7 +179,7 @@ export default function BasicTabs() {
               className="my-3 "
               onClick={() => setShowDefault2(true)}
             >
-              Recherche d'autres profils
+              {t('Search for other profiles')}
             </Button>
           </InputGroup>
         </Col>
@@ -192,16 +194,16 @@ export default function BasicTabs() {
             variant="scrollable"
             aria-label="scrollable force tabs example"
           >
-            <Tab wrapped label="Parenté " {...a11yProps(0)} />
-            <Tab wrapped label="Invitations envoyés" {...a11yProps(1)} />
+            <Tab wrapped label={t('relationship')} {...a11yProps(0)} />
+            <Tab wrapped label={t('Invitations sent')} {...a11yProps(1)} />
 
             <Tab
               wrapped
               label={
                 <span>
-                  invitations reçus{" "}
+                  {t('Invitations received')}{" "}
                   <span className="badge badge-danger">
-                  {decodedinvs}
+                    {decodedinvs}
                   </span>
                 </span>
               }

@@ -43,11 +43,13 @@ import Stack from "@mui/material/Stack";
 import { CounterWidget } from "../../components/Widgets";
 import logo_colored from "../../assets/img/logo_colored.png";
 import { useReactToPrint } from "react-to-print";
+import { useTranslation } from "react-i18next";
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+  const { t } = useTranslation();
   const history = useHistory();
   const [selectedDate, handleDateChange] = React.useState([null, null]);
   const d = new Date();
@@ -108,7 +110,7 @@ export default function AllProfiles() {
             className="me-2"
           >
             <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-            Retour
+            {t('back')}
           </Dropdown.Toggle>
         </ButtonGroup>
       </div>
@@ -120,7 +122,7 @@ export default function AllProfiles() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Liste des profils</h4>
+          <h4>{t("list_of_profiles")}</h4>
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}
@@ -136,16 +138,16 @@ export default function AllProfiles() {
       <div className="d-block mb-4 mb-md-2">
         <Card border="light" className="shadow-sm m-3 p-3">
           <Row className="align-items-center">
-            <h5>Filter par date</h5>
+            <h5>{t("filter_by_date")}</h5>
             <Col md={3} className="mb-3">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label="De la date"
-                    openTo="year"
+                    label={t("from_date")}
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, startDate: e });
@@ -162,9 +164,9 @@ export default function AllProfiles() {
                   <DatePicker
                     disableFuture
                     inputFormat="dd/MM/yyyy"
-                    label="A la date"
+                    label={t("until")}
                     value={formdata.endDate}
-                    openTo="year"
+                    openTo="day"
                     views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });
@@ -175,11 +177,11 @@ export default function AllProfiles() {
               </LocalizationProvider>
             </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Filter</Button>
+              <Button onClick={(e) => gofilter()}>{t("filter")}</Button>
             </Col>
             <Col hidden >
               <Button onClick={handlePrint}>
-                <FontAwesomeIcon icon={faPrint} /> invoice
+                <FontAwesomeIcon icon={faPrint} /> {t("invoice")}
               </Button>
             </Col>
             <Col md={3}>
@@ -199,12 +201,12 @@ export default function AllProfiles() {
             <thead className="thead-light">
               <tr>
                 <th className="border-0">#</th>
-                <th className="border-0">Nom Prénom</th>
-                <th className="border-0">Date de création de profil</th>
-                <th className="border-0">Date de décés</th>
-                <th className="border-0">Coordonnées</th>
-                <th className="border-0">Email de référence</th>
-                <th className="border-0">Actions</th>
+                <th className="border-0">{t('full_name')}</th>
+                <th className="border-0">{t('Profile creation date')}</th>
+                <th className="border-0">{t('Date of death')}</th>
+                <th className="border-0">{t('Contact information')}</th>
+                <th className="border-0">{t('reference_email')}</th>
+                <th className="border-0">{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -234,13 +236,13 @@ export default function AllProfiles() {
                           onClick={() => history.push("/prof/" + dm._id)}
                         >
                           <FontAwesomeIcon icon={faEye} className="me-2" />{" "}
-                          Details
+                          {t('Details')}
                         </CDropdownItem>
                         <CDropdownItem
                           onClick={() => history.push("/editprof/" + dm._id)}
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          Editer{" "}
+                          {t('Edit')}{" "}
                         </CDropdownItem>
                       </CDropdownMenu>
                     </CDropdown>
@@ -253,140 +255,140 @@ export default function AllProfiles() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Précédent</Pagination.Prev>
+                <Pagination.Prev>{t('Previous')}</Pagination.Prev>
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
                 <Pagination.Item>4</Pagination.Item>
                 <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>Suivant</Pagination.Next>
+                <Pagination.Next>{t('Next')}</Pagination.Next>
               </Pagination>
             </Nav>
             <small className="fw-bold">
-              Affichage de <b>{2}</b> sur <b>25</b> entrées
+              {t('Display of')} <b>{2}</b> {t('on')} <b>25</b> {t('entries')}
             </small>
           </Card.Footer>
         </Card.Body>
       </Card>
       <>
 
-      <Card
-        hidden
-        border="light"
-        className="bg-white shadow-sm mb-4 all-center"
-      
-      >
-        <Card.Body   >
-          <div className="card"  ref={componentRef}>
-            <div className="card-header bg-black" />
-            <div className="card-body">
-              <div className="container">
-                <div className="row">
-                  <div className="col-xl-12">
-                    <img height={"100px"}  alt="logo" src={logo_colored} />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-xl-12">
-                  <ul className="list-unstyled float-start">
-                      <li style={{ fontSize: 30, color: "blue" }}>Skiesbook inc.</li>
-                      <li>123, Elm Street</li>
-                      <li>123-456-789</li>
-                      <li>mail@mail.com</li>
-                    </ul>
-                    <ul className="list-unstyled float-end">
-                      <li style={{ fontSize: 30, color: "Black" }}>{user?.graveyard?.name}</li>
-                      <li>{user?.graveyard?.address}</li>
-                      <li>{user?.phone}</li>
-                      <li>{user?.email}</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="row text-center">
-                  <h3
-                    className="text-uppercase text-center mt-3"
-                    style={{ fontSize: 40 }}
-                  >
-                    Invoice
-                  </h3>
-                  <p>{user?._id}</p>
-                </div>
-                <Card border="light" className="table-wrapper shadow-sm">
-        <Card.Body className="">
-          <Table className="table-centered">
-            <thead className="thead-light">
-              <tr>
-                <th className="border-0">#</th>
-                <th className="border-0">Nom Prénom</th>
-                <th className="border-0">Date de création de profil</th>
-                <th className="border-0">Date de décés</th>
-                <th className="border-0">Email de référence</th>
-                <th className="border-0">prix</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((dm, index) => (
-                <tr>
-                  <td>{index + 1}</td>
-                  <td className="fw-bold">
-                    {dm?.profileName} {dm?.profileLastName}
-                  </td>
-                  <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
-                  <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
-                  <td>{dm?.profileEmail}</td>
-                  <td> 20 $ </td>
+        <Card
+          hidden
+          border="light"
+          className="bg-white shadow-sm mb-4 all-center"
 
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
-          
-        </Card.Body>
-      </Card>
-                <div className="row">
-                  <div className="col-xl-8">
-                    <ul className="list-unstyled me-0  float-end">
-                      <li>
-                        <span className="me-3">Total Amount:</span>
-                        <i className="fas fa-dollar-sign" /> {data?.length * 20 } $ 
-                      </li>
-                     
-                    </ul>
+        >
+          <Card.Body   >
+            <div className="card" ref={componentRef}>
+              <div className="card-header bg-black" />
+              <div className="card-body">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xl-12">
+                      <img height={"100px"} alt="logo" src={logo_colored} />
+                    </div>
                   </div>
-                </div>
-                <hr />
-                <div className="row">
-                  <div className="col-xl-8" style={{ marginLeft: 60 }}>
-                    <p
-                      className=""
-                      style={{
-                        fontSize: 30,
-                        color: "blue",
-                        fontWeight: 400,
-                        fontFamily: "Arial, Helvetica, sans-serif",
-                      }}
+                  <div className="row">
+                    <div className="col-xl-12">
+                      <ul className="list-unstyled float-start">
+                        <li style={{ fontSize: 30, color: "blue" }}>Skiesbook inc.</li>
+                        <li>123, Elm Street</li>
+                        <li>123-456-789</li>
+                        <li>mail@mail.com</li>
+                      </ul>
+                      <ul className="list-unstyled float-end">
+                        <li style={{ fontSize: 30, color: "Black" }}>{user?.graveyard?.name}</li>
+                        <li>{user?.graveyard?.address}</li>
+                        <li>{user?.phone}</li>
+                        <li>{user?.email}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="row text-center">
+                    <h3
+                      className="text-uppercase text-center mt-3"
+                      style={{ fontSize: 40 }}
                     >
-                      Total:
-                      <span>
-                        <i className="fas fa-dollar-sign" /> {data?.length * 20 } $
-                      </span>
-                    </p>
+                      {t('invoice')}
+                    </h3>
+                    <p>{user?._id}</p>
                   </div>
-                </div>
-                <div className="row mt-2 mb-5">
-                  <p className="fw-bold">
-                    Date: <span className="text-muted"> { moment(d).format("YYYY/MM/DD") }</span>
-                  </p>
-                  <p className="fw-bold mt-3">Signature:</p>
+                  <Card border="light" className="table-wrapper shadow-sm">
+                    <Card.Body className="">
+                      <Table className="table-centered">
+                        <thead className="thead-light">
+                          <tr>
+                            <th className="border-0">#</th>
+                            <th className="border-0">{t('full_name')}</th>
+                            <th className="border-0">{t('Profile creation date')}</th>
+                            <th className="border-0">{t('Date of death')}</th>
+                            <th className="border-0">{t('reference_email')}</th>
+                            <th className="border-0">{t('price')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data?.map((dm, index) => (
+                            <tr>
+                              <td>{index + 1}</td>
+                              <td className="fw-bold">
+                                {dm?.profileName} {dm?.profileLastName}
+                              </td>
+                              <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
+                              <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
+                              <td>{dm?.profileEmail}</td>
+                              <td> 20 $ </td>
+
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+
+
+                    </Card.Body>
+                  </Card>
+                  <div className="row">
+                    <div className="col-xl-8">
+                      <ul className="list-unstyled me-0  float-end">
+                        <li>
+                          <span className="me-3">{t('Total Amount')}:</span>
+                          <i className="fas fa-dollar-sign" /> {data?.length * 20} $
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className="row">
+                    <div className="col-xl-8" style={{ marginLeft: 60 }}>
+                      <p
+                        className=""
+                        style={{
+                          fontSize: 30,
+                          color: "blue",
+                          fontWeight: 400,
+                          fontFamily: "Arial, Helvetica, sans-serif",
+                        }}
+                      >
+                        Total:
+                        <span>
+                          <i className="fas fa-dollar-sign" /> {data?.length * 20} $
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="row mt-2 mb-5">
+                    <p className="fw-bold">
+                      {t('Date')}: <span className="text-muted"> {moment(d).format("YYYY/MM/DD")}</span>
+                    </p>
+                    <p className="fw-bold mt-3">{t('Signature')}:</p>
+                  </div>
                 </div>
               </div>
+              <div className="card-footer bg-black" />
             </div>
-            <div className="card-footer bg-black" />
-          </div>
-        </Card.Body>
-      </Card>
-    </>
+          </Card.Body>
+        </Card>
+      </>
     </>
   );
 }

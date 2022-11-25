@@ -115,7 +115,7 @@ export default function Signin() {
       });
     } else {
       axios
-        .post("http://localhost:3000/api/v1/request", formData)
+        .post("http://skiesbook.com:3000/api/v1/request", formData)
         .then((response) => {
           if (response.status === 200) {
             Swal.fire({
@@ -137,12 +137,12 @@ export default function Signin() {
             submitB2b(e);
           }}
         >
-          <Modal.Header closeButton>
+          <Modal.Header  style={{borderColor : "transparent"}}  closeButton>
             <Modal.Title>Devenir un partenaire</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
-              <h5 className="mb-2">Information responsable cimetière </h5>
+              <h5 className="mb-2">Information</h5>
               <Col md={6} className="mb-3">
                 <Form.Group id="firstName">
                   <Form.Label>Nom</Form.Label>
@@ -180,7 +180,7 @@ export default function Signin() {
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group id="firstName">
-                  <Form.Label>adresse Email</Form.Label>
+                  <Form.Label>Adresse courriel</Form.Label>
                   <Form.Control
                     required
                     type="email"
@@ -206,7 +206,7 @@ export default function Signin() {
                 </Form.Group>
               </Col>
             </Row>
-            <h5 className="mb-2">Information cimetière </h5>
+            <h5 className="mb-2">Cimetière </h5>
 
             <Row className="align-items-center">
               <Col md={6} className="mb-3">
@@ -246,7 +246,6 @@ export default function Signin() {
                   <Form.Control
                     required
                     type="text"
-                    placeholder="Entrer les cordonnées"
                     name="cords"
                     onChange={(e) =>
                       setFormData({ ...formData, address: e.target.value })
@@ -296,31 +295,18 @@ export default function Signin() {
               </Col>
             </Row>
           </Modal.Body>
-          <Modal.Footer>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Fermer
-              </Button>
-              <Button type="submit" variant="primary">
-                Sauvegarder
-              </Button>
-            </Modal.Footer>
+          <Modal.Footer  style={{borderColor : "transparent"}} >
+            <Button variant="secondary" onClick={handleClose}>
+              Fermer
+            </Button>
+            <Button type="submit" variant="primary">
+              Sauvegarder
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
-          <p className="text-center">
-            <Card.Link
-              as={Link}
-              to={Routes.DashboardOverview.path}
-              className="text-gray-700"
-            >
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
-              {t("back_home_page")}
-            </Card.Link>
-          </p>
-
           <Col
             xs={12}
             className="d-flex align-items-center justify-content-center"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Col,
@@ -7,7 +7,7 @@ import {
   Card,
   Form,
   Button,
-  InputGroup, ButtonGroup,Dropdown
+  InputGroup, ButtonGroup, Dropdown
 } from "@themesberg/react-bootstrap";
 import PhoneInput from "react-phone-input-2";
 
@@ -15,8 +15,10 @@ import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const Addsuperadmin = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   const [value, setValue] = useState();
@@ -41,7 +43,8 @@ const Addsuperadmin = () => {
       "Content-Type": "application/json",
     },
   };
-  async function Submit() {
+  async function Submit(e) {
+    e.preventDefault();
     const mydata = new FormData();
     mydata.append("name", formData.name);
     mydata.append("lastn", formData.lastn);
@@ -61,7 +64,7 @@ const Addsuperadmin = () => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: "Employé ajouté avec succès",
+          title: t("employee_added_successfully"),
           showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -73,7 +76,7 @@ const Addsuperadmin = () => {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Addresse mail existe déja",
+          title: t("email_address_already_exists"),
           showConfirmButton: false,
           timer: 1500,
         });
@@ -83,7 +86,7 @@ const Addsuperadmin = () => {
   return (
     <Card border="light" className="bg-white shadow-sm mb-4">
       <Card.Body>
-      <div className="btn-toolbar mb-2 mb-md-2">
+        <div className="btn-toolbar mb-2 mb-md-2">
           <ButtonGroup>
             <Dropdown.Toggle
               onClick={(e) => history.goBack()}
@@ -93,16 +96,16 @@ const Addsuperadmin = () => {
               className="me-2"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-              Retour
+              {t('back')}
             </Dropdown.Toggle>
           </ButtonGroup>
-          </div>
-        <h5 className="mb-4">Ajout d'un nouvel employé</h5>
-        <Form>
+        </div>
+        <h5 className="mb-4">{t("add_a_new_employee")}</h5>
+        <Form onSubmit={(e)=> Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Prénom</Form.Label>
+                <Form.Label>{t('firstname')}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -114,7 +117,7 @@ const Addsuperadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Nom</Form.Label>
+                <Form.Label>{t('lastname')}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -128,7 +131,7 @@ const Addsuperadmin = () => {
           <Row hidden className="align-items-center">
             <Col md={6} className="mb-3">
               <Form.Group id="birthday">
-                <Form.Label>Date de naissance</Form.Label>
+                <Form.Label>{t("date_of_birth")}</Form.Label>
                 <InputGroup>
                   <Form.Control
                     className="date"
@@ -144,16 +147,16 @@ const Addsuperadmin = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
-                <Form.Label>Sexe</Form.Label>
+                <Form.Label>{t('gender')}</Form.Label>
                 <Form.Select
                   defaultValue="M"
                   onChange={(e) =>
                     setFormData({ ...formData, sex: e.target.value })
                   }
                 >
-                  <option value="0">Autre</option>
-                  <option value="F">Femme</option>
-                  <option value="M">Homme</option>
+                  <option value="0">{t('other')}</option>
+                  <option value="F">{t('women')}</option>
+                  <option value="M">{t('man')}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -161,7 +164,7 @@ const Addsuperadmin = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t('email')}</Form.Label>
                 <Form.Control
                   required
                   type="email"
@@ -173,8 +176,9 @@ const Addsuperadmin = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>Téléphone</Form.Label>
+                <Form.Label>{t('phone')}</Form.Label>
                 <PhoneInput
+                  required
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
                   value={value}
@@ -184,13 +188,12 @@ const Addsuperadmin = () => {
             </Col>
           </Row>
           <Row>
-           
+
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Image</Form.Label>
+                <Form.Label>{t('image')}</Form.Label>
                 <Form.Control
-                  required
                   type="file"
                   onChange={(e) =>
                     setFormData({ ...formData, userimage: e.target.files[0] })
@@ -201,15 +204,15 @@ const Addsuperadmin = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="role">
-                <Form.Label>Rôle</Form.Label>
+                <Form.Label>{t("role")}</Form.Label>
                 <Form.Select
                   defaultValue="gstaff"
                   name="Role"
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                 >
-                  <option value="gstaff">Vendeur </option>
-                  <option value="gadmin">Admin</option>
-                  <option value="gcompta">Comptabilité</option>
+                  <option value="gstaff">{t("seller")} </option>
+                  <option value="gadmin">{t('admin')}</option>
+                  <option value="gcompta">{t('Accounting')}</option>
 
                 </Form.Select>
               </Form.Group>
@@ -217,8 +220,8 @@ const Addsuperadmin = () => {
           </Row>
 
           <div className="mt-3">
-            <Button variant="primary" onClick={(e) => Submit()}>
-              Sauvegarder
+            <Button variant="primary" type="submit">
+              {t('save')}
             </Button>
           </div>
         </Form>

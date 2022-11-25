@@ -67,7 +67,7 @@ const Addadmin = () => {
     sex: user?.sex,
     password: "",
     confirmPassword: "",
-    userimage: user?.userimage,
+    userimage: "",
     phone: user?.phone,
     role: "admin",
     gname: user?.graveyard?.name,
@@ -87,16 +87,17 @@ const Addadmin = () => {
     const mydata = new FormData();
     mydata.append("name", e.target[0].value);
     mydata.append("lastn", e.target[1].value);
-    mydata.append("Datebirth", e.target[2].value);
     mydata.append("email", e.target[4].value);
     mydata.append("sex", e.target[3].value);
-    mydata.append("password", formData.password);
     mydata.append("phone", e.target[5].value);
     mydata.append("role", formData.role);
     mydata.append("gname", e.target[10].value);
     mydata.append("funeral_home", e.target[11].value);
     mydata.append("address", e.target[11].value);
     mydata.append("graveyard", user?.graveyard?._id);
+    if (formData.userimage !== "") {
+      mydata.append("userimage", formData.userimage);
+    }
     /*     mydata.append("latitude", position.lat);
     mydata.append("logitude", position.lng); */
     const { data } = await axios.put(
@@ -234,7 +235,7 @@ const Addadmin = () => {
                 <PhoneInput
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
-                  value={value}
+                  value={user?.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e })}
                 />
               </Form.Group>

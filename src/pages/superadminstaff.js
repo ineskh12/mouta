@@ -210,7 +210,7 @@ export default function AllSuperAdmins() {
                   <td>
                     <Button
                       className="m-1"
-                      onClick={() => history.push("/editsuperadmin/" + dm?._id)}
+                      onClick={() => history.push("/editstaff/" + dm?._id)}
                       variant="primary"
                       size="sm"
                     >
