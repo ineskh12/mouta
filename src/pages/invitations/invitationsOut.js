@@ -24,8 +24,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBootstrap } from "@fortawesome/free-brands-svg-icons";
 import moment from "moment-timezone";
+import { useTranslation } from "react-i18next";
 
 const InvOut = (props) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   const [data, setData] = useState([]);
@@ -60,11 +62,11 @@ const InvOut = (props) => {
               size="sm"
               className="me-2"
             >
-              Profil de {data.profileName}
+              {t('Profile of')} {data.profileName}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">Invitations envoyés</h5>
+        <h5 className="mb-4">{t('Invitations sent')}</h5>
 
         <Row>
           {data?.invitationsout?.map((item) => (

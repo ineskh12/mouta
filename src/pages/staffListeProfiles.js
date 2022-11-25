@@ -32,12 +32,14 @@ import moment from "moment-timezone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
 if (token !== null) decoded = jwt_decode(token);
 
 export default function AllProfiles() {
+  const { t } = useTranslation();
   const history = useHistory();
 
   const [data, setData] = useState([]);
@@ -66,7 +68,7 @@ export default function AllProfiles() {
               className: "breadcrumb-dark breadcrumb-transparent",
             }}
           ></Breadcrumb>
-          <h4>Liste des cimetières</h4>
+          <h4>{t("list_of_cemeteries")}</h4>
 {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
  */}       
@@ -76,7 +78,7 @@ export default function AllProfiles() {
         <div className="btn-toolbar mb-2 mb-md-0">
           <ButtonGroup>
             <Dropdown.Toggle onClick={(e)=>history.push('/AdminAdd')} as={Button} variant="primary" size="sm" className="me-2">
-            <FontAwesomeIcon icon={faPlus} className="me-2" />nouveau cimetière
+            <FontAwesomeIcon icon={faPlus} className="me-2" />{t("new_cemetery")}
           </Dropdown.Toggle>
           </ButtonGroup>
         </div>
@@ -98,12 +100,12 @@ export default function AllProfiles() {
             <thead>
               <tr>
                 <th className="border-bottom">#</th>
-                <th className="border-bottom">Nom Prénom </th>
-                <th className="border-bottom">Date de naissance </th>
-                <th className="border-bottom">Date de décés</th>
-                <th className="border-bottom">Cordonnées</th>
-                <th className="border-bottom">Email de référence</th>
-                <th className="border-bottom">Action</th>
+                <th className="border-bottom">{t('full_name')}</th>
+                <th className="border-bottom">{t("date_of_birth")} </th>
+                <th className="border-bottom">{t("Date of death")}</th>
+                <th className="border-bottom">{t("Contact information")}</th>
+                <th className="border-bottom">{t("reference_email")}</th>
+                <th className="border-bottom">{t('action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -138,17 +140,17 @@ export default function AllProfiles() {
                           onClick={() => history.push("/defun/" + dm._id)}
                         >
                           <FontAwesomeIcon icon={faEye} className="me-2" /> 
-                          Détails
+                          {t('Details')}
                         </Dropdown.Item>
                         <Dropdown.Item
                           onClick={() => history.push("/profile/" + dm._id)}
                         >
                           <FontAwesomeIcon icon={faEdit} className="me-2" />{" "}
-                          Editer
+                          {t('Edit')}
                         </Dropdown.Item>
                         <Dropdown.Item className="text-danger">
                           <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                          Supprimer
+                          {t('delete')}
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -160,17 +162,17 @@ export default function AllProfiles() {
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
             <Nav>
               <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Précédent</Pagination.Prev>
+                <Pagination.Prev>{t('Previous')}</Pagination.Prev>
                 <Pagination.Item active>1</Pagination.Item>
                 <Pagination.Item>2</Pagination.Item>
                 <Pagination.Item>3</Pagination.Item>
                 <Pagination.Item>4</Pagination.Item>
                 <Pagination.Item>5</Pagination.Item>
-                <Pagination.Next>Suivant</Pagination.Next>
+                <Pagination.Next>{t('Next')}</Pagination.Next>
               </Pagination>
             </Nav>
             <small className="fw-bold">
-              Affichage de <b>{2}</b> sur <b>25</b> entrées
+              {t("Display of")} <b>{2}</b> {t('on')} <b>25</b> {t('entries')}
             </small>
           </Card.Footer>
         </Card.Body>

@@ -2,15 +2,17 @@ import React, { useRef } from "react";
 import logo_colored from "../../assets/img/logo_colored.png";
 import { useReactToPrint } from "react-to-print";
 import { Card, Table } from "@themesberg/react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard(props, ref) {
+  const { t } = useTranslation();
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
   return (
     <>
-      <button onClick={handlePrint}>print</button>
+      <button onClick={handlePrint}>{t('print')}</button>
 
       <Card
         ref={componentRef}
@@ -48,7 +50,7 @@ export default function Dashboard(props, ref) {
                     className="text-uppercase text-center mt-3"
                     style={{ fontSize: 40 }}
                   >
-                    Invoice
+                    {t('invoice')}
                   </h3>
                   <p>123456789</p>
                 </div>
@@ -61,11 +63,11 @@ export default function Dashboard(props, ref) {
                       <thead className="thead-light">
                         <tr>
                           <th className="border-0">#</th>
-                          <th className="border-0">Nom cimetière</th>
-                          <th className="border-0">Responsable</th>
-                          <th className="border-0">Téléphone</th>
-                          <th className="border-0">Adresse </th>
-                          <th className="border-0">Actions</th>
+                          <th className="border-0">{t('cemetery_name')}</th>
+                          <th className="border-0">{t('responsible')}</th>
+                          <th className="border-0">{t('phone')}</th>
+                          <th className="border-0">{t('address')}</th>
+                          <th className="border-0">{t('actions')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -86,12 +88,12 @@ export default function Dashboard(props, ref) {
                   <div className="col-xl-8">
                     <ul className="list-unstyled me-0">
                       <li>
-                        <span className="me-3">Total Amount:</span>
+                        <span className="me-3">{t('Total Amount')}:</span>
                         <i className="fas fa-dollar-sign" /> 6850,00
                       </li>
                       <li>
                         {" "}
-                        <span className="me-5">Discount:</span>
+                        <span className="me-5">{t('Discount')}:</span>
                         <i className="fas fa-dollar-sign" /> 500,00
                       </li>
                       <li>
@@ -99,7 +101,7 @@ export default function Dashboard(props, ref) {
                           className=""
                           style={{ marginRight: 35 }}
                         >
-                          Shippment:{" "}
+                          {t('Shipment')}:{" "}
                         </span>
                         <i className="fas fa-dollar-sign" /> 500,00
                       </li>
@@ -118,7 +120,7 @@ export default function Dashboard(props, ref) {
                         fontFamily: "Arial, Helvetica, sans-serif",
                       }}
                     >
-                      Total:
+                      {t('Total')}:
                       <span>
                         <i className="fas fa-dollar-sign" /> 6350,00
                       </span>
@@ -127,9 +129,9 @@ export default function Dashboard(props, ref) {
                 </div>
                 <div className="row mt-2 mb-5">
                   <p className="fw-bold">
-                    Date: <span className="text-muted">23 June 20221</span>
+                    {t('Date')}: <span className="text-muted">23 June 20221</span>
                   </p>
-                  <p className="fw-bold mt-3">Signature:</p>
+                  <p className="fw-bold mt-3">{t('Signature')}:</p>
                 </div>
               </div>
             </div>

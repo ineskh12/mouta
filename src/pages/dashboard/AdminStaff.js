@@ -184,10 +184,10 @@ export default function Dashboard() {
                   <DatePicker
                     disableFuture
                     label={t("from_date")}
-                    openTo={t("year")}
                     inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
-                    views={[t("year"), t("month"), t("day")]}
+                    openTo="day"
+                    views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, startDate: e });
                     }}
@@ -206,8 +206,8 @@ export default function Dashboard() {
                     inputFormat="dd/MM/yyyy"
                     label={t("until")}
                     value={formdata.endDate}
-                    openTo={t("year")}
-                    views={[t("year"), t("month"), t("day")]}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(e) => {
                       setFormdata({ ...formdata, endDate: e });
                     }}

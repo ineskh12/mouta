@@ -251,7 +251,7 @@ const GetClient = () => {
                         disableFuture
                         label={t('date_of_birth')}
                         open={false}
-                        views={[t("year"), t("month"), t("day")]}
+                        views={["year", "month", "day"]}
                         value={inputList.profileDatebirth}
                         onChange={(e) =>
                           setInputList({ ...inputList, profileDatebirth: e })
@@ -271,7 +271,7 @@ const GetClient = () => {
                         disableFuture
                         label={t("Date of death")}
                         open={false}
-                        views={[t("year"), t("month"), t("day")]}
+                        views={["year", "month", "day"]}
                         value={inputList.profileDatedeath}
                         onChange={(e) =>
                           setInputList({ ...inputList, profileDatedeath: e })

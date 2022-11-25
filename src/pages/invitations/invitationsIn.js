@@ -20,7 +20,7 @@ import {
   Dropdown,
   Row,
   Modal,
-  Col,Form
+  Col, Form
 } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment-timezone";
@@ -28,8 +28,10 @@ import { Avatar } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useTranslation } from "react-i18next";
 
 const InvOut = (props) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   const [data, setData] = useState([]);
@@ -40,25 +42,25 @@ const InvOut = (props) => {
   const [link, setLink] = useState("");
   const [link2, setLink2] = useState("");
   const [item, setItem] = useState("");
-  const famillyLinks=[
-    {title:"père",value:"père"},
-    {title:"mère",value:"mère"},
-    {title:"frère",value:"frère"},
-    {title:"sœur",value:"sœur"},
-    {title:"grandpère",value:"grandpère"},
-    {title:"grandmère",value:"grandmère"},
-    {title:"petit-fils",value:"petit-fils"},
-    {title:"petite-fille",value:"petite-fille"},
-    {title:"cousin",value:"cousin"},
-    {title:"neveu",value:"neveu"},
-    {title:"nièce",value:"nièce"},
-    {title:"oncle",value:"oncle"},
-    {title:"tante",value:"tante"},
-    {title:"sibling",value:"sibling"},
-    {title:"belle-mère",value:"belle-mère"},
-    {title:"beau-père",value:"beau-père"},
-    {title:"beau-frère",value:"beau-frère"},
-    {title:"belle-sœur",value:"belle-sœur"},
+  const famillyLinks = [
+    { title: t("father"), value: "père" },
+    { title: t("mother"), value: "mère" },
+    { title: t("brother"), value: "frère" },
+    { title: t("sister"), value: "sœur" },
+    { title: t("grandfather"), value: "grandpère" },
+    { title: t("grandmother"), value: "grandmère" },
+    { title: t("grandson"), value: "petit-fils" },
+    { title: t("granddaughter"), value: "petite-fille" },
+    { title: t("cousin"), value: "cousin" },
+    { title: t("nephew"), value: "neveu" },
+    { title: t("niece"), value: "nièce" },
+    { title: t("uncle"), value: "oncle" },
+    { title: t("aunt"), value: "tante" },
+    { title: t("sibling"), value: "sibling" },
+    { title: t("mother-in-law"), value: "belle-mère" },
+    { title: t("stepfather"), value: "beau-père" },
+    { title: t("brother-in-law"), value: "beau-frère" },
+    { title: t("sister-in-law"), value: "belle-sœur" },
   ]
   const fetchData = async () => {
     try {
@@ -86,9 +88,9 @@ const InvOut = (props) => {
       console.log(response);
       Swal.fire({
         title: "Success",
-        text: "Invitation Accepted",
+        text: t("Invitation Accepted"),
         icon: "success",
-        confirmButtonText: "OK",
+        confirmButtonText: t("OK"),
       }).then(() => {
         history.goBack();
       });
@@ -107,27 +109,27 @@ const InvOut = (props) => {
   const [showDefault1, setShowDefault1] = useState(false);
 
 
-  async function openModal(id, name, img,item) {
+  async function openModal(id, name, img, item) {
     setReciever(id);
     setRecieverName(name);
     setRecieverImg(img);
     setShowDefault1(true);
     setItem(item);
   }
-  async function calltoaction(id, name, img,item) {
+  async function calltoaction(id, name, img, item) {
     setReciever(id);
     await removeinv(id)
   }
   async function removeinv(ids) {
     try {
       Swal.fire({
-        title: "vous etes sur ?",
-        text: "vous ne pourrez pas revenir en arriere",
+        title: t("are you sure ?"),
+        text: t("you can't go back"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Oui, supprimer l'invitation!",
+        confirmButtonText: t("Yes, delete the invite!"),
       }).then(async (result) => {
         if (result.value) {
           const mydata = {
@@ -141,17 +143,17 @@ const InvOut = (props) => {
           );
           console.log(response);
           Swal.fire({
-            title: "Success",
-            text: "Invitation Rejeté",
+            title: t('Success'),
+            text: t("Invitation Rejected"),
             icon: "success",
-            confirmButtonText: "OK",
+            confirmButtonText: t("OK"),
           }).then(() => {
             history.go(0);
           }
           );
         }
       });
-    } 
+    }
     catch (error) {
       console.error(error.message);
     }
@@ -166,14 +168,14 @@ const InvOut = (props) => {
       >
         <Modal.Header>
           <Modal.Title className="h6">
-            Accepter invitation de parenté
+            {t("Accept relationship invitation")}
           </Modal.Title>
           <Button variant="close" aria-label="Close" onClick={handleClose} />
         </Modal.Header>
         <Form onSubmit={(e) => Accepter()}>
           <Modal.Body>
             <div className="d-flex justify-content-center">
-              <h4>Entrez votre lien de parenté avec {recievername} </h4>
+              <h4>{t('Enter your relationship with')} {recievername} </h4>
               <br></br>
               <div className="row justify-content-center">
                 <Avatar
@@ -192,7 +194,7 @@ const InvOut = (props) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Lien de parenté"
+                    label={t('relationship')}
                     onBlur={(e) => {
                       setLink(e.target.value);
                     }}
@@ -203,14 +205,14 @@ const InvOut = (props) => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary" type="submit">
-              Accept invitation
+              {t("Accept invitation")}
             </Button>
             <Button
               variant="secondary"
               className="text-gray ms-auto"
               onClick={handleClose}
             >
-              Fermer
+              {t('close')}
             </Button>
           </Modal.Footer>
         </Form>
@@ -226,11 +228,11 @@ const InvOut = (props) => {
                 size="sm"
                 className="me-2"
               >
-                Profil de {data.profileName}
+                {t("Profile of")} {data.profileName}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h5 className="mb-4">Invitations reçus</h5>
+          <h5 className="mb-4">{t("Invitations received")}</h5>
           <Row>
             {data?.invitationsin?.map((item) => (
               <Col xs={6} md={4}>
@@ -263,7 +265,7 @@ const InvOut = (props) => {
                       }
                     >
                       <FontAwesomeIcon icon={faCheck} className="me-2" />
-                      Accepter
+                      {t('Accept')}
                     </Button>
 
                     <Button
@@ -280,7 +282,7 @@ const InvOut = (props) => {
                       }
                     >
                       <FontAwesomeIcon icon={faCheck} className="me-2" />
-                      Rejeter
+                      {t('Dismiss')}
                     </Button>
                   </Toast.Header>
                   <Toast.Body>

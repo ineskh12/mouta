@@ -590,8 +590,8 @@ function App() {
 
                             disableFuture
                             label={t("Event date")}
-                            openTo={t("year")}
-                            views={[t("year"), t("month"), t("day")]}
+                            openTo="day"
+                            views={["year", "month", "day"]}
                             value={formData2.date}
                             onChange={(e) =>
                               setFormData2({ ...formData2, date: e })

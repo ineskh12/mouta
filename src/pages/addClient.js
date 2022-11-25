@@ -26,8 +26,10 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import PhoneInput from "react-phone-input-2";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useTranslation } from "react-i18next";
 
 const AddClient = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const token = JSON.parse(localStorage.getItem("token"));
   const [data, setData] = useState([]);
@@ -181,7 +183,7 @@ const AddClient = () => {
               Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Client ajouté avec succès",
+                title: t("Customer added successfully"),
                 showConfirmButton: true,
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -190,7 +192,7 @@ const AddClient = () => {
               });
             })
             .catch((error) => {
-              Swal.showValidationMessage(`Addresse mail existe déja`);
+              Swal.showValidationMessage(t('email_address_already_exists'));
             });
         },
         allowOutsideClick: () => !Swal.isLoading(),
@@ -353,16 +355,16 @@ const AddClient = () => {
               className="me-2"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-              Retour
+              {t('back')}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">Information général</h5>
+        <h5 className="mb-4">{t('General informations')}</h5>
         <Form onSubmit={(e) => Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Nom</Form.Label>
+                <Form.Label>{t('lastname')}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -374,7 +376,7 @@ const AddClient = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>Prénom</Form.Label>
+                <Form.Label>{t('firstname')}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -393,8 +395,8 @@ const AddClient = () => {
                   <DatePicker
                     inputFormat="dd/MM/yyyy"
                     disableFuture
-                    label="Date de naissance"
-                    openTo="day"
+                    label={t('date_of_birth')}
+                    openTo={"day"}
                     views={["year", "month", "day"]}
                     value={formData.Datebirth}
                     onChange={(e) => setFormData({ ...formData, Datebirth: e })}
@@ -406,17 +408,17 @@ const AddClient = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
-                <Form.Label>Sexe</Form.Label>
+                <Form.Label>{t('gender')}</Form.Label>
                 <Form.Select
                   defaultValue="M"
                   onChange={(e) =>
                     setFormData({ ...formData, sex: e.target.value })
                   }
                 >
-                  <option value="0">Sexe</option>
-                  <option value="F">Femme</option>
-                  <option value="M">Homme</option>
-                  <option value="I">Autre</option>
+                  <option value="0">{t('gender')}</option>
+                  <option value="F">{t('women')}</option>
+                  <option value="M">{t('man')}</option>
+                  <option value="I">{t('other')}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -424,7 +426,7 @@ const AddClient = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>{t('email')}</Form.Label>
                 <Form.Control
                   required
                   type="email"
@@ -436,7 +438,7 @@ const AddClient = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>Téléphone</Form.Label>
+                <Form.Label>{t('phone')}</Form.Label>
                 <PhoneInput
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
@@ -449,7 +451,7 @@ const AddClient = () => {
           <Row>
             <Col sm={6} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Pays </Form.Label>
+                <Form.Label>{t('Country')}</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
                   onChange={(val) => handleChange(val.target.value)}
@@ -461,7 +463,7 @@ const AddClient = () => {
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
-              <Form.Label>Région</Form.Label>
+              <Form.Label>{t('Region')}</Form.Label>
               <Form.Group>
                 <Form.Select
                   onBlur={(region) =>
@@ -483,7 +485,7 @@ const AddClient = () => {
           <Row>
             <Col sm={3} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Ville</Form.Label>
+                <Form.Label>{t('City')}</Form.Label>
                 <Form.Control
                   onBlur={(ville) =>
                     setFormData({
@@ -500,7 +502,7 @@ const AddClient = () => {
             </Col>
             <Col sm={2} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Zip Code</Form.Label>
+                <Form.Label>{t('Zip Code')}</Form.Label>
                 <Form.Control
                   onBlur={(zipCode) =>
                     setFormData({
@@ -518,7 +520,7 @@ const AddClient = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>Image</Form.Label>
+                <Form.Label>{t('image')}</Form.Label>
                 <Form.Control
                   type="file"
                   onChange={(e) =>
@@ -529,11 +531,11 @@ const AddClient = () => {
             </Col>
           </Row>
 
-          <h5 className="my-4">Informations du Cimetière </h5>
+          <h5 className="my-4">{t('Cemetery Information')}</h5>
           <Row>
             <Col sm={4} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>Cimetière</Form.Label>
+                <Form.Label>{t('cemetery')}</Form.Label>
                 <Form.Control
                   disabled
                   type="text"
@@ -543,17 +545,17 @@ const AddClient = () => {
             </Col>
           </Row>
 
-          <h5 className="my-4">Information des profiles </h5>
+          <h5 className="my-4">{t('Profile Information')} </h5>
 
           {inputList.map((x, i) => {
             return (
               <>
-                <h6 className="my-4"> Profile num {i + 1} </h6>
+                <h6 className="my-4"> {t('Profile num')} {i + 1} </h6>
 
                 <Row>
                   <Col md={6} className="mb-3">
                     <Form.Group id="firstName">
-                      <Form.Label>Nom</Form.Label>
+                      <Form.Label>{t('lastname')}</Form.Label>
                       <Form.Control
                         required
                         type="text"
@@ -565,7 +567,7 @@ const AddClient = () => {
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="lastName">
-                      <Form.Label>Prénom</Form.Label>
+                      <Form.Label>{t('firstname')}</Form.Label>
                       <Form.Control
                         required
                         type="text"
@@ -584,7 +586,7 @@ const AddClient = () => {
                           <DatePicker
                             inputFormat="dd/MM/yyyy"
                             disableFuture
-                            label="Date de naissance"
+                            label={t('date_of_birth')}
                             name="profileDatebirth"
                             open={false}
                             openTo="day"
@@ -604,7 +606,7 @@ const AddClient = () => {
                           <DatePicker
                             inputFormat="dd/MM/yyyy"
                             disableFuture
-                            label="Date de décés"
+                            label={t('Date of death')}
                             name="profileDatedeath"
                             open={false}
                             openTo="day"
@@ -620,21 +622,21 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="gender">
-                      <Form.Label>Sexe</Form.Label>
+                      <Form.Label>{t('gender')}</Form.Label>
                       <Form.Select
                         defaultValue="F"
                         name="gender"
                         onChange={(e) => handleInputChange(e, i)}
                       >
-                        <option value="F">Femme</option>
-                        <option value="M">Homme</option>
-                        <option value="I">Autre</option>
+                        <option value="F">{t('women')}</option>
+                        <option value="M">{t('man')}</option>
+                        <option value="I">{t('other')}</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="Emplacement du funérailles">
-                      <Form.Label>Emplacement du funérailles</Form.Label>
+                      <Form.Label>{t('Location of funeral')}</Form.Label>
                       <Form.Control
                         required
                         type="text"
@@ -646,20 +648,20 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="funérailles">
-                      <Form.Label>Modes de funérailles</Form.Label>
+                      <Form.Label>{t('Funeral arrangements')}</Form.Label>
                       <Form.Select
                         defaultValue="I"
                         name="modeDeath"
                         onChange={(e) => handleInputChange(e, i)}
                       >
-                        <option value="I">Inhumation (Enterrement) </option>
-                        <option value="C">Crémation (Incinération)</option>
+                        <option value="I">{t('Burial')} </option>
+                        <option value="C">{t('Cremation')}</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="emal">
-                      <Form.Label>Email de référence</Form.Label>
+                      <Form.Label>{t('reference_email')}</Form.Label>
                       <Form.Control
                         required
                         name="profileEmail"
@@ -671,7 +673,7 @@ const AddClient = () => {
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="ville">
-                      <Form.Label>ville natale</Form.Label>
+                      <Form.Label>{t('hometown')}</Form.Label>
                       <Form.Control
                         required
                         name="hometown"
@@ -683,7 +685,7 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="ville">
-                      <Form.Label>Emplacement</Form.Label>
+                      <Form.Label>{t('location')}</Form.Label>
                       {
                         // free solo option with search
                       }
@@ -694,7 +696,7 @@ const AddClient = () => {
                         )}
                         onChange={(e, value) => handlePlace(i, value)}
                         renderInput={(params) => (
-                          <TextField {...params} label="Emplacement" />
+                          <TextField {...params} label={t('location')} />
                         )}
                       />
                     </Form.Group>
@@ -708,7 +710,7 @@ const AddClient = () => {
                       variant="secondary"
                       onClick={() => handleRemoveClick(i)}
                     >
-                      Supprimer
+                      {t('delete')}
                     </Button>
                   )}
                   {inputList.length - 1 === i && (
@@ -718,7 +720,7 @@ const AddClient = () => {
                       variant="secondary"
                       onClick={handleAddClick}
                     >
-                      Ajouter un autre profil
+                      {t('Add another profile')}
                     </Button>
                   )}
                 </div>
@@ -728,7 +730,7 @@ const AddClient = () => {
 
           <div className="mt-3">
             <Button variant="primary" type="submit">
-              Sauvegarder
+              {t('save')}
             </Button>
           </div>
         </Form>

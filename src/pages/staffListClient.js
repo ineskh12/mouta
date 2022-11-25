@@ -49,8 +49,10 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
+import { useTranslation } from "react-i18next";
 
 const Staffclient = () => {
+  const { t } = useTranslation();
   const token = JSON.parse(localStorage.getItem("token"));
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
@@ -129,11 +131,11 @@ const Staffclient = () => {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                Retour
+                {t('back')}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
-          <h4>Liste des Clients cimetière {grave?.name}</h4>
+          <h4>{t('List of Cemetery Clients')} {grave?.name}</h4>
 
           {/*           <p className="mb-0">Your web analytics dashboard template.</p>
 
@@ -150,7 +152,7 @@ const Staffclient = () => {
                 className="me-2"
               >
                 <FontAwesomeIcon icon={faPlus} className="me-2" />
-                Nouveau Client
+                {t("New customer")}
               </Dropdown.Toggle>
             </ButtonGroup>
           </div>
@@ -165,7 +167,7 @@ const Staffclient = () => {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search" />
+              <Form.Control type="text" placeholder={t('search')} />
             </InputGroup>
           </Col>
           <Col>
@@ -182,7 +184,7 @@ const Staffclient = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
                 <Dropdown.Item className="fw-bold text-dark">
-                  Show
+                  {t('show')}
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex fw-bold">
                   10{" "}
@@ -204,13 +206,13 @@ const Staffclient = () => {
         <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
           <Nav>
             <Pagination className="mb-2 mb-lg-0">
-              <Pagination.Prev>Précédent</Pagination.Prev>
+              <Pagination.Prev>{t('Previous')}</Pagination.Prev>
               <Pagination.Item active>1</Pagination.Item>
               <Pagination.Item>2</Pagination.Item>
               <Pagination.Item>3</Pagination.Item>
               <Pagination.Item>4</Pagination.Item>
               <Pagination.Item>5</Pagination.Item>
-              <Pagination.Next>Suivant</Pagination.Next>
+              <Pagination.Next>{t('Next')}</Pagination.Next>
             </Pagination>
           </Nav>
         </Card.Footer>
@@ -290,15 +292,14 @@ const Staffclient = () => {
               </CDropdownToggle>
               <CDropdownMenu style={{ left: "50px;" }} className="float-left">
                 <CDropdownItem>
-                  <FontAwesomeIcon icon={faEye} className="me-2" /> Liste
-                  Clients
+                  <FontAwesomeIcon icon={faEye} className="me-2" /> {t("List of Cemetery Clients")}
                 </CDropdownItem>
                 <CDropdownItem>
-                  <FontAwesomeIcon icon={faEdit} className="me-2" /> Editer{" "}
+                  <FontAwesomeIcon icon={faEdit} className="me-2" /> {t('Edit')}{" "}
                 </CDropdownItem>
                 <CDropdownItem>
                   <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                  Supprimer
+                    {t("delete")}
                 </CDropdownItem>
               </CDropdownMenu>
             </CDropdown>
@@ -309,16 +310,16 @@ const Staffclient = () => {
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
                 <Typography variant="h6" gutterBottom component="div">
-                  Profiles
+                  {t("Profils")}
                 </Typography>
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Photo</TableCell>
-                      <TableCell>Nom et prenom</TableCell>
-                      <TableCell align="Left">date de décès</TableCell>
-                      <TableCell align="right">Creation du profil</TableCell>
-                      <TableCell align="right">Action</TableCell>
+                      <TableCell>{t('photo')}</TableCell>
+                      <TableCell>{t('full_name')}</TableCell>
+                      <TableCell align="Left">{t("Date of death")}</TableCell>
+                      <TableCell align="right">{t("Profile creation")}</TableCell>
+                      <TableCell align="right">{t("action")}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -373,7 +374,7 @@ const Staffclient = () => {
                                   icon={faEye}
                                   className="me-2"
                                 />
-                                Détails
+                                {t('Details')}
                               </Dropdown.Item>
                               <Dropdown.Item
                               /* onClick={() => history.push("/profile/" + dm._id)}*/
@@ -382,14 +383,14 @@ const Staffclient = () => {
                                   icon={faEdit}
                                   className="me-2"
                                 />{" "}
-                                Editer
+                                {t('Edit')}
                               </Dropdown.Item>
                               <Dropdown.Item className="text-danger">
                                 <FontAwesomeIcon
                                   icon={faTrashAlt}
                                   className="me-2"
                                 />{" "}
-                                Supprimer
+                                {t('delete')}
                               </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
@@ -440,11 +441,11 @@ const Staffclient = () => {
             <TableRow>
               <TableCell />
               <TableCell>#</TableCell>
-              <TableCell align="right">Client </TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Télephone</TableCell>
-              <TableCell align="right">nbre de profils</TableCell>
-              <TableCell align="right">Action</TableCell>
+              <TableCell align="right">{t('Customer')} </TableCell>
+              <TableCell align="right">{t('email')}</TableCell>
+              <TableCell align="right">{t('phone')}</TableCell>
+              <TableCell align="right">{t("number_of_profiles")}</TableCell>
+              <TableCell align="right">{t('action')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

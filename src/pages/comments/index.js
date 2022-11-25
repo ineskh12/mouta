@@ -22,8 +22,10 @@ import { Avatar } from "@material-ui/core";
 
 import { faCheck } from "@fortawesome/fontawesome-free-solid";
 import ModalImage from "react-modal-image";
+import { useTranslation } from "react-i18next";
 
 export default function BasicTabs() {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
 
   const token = JSON.parse(localStorage.getItem("token"));
@@ -46,14 +48,14 @@ export default function BasicTabs() {
   const accept = async (action, id, profile) => {
     try {
       Swal.fire({
-        title: "Changer l'état du commentaire ?",
+        title: t("Change comment status ?"),
         showCancelButton: true,
-        confirmButtonText: "Oui !",
+        confirmButtonText: t('yes'),
         showLoaderOnConfirm: true,
-  
+
         preConfirm: async () => {
           return await axios
-            .post("http://www.skiesbook.com:3000/api/v1/profile/changecomstatus/" + profile,  {
+            .post("http://www.skiesbook.com:3000/api/v1/profile/changecomstatus/" + profile, {
               action: action,
               id: id,
             })
@@ -61,7 +63,7 @@ export default function BasicTabs() {
               Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "état du comentaire changé avec succés",
+                title: t("comment status changed successfully"),
                 showConfirmButton: true,
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -70,7 +72,7 @@ export default function BasicTabs() {
               });
             })
             .catch((error) => {
-              Swal.showValidationMessage(`erreur: ${error}`);
+              Swal.showValidationMessage(`${t("error")}: ${error}`);
             });
         },
         allowOutsideClick: () => !Swal.isLoading(),
@@ -80,7 +82,7 @@ export default function BasicTabs() {
     }
 
 
-    
+
   };
 
   const history = useHistory();
@@ -99,11 +101,11 @@ export default function BasicTabs() {
                   size="sm"
                   className="me-2"
                 >
-                  Profil de {profile?.profileName} {profile?.profileLastName}
+                  {t("Profile of")} {profile?.profileName} {profile?.profileLastName}
                 </Dropdown.Toggle>
               </ButtonGroup>
             </div>
-            <h5 className="mb-4">Commentaires reçus</h5>
+            <h5 className="mb-4">{t("Comments received")}</h5>
             <Row>
               {profile?.comments?.map(
                 (item) =>
@@ -128,44 +130,44 @@ export default function BasicTabs() {
                             }
                           >
                             <FontAwesomeIcon icon={faCheck} className="me-2" />
-                            Accepter
+                            {t('Accept')}
                           </Button>
 
                           <Button
                             variant="danger"
                             size="xs"
                             className="me-2"
-                            onClick={(e) => accept("refuse", item?._id,profile._id)}
+                            onClick={(e) => accept("refuse", item?._id, profile._id)}
                           >
                             <FontAwesomeIcon icon={faCheck} className="me-2" />
-                            Rejeter
+                            {t('Dismiss')}
                           </Button>
                         </Toast.Header>
                         <Toast.Body>
                           <div className="text">
-                          {(item?.images).length > 0 && (
-                                            <div className="row g-0">
-                                              {item?.images?.map((img) => (
-                                                <div className="col mb-3">
-                                                <a>
-                                                    <ModalImage
-                                                      hideDownload
-                                                      small={
-                                                        "http://www.skiesbook.com:3000/uploads/" +
-                                                        img
-                                                      }
-                                                      large={
-                                                        "http://www.skiesbook.com:3000/uploads/" +
-                                                        img
-                                                      }
-                                                      className="img-fluid rounded"
-                                                      alt=""
-                                                    />
-                                                  </a>
-                                                </div>
-                                              ))}
-                                            </div>
-                                          )}
+                            {(item?.images).length > 0 && (
+                              <div className="row g-0">
+                                {item?.images?.map((img) => (
+                                  <div className="col mb-3">
+                                    <a>
+                                      <ModalImage
+                                        hideDownload
+                                        small={
+                                          "http://www.skiesbook.com:3000/uploads/" +
+                                          img
+                                        }
+                                        large={
+                                          "http://www.skiesbook.com:3000/uploads/" +
+                                          img
+                                        }
+                                        className="img-fluid rounded"
+                                        alt=""
+                                      />
+                                    </a>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                             <b> {item?.message}</b>
                             <p className="mb-0">
                               {moment(item?.timestamp).format("DD-MM-YYYY")}
