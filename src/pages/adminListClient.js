@@ -51,16 +51,26 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
 
 const GetClient = () => {
   const { t } = useTranslation();
+
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
@@ -126,8 +136,8 @@ const GetClient = () => {
   const [inputList, setInputList] = useState({
     profileName: "",
     profileLastName: "",
-    profileDatebirth: new Date(),
-    profileDatedeath: new Date(),
+    profileDatebirth: new Date(moment().format('YYYY-MM-DD')),
+    profileDatedeath: new Date(moment().format('YYYY-MM-DD')),
     gender: "F",
     cords: "",
     modeDeath: "I",
@@ -244,10 +254,10 @@ const GetClient = () => {
             <Row className="align-items-center">
               <Col md={6} className="mb-3">
                 <Form.Group id="birthday">
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                     <Stack spacing={3}>
                       <DatePicker
-                        inputFormat="dd/MM/yyyy"
+                        // inputFormat="dd/MM/yyyy"
                         disableFuture
                         label={t('date_of_birth')}
                         open={false}
@@ -264,10 +274,10 @@ const GetClient = () => {
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group id="birthday">
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                     <Stack spacing={3}>
                       <DatePicker
-                        inputFormat="dd/MM/yyyy"
+                        // inputFormat="dd/MM/yyyy"
                         disableFuture
                         label={t("Date of death")}
                         open={false}

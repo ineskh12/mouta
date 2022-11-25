@@ -28,21 +28,34 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import moment from "moment-timezone";
 import TextField from "@material-ui/core/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import { CSVLink } from "react-csv";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
+import { Paper, TableContainer } from "@mui/material";
 
 export default function Dashboard() {
+
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
+
+
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const history = useHistory();
   const d = new Date();
   const { t } = useTranslation();
   const [formdata, setFormdata] = useState({
-    startDate: moment(d).format("YYYY-MM"),
+    startDate: moment(d).format("YYYY-MM-DD"),
     endDate: moment(d).format("YYYY-MM-DD"),
   });
   const [first, setfirst] = useState({});
@@ -144,22 +157,24 @@ export default function Dashboard() {
             </Col>
           </Row>
         </Card.Header>
-        <Table responsive className="align-items-center table-flush">
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">#{t('id')}</th>
+        <TableContainer component={Paper}>
+          <Table responsive className="align-items-center table-flush">
+            <thead className="thead-light">
+              <tr>
+                <th scope="col">#{t('id')}</th>
 
-              <th scope="col">{t('Profile')}</th>
-              <th scope="col">{t('Creation')}</th>
-              <th scope="col">{t('action')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.profiles?.map((pv) => (
-              <TableRow key={`page-visit-${pv?._id}`} {...pv} />
-            ))}
-          </tbody>
-        </Table>
+                <th scope="col">{t('Profile')}</th>
+                <th scope="col">{t('Creation')}</th>
+                <th scope="col">{t('action')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.profiles?.map((pv) => (
+                <TableRow key={`page-visit-${pv?._id}`} {...pv} />
+              ))}
+            </tbody>
+          </Table>
+        </TableContainer>
       </Card>
     );
   };
@@ -179,13 +194,13 @@ export default function Dashboard() {
           <Row className="align-items-center">
             <h5>{t('filter_by_date_and_employee')}</h5>
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
                     label={t('from_date')}
                     openTo="day"
-                    inputFormat="dd/MM/yyyy"
+                    // inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     views={["year", "month", "day"]}
                     onChange={(e) => {
@@ -199,11 +214,11 @@ export default function Dashboard() {
 
 
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    inputFormat="dd/MM/yyyy"
+                    // inputFormat="dd/MM/yyyy"
                     label={t('until')}
                     value={formdata.endDate}
                     openTo="day"

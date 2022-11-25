@@ -35,7 +35,9 @@ import { Search } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { Stack, TextField } from "@mui/material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en';
+import 'dayjs/locale/fr';
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -45,11 +47,19 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import { useTranslation } from "react-i18next";
-
+import cookies from "js-cookie";
 
 function App() {
 
   const { t } = useTranslation();
+  
+  const currentLanguageCode = cookies.get("i18next") || "en";
+  const [locale, setLocale] = React.useState(currentLanguageCode);
+
+  useEffect(() => {
+    setLocale(currentLanguageCode)
+  }, [currentLanguageCode]);
+
 
   const [parcours, setparcours] = useState({ etat: true, style: "nav-link active" });
   const [images, setimages] = useState({ etat: false, style: "nav-link" });
@@ -236,7 +246,7 @@ function App() {
   });
   const [formData2, setFormData2] = useState({
     message: "",
-    date: "01/01/2000",
+    date: "2000-01-01",
   });
   const [formData3, setFormData3] = useState({
     name: "",
@@ -582,11 +592,11 @@ function App() {
                   <Col md={8} className="mb-3">
                     <Form.Group id="birthday">
                       <Form.Label>{t('Date')}</Form.Label>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                         <Stack>
                           <DatePicker
                             required
-                            inputFormat="dd/MM/yyyy"
+                            // inputFormat="dd/MM/yyyy"
 
                             disableFuture
                             label={t("Event date")}

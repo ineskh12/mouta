@@ -3,6 +3,7 @@ import logo_colored from "../../assets/img/logo_colored.png";
 import { useReactToPrint } from "react-to-print";
 import { Card, Table } from "@themesberg/react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { Paper, TableContainer } from "@mui/material";
 
 export default function Dashboard(props, ref) {
   const { t } = useTranslation();
@@ -26,12 +27,12 @@ export default function Dashboard(props, ref) {
               <div className="container">
                 <div className="row">
                   <div className="col-xl-12">
-                    <img height={"100px"}  alt="logo" src={logo_colored} />
+                    <img height={"100px"} alt="logo" src={logo_colored} />
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-xl-12">
-                  <ul className="list-unstyled float-start">
+                    <ul className="list-unstyled float-start">
                       <li style={{ fontSize: 30, color: "blue" }}>Skiesbook inc.</li>
                       <li>123, Elm Street</li>
                       <li>123-456-789</li>
@@ -55,33 +56,35 @@ export default function Dashboard(props, ref) {
                   <p>123456789</p>
                 </div>
                 <Card border="light" className="shadow-sm mb-4">
-                  <Card.Body className="pb-0">
-                    <Table
-                      responsive
-                      className="table-centered table-nowrap rounded mb-0"
-                    >
-                      <thead className="thead-light">
-                        <tr>
-                          <th className="border-0">#</th>
-                          <th className="border-0">{t('cemetery_name')}</th>
-                          <th className="border-0">{t('Responsible')}</th>
-                          <th className="border-0">{t('phone')}</th>
-                          <th className="border-0">{t('address')}</th>
-                          <th className="border-0">{t('actions')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>aaziz</td>
-                          <td>s</td>
+                  <Card.Body className="p-0">
+                    <TableContainer component={Paper}>
+                      <Table
+                        responsive
+                        className="table-centered table-nowrap rounded mb-0"
+                      >
+                        <thead className="thead-light">
+                          <tr>
+                            <th className="border-0">#</th>
+                            <th className="border-0">{t('cemetery_name')}</th>
+                            <th className="border-0">{t('Responsible')}</th>
+                            <th className="border-0">{t('phone')}</th>
+                            <th className="border-0">{t('address')}</th>
+                            <th className="border-0">{t('actions')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>aaziz</td>
+                            <td>s</td>
 
-                          <td className="fw-bold">aaziz</td>
-                          <td>aaziz</td>
-                          <td>aaziz</td>
-                          <td>ok</td>
-                        </tr>
-                      </tbody>
-                    </Table>
+                            <td className="fw-bold">aaziz</td>
+                            <td>aaziz</td>
+                            <td>aaziz</td>
+                            <td>ok</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </TableContainer>
                   </Card.Body>
                 </Card>
                 <div className="row">
