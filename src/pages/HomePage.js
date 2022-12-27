@@ -194,7 +194,7 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
           
           {/* a traduire cette page */}
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithLoader
             exact
             path={Routes.NotFound.path}
@@ -210,7 +210,7 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/prof/:id" component={Test} />
           <RouteWithSidebar exact path="/staff" component={Staff} />
           <RouteWithSidebar exact path="/addstaff" component={addStaff} />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithSidebar exact path="/emplacements" component={Emplacement} />
           <RouteWithSidebar exact path="/editstaff/:id" component={EditStaff} />
 
@@ -280,9 +280,8 @@ export default function Myroutes() {
             component={InviIn}
             />
           <RouteWithSidebar exact path="/parente/:id" component={Parente} />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithSidebar exact path="/prof/:id" component={Test} />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
           {/* pages */}
           <RouteWithSidebar exact path="/AddProfile" component={AddProfile} />
           <RouteWithSidebar exact path="/profile/:id" component={AddProfile} />
@@ -323,7 +322,7 @@ export default function Myroutes() {
             path="/staffprofile"
             component={StaffProfile}
             />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
 
           <RouteWithSidebar exact path="/clients" component={clients} />
           <RouteWithLoader
@@ -342,7 +341,7 @@ export default function Myroutes() {
           <RouteWithSidebar exact path="/prof/:id" component={Test} />
           <RouteWithSidebar exact path="/staff" component={Staff} />
           <RouteWithSidebar exact path="/addstaff" component={addStaff} />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
 
           {/* pages */}
           <RouteWithSidebar
@@ -401,7 +400,7 @@ export default function Myroutes() {
             path="/staffprofile"
             component={StaffProfile}
             />
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
 
           <RouteWithSidebar
             exact
@@ -472,7 +471,7 @@ export default function Myroutes() {
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithLoader
             exact
             path={Routes.NotFound.path}
@@ -507,7 +506,7 @@ export default function Myroutes() {
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithLoader
             exact
             path={Routes.NotFound.path}
@@ -551,7 +550,7 @@ export default function Myroutes() {
 
           <RouteWithSidebar exact path="/AdminAdd" component={Addadmin} />
 
-          <RouteWithSidebar exact path="/editprof/:id" component={Testedit} />
+          <RouteWithLoader exact path="/editprof/:id" component={Testedit} />
           <RouteWithLoader
             exact
             path={Routes.NotFound.path}

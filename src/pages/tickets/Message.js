@@ -9,8 +9,8 @@ const useStyles = makeStyles((theme) =>
       display: "flex-row",
     },
     messageRow2: {
-        display: "flex",
-      },
+      display: "flex",
+    },
     messageRowRight: {
       display: "flex",
       justifyContent: "flex-end",
@@ -132,11 +132,10 @@ export const MessageLeft = (props) => {
   return (
     <>
       <div className={classes.messageRow}>
-      <div className={classes.messageRow2}>
-        
+        <div className={classes.messageRow2}>
           <div className={classes.displayName}>{displayName}</div>
-          </div>
-          <div>
+        </div>
+        <div>
           <div className={classes.messageBlue}>
             <p className={classes.messageContent}>{message}</p>
             <div className={classes.messageTimeStampRight}>{timestamp}</div>

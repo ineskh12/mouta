@@ -10,7 +10,7 @@ import {
   faTimes,
   faMapPin,
   faAddressBook,
-  faImages,
+  faVials,
   faHouseUser,
   faMap,
   faUser,
@@ -522,6 +522,12 @@ export default (props = {}) => {
                     link={"/dashboard"}
                     eventKey="/dashboard"
                     icon={faChartPie}
+                  />
+                  <NavItem
+                    title={t("Simulation")}
+                    link={"/Simulate"}
+                    eventKey="/Simulate"
+                    icon={faVials}
                   />
                 </Nav>
               </>

@@ -327,7 +327,7 @@ export default function Signin() {
               </div>
 
               <Form.Group id="email" className="mb-4">
-                <Form.Label>{t("your_email")}</Form.Label>
+                <Form.Label>{t("courriel")}</Form.Label>
                 <InputGroup>
                   <InputGroup.Text>
                     <FontAwesomeIcon icon={faEnvelope} />

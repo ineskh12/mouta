@@ -241,19 +241,24 @@ export default function AllProfiles() {
         <Card.Body className="p-0">
           <TableContainer component={Paper}>
             <Table
-              style={{ overflow: "auto", display: "block", tableLayout: "auto" }}
+              style={{
+                overflow: "auto",
+                display: "block",
+                tableLayout: "auto",
+              }}
               className="table-centered table-nowrap rounded mb-0"
             >
               <thead className="thead-light">
                 <tr>
-                  <th className="border-0">Nom cimetière</th>
-                  <th className="border-0">Nom et prenom</th>
-                  <th className="border-0">Pays</th>
-                  <th className="border-0">Adresse</th>
-                  <th className="border-0">Télephone</th>
-                  <th className="border-0">Email</th>
-                  <th className="border-0">Date de réalisation</th>
-                  <th className="border-0">Action</th>
+                  <th className="border-0">{t("Nom cimetière")}</th>
+                  <th className="border-0">{t("Nom et prenom")}</th>
+                  <th className="border-0">{t("Pays")}</th>
+                  <th className="border-0">{t("Adresse")}</th>
+                  <th className="border-0">{t("Télephone")}</th>
+                  <th className="border-0">{t("Note")}</th>
+                  <th className="border-0">{t("Email")}</th>
+                  <th className="border-0">{t("Date de réalisation")}</th>
+                  <th className="border-0">{t("Action")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -268,8 +273,8 @@ export default function AllProfiles() {
                           dm.state === "declined"
                             ? "#ff6a45"
                             : dm.state === "accepted"
-                              ? "#59ff59"
-                              : "",
+                            ? "#59ff59"
+                            : "",
                       }}
                     >
                       <td className="fw-bold">{dm?.graveyardName}</td>
@@ -303,10 +308,34 @@ export default function AllProfiles() {
 
                       <td className="fw-bold">{dm?.phone}</td>
 
+                      <td className="fw-bold">
+                        {dm?.note?.length > 0 ? (
+                          // if text is more than 350 px return to lin
+
+                          <div
+                            style={{
+                              width: "350px",
+                             whiteSpace: "normal",
+                            }}
+                          >
+                            {dm?.note}{" "}
+                          </div>
+                        ) : (
+                          <Button
+                            variant="outline-primary"
+                            onClick={() => handleShow(dm._id, dm?.note)}
+                          >
+                            <FontAwesomeIcon icon={faEye} />
+                          </Button>
+                        )}
+                      </td>
+
                       <td>
                         <span className="fw-bold">{dm?.email}</span>
                       </td>
-                      <td>{moment(dm?.createdAt).format("DD/MM/YYYY HH:mm")}</td>
+                      <td>
+                        {moment(dm?.createdAt).format("DD/MM/YYYY HH:mm")}
+                      </td>
                       <td>
                         {dm.state === "pending" ? (
                           <>

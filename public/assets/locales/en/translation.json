@@ -120,7 +120,7 @@
     "filter_by_date": "Filter by date",
     "filter_by_date_and_employee": "Filter by date and employee",
     "from_date": "From Date",
-    "until": "Until",
+    "until": "To",
     "year": "year",
     "Year": "Year",
     "month": "month",
@@ -315,6 +315,7 @@
     "Send relationship invitation": "Send relationship invitation",
     "Enter your relationship with": "Enter your relationship with",
     "Invite": "Invite",
+    "courriel" : "mail address",
     "Send an invitation": "Send an invitation",
     "Accounting": "Accounting",
     "Edit a customer": "Edit a customer",
@@ -325,6 +326,7 @@
     "Object": "Object",
     "New ticket": "New ticket",
     "I accept the terms and conditions": "I accept the terms and conditions",
+    "Terms and Conditions": "Terms and Conditions",
     "Send message": "Send message",
     "Profiles added": "Profiles added",
     "id": "id",
@@ -375,5 +377,6 @@
     "Client List": "Client List",
     "All profiles": "All profiles",
     "Support": "Support",
-    "Not Found Page": "Not Found Page"
+    "Not Found Page": "Not Found Page",
+    "is_alive": "Still alive"
 }

@@ -30,11 +30,14 @@ const Language = () => {
   const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
 
   const { t } = useTranslation();
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   useEffect(() => {
-    console.log("Setting page stuff");
     document.body.dir = currentLanguage.dir || "ltr";
     document.title = t("app_title");
+    console.log("currentLanguage", currentLanguage);
   }, [currentLanguage, t]);
 
   const GlobeIcon = ({ width = 24, height = 24 }) => (
@@ -56,37 +59,35 @@ const Language = () => {
         <div className="dropdown">
           <DropdownButton
             variant="outline-link"
-            title={<GlobeIcon />}
+            title={capitalizeFirstLetter(currentLanguageCode)}
             id="input-group-dropdown-2"
             align="end"
+            
           >
-            {languages.map(({ code, name, country_code }, i) => (
-              <>
-                <Dropdown.Item
-                  key={country_code}
-                  onClick={() => {
-                    i18next.changeLanguage(code);
-                  }}
-                  className={classNames("dropdown-item", {
-                    disabled: currentLanguageCode === code,
-                  })}
-                  style={{
-                    backgroundColor:
-                      currentLanguageCode === code ? "#e9ecef" : "white",
-                  }}
-                >
-                  <span
-                    className={`flag-icon flag-icon-${country_code} mx-2`}
-                    style={{
-                      opacity: currentLanguageCode === code ? 0.5 : 1,
+              {languages.map(({ code, name, country_code }, i) => (
+                <>
+                  <Dropdown.Item
+                    key={country_code}
+                    onClick={() => {
+                      i18next.changeLanguage(code);
                     }}
-                  ></span>
-                  {name}
-                </Dropdown.Item>
-                {i !== languages.length - 1 ? <Dropdown.Divider /> : null}
-              </>
-            ))}
-          </DropdownButton>
+                    className={classNames("dropdown-item", {
+                      disabled: currentLanguageCode === code,
+                    })}
+                    style={{
+                      backgroundColor:
+                        currentLanguageCode === code ? "#e9ecef" : "white",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    {name}
+                  </Dropdown.Item>
+                  {i !== languages.length - 1 ? <Dropdown.Divider /> : null}
+                </>
+              ))}
+            </DropdownButton>
+
+          
           {/* <button
                         className="btn btn-link dropdown-toggle"
                         type="button"

@@ -14,12 +14,7 @@ import {
   ButtonGroup,
   Dropdown,
 } from "@themesberg/react-bootstrap";
-import { useHistory } from "react-router-dom";
-import MuiAlert from "@material-ui/lab/Alert";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-
 import axios from "axios";
-import Swal from "sweetalert2";
 import jwt_decode from "jwt-decode";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import Alert from "@material-ui/lab/Alert";
@@ -44,27 +39,30 @@ const Addadmin = () => {
   let decoded = null;
   if (token !== null) decoded = jwt_decode(token);
   const [alert, setAlert] = useState(false);
+  const [emplacements, setEmplacements] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const { data: response } = await axios.get(
+        "http://skiesbook.com:3000/api/v1/users/getAdmin/" + decoded.userId
+      );
+      setData(response);
+      setCenter({
+        lat: parseFloat(response.graveyard.Lat),
+        lng: parseFloat(response.graveyard.Lng),
+      });
+      setMarker({
+        lat: parseFloat(response.graveyard.Lat),
+        lng: parseFloat(response.graveyard.Lng),
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getAdmin/" + decoded.userId
-        );
-        setData(response);
-        setCenter({
-          lat: parseFloat(response.graveyard.Lat),
-          lng: parseFloat(response.graveyard.Lng),
-        });
-        setMarker({
-          lat: parseFloat(response.graveyard.Lat),
-          lng: parseFloat(response.graveyard.Lng),
-        });
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -127,7 +125,7 @@ const Addadmin = () => {
           <></>
         )}
         <Card.Body>
-          <h5 className="my-4">Emplacements </h5>
+          <h5 className="my-4">Emplacements</h5>
           <Form onSubmit={submit}>
             <Row>
               <Col md={4} className="mb-3">
@@ -183,8 +181,7 @@ const Addadmin = () => {
               <Col sm={6} className="mb-3">
                 <img
                   // zoom in image on mouse pointer
-                 
-                  
+
                   alt="plan"
                   src={"http://skiesbook.com:3000/uploads/" + data?.graveyard?.plan}
                 />

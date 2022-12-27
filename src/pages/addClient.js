@@ -19,9 +19,10 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router-dom";
 import USstates from "./UsStates.json";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/en';
-import 'dayjs/locale/fr';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/en";
+import "dayjs/locale/fr";
+import "dayjs/locale/es";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
@@ -38,7 +39,7 @@ const AddClient = () => {
   const [locale, setLocale] = React.useState(currentLanguageCode);
 
   useEffect(() => {
-    setLocale(currentLanguageCode)
+    setLocale(currentLanguageCode);
   }, [currentLanguageCode]);
 
   const history = useHistory();
@@ -61,13 +62,14 @@ const AddClient = () => {
     postalcode: "",
     role: "client",
     graveyard: decoded.graveyardId,
+    alive: true,
   });
   const [inputList, setInputList] = useState([
     {
       profileName: "",
       profileLastName: "",
-      profileDatebirth: new Date(),
-      profileDatedeath: new Date(),
+      profileDatebirth: null,
+      profileDatedeath: null,
       gender: "F",
       cords: "",
       modeDeath: "I",
@@ -76,6 +78,7 @@ const AddClient = () => {
       graveyard: decoded.graveyardId,
       banner: "banner.jpg",
       profileImage: "avatar.jpg",
+      alive: true,
       position: {
         lat: null,
         lng: null,
@@ -89,6 +92,13 @@ const AddClient = () => {
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
+    console.log(inputList);
+  };
+
+  const handleAlive = (e, index) => {
+    const list = [...inputList];
+    list[index]["alive"] = !list[index]["alive"];
+    setInputList(list);
   };
 
   const handlePositionChange = (value, name, index) => {
@@ -99,12 +109,14 @@ const AddClient = () => {
 
   const handleInputChange2 = (e, index) => {
     const list = [...inputList];
+    console.log(e);
     list[index]["profileDatebirth"] = e;
     setInputList(list);
   };
 
   const handleInputChange3 = (e, index) => {
     const list = [...inputList];
+    console.log(e);
     list[index]["profileDatedeath"] = e;
     setInputList(list);
   };
@@ -121,8 +133,8 @@ const AddClient = () => {
       {
         profileName: "",
         profileLastName: "",
-        profileDatebirth: new Date(),
-        profileDatedeath: new Date(),
+        profileDatebirth: null,
+        profileDatedeath: null,
         gender: "F",
         cords: "",
         modeDeath: "I",
@@ -131,6 +143,7 @@ const AddClient = () => {
         graveyard: decoded.graveyardId,
         banner: "banner.jpg",
         profileImage: "avatar.jpg",
+        alive: true,
         position: {
           lat: null,
           lng: null,
@@ -162,8 +175,27 @@ const AddClient = () => {
   };
   const Submit = async (e) => {
     e.preventDefault();
+
+    if (formData.phone === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Phone is required!",
+      });
+      return;
+    }
+
     formData.Datebirth = moment(birthday).format("DD-MM-YYYY");
     const mydata = new FormData();
+
+    const profiles = inputList.map((profile) => {
+      return {
+        ...profile,
+        profileEmail: formData.email,
+      }
+    })
+        
+
     mydata.append("name", formData.name);
     mydata.append("lastn", formData.lastn);
     mydata.append("Datebirth", formData.Datebirth);
@@ -175,9 +207,8 @@ const AddClient = () => {
     mydata.append("role", formData.role);
     mydata.append("address", formData.address);
     mydata.append("postalcode", formData.postalcode);
-
     mydata.append("graveyard", decoded.graveyardId);
-    mydata.append("profiles", JSON.stringify(inputList));
+    mydata.append("profiles", JSON.stringify(profiles));
     mydata.append("vendor", decoded.userId);
 
     Swal.fire({
@@ -187,11 +218,8 @@ const AddClient = () => {
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         return await axios
-          .post(
-            "http://skiesbook.com:3000/api/v1/users/addclient",
-            mydata,
-            config
-          ).then((result) => {
+          .post("http://skiesbook.com:3000/api/v1/users/addclient", mydata, config)
+          .then((result) => {
             Swal.fire({
               position: "center",
               icon: "success",
@@ -204,7 +232,7 @@ const AddClient = () => {
             });
           })
           .catch((error) => {
-            Swal.showValidationMessage(t('email_address_already_exists'));
+            Swal.showValidationMessage(t("email_address_already_exists"));
           });
       },
       allowOutsideClick: () => !Swal.isLoading(),
@@ -212,7 +240,6 @@ const AddClient = () => {
   };
 
   const [passwordType, setPasswordType] = useState("password");
-  const [passwordInput, setPasswordInput] = useState("");
 
   const togglePassword = () => {
     if (passwordType === "password") {
@@ -349,7 +376,7 @@ const AddClient = () => {
       lat: location?.lat,
       lng: location?.lng,
       code: location?.code,
-      id: location?._id
+      id: location?._id,
     };
     handlePositionChange(position, "position", index);
     console.log(inputList);
@@ -367,16 +394,16 @@ const AddClient = () => {
               className="me-2"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-              {t('back')}
+              {t("back")}
             </Dropdown.Toggle>
           </ButtonGroup>
         </div>
-        <h5 className="mb-4">{t('General informations')}</h5>
+        <h5 className="mb-4">{t("General informations")}</h5>
         <Form onSubmit={(e) => Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>{t('lastname')}</Form.Label>
+                <Form.Label>{t("lastname")}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -388,7 +415,7 @@ const AddClient = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="lastName">
-                <Form.Label>{t('firstname')}</Form.Label>
+                <Form.Label>{t("firstname")}</Form.Label>
                 <Form.Control
                   required
                   type="text"
@@ -402,13 +429,16 @@ const AddClient = () => {
 
           <Row className="align-items-center">
             <Col md={6} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale={locale}
+              >
                 <Stack spacing={3}>
                   <DatePicker
                     // inputFormat="dd/MM/yyyy"
                     disableFuture
-                    label={t('date_of_birth')}
-                    openTo={"day"}
+                    label={t("date_of_birth")}
+                    openTo="day"
                     views={["year", "month", "day"]}
                     value={formData.Datebirth}
                     onChange={(e) => setFormData({ ...formData, Datebirth: e })}
@@ -420,17 +450,17 @@ const AddClient = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="gender">
-                <Form.Label>{t('gender')}</Form.Label>
+                <Form.Label>{t("gender")}</Form.Label>
                 <Form.Select
                   defaultValue="M"
                   onChange={(e) =>
                     setFormData({ ...formData, sex: e.target.value })
                   }
                 >
-                  <option value="0">{t('gender')}</option>
-                  <option value="F">{t('women')}</option>
-                  <option value="M">{t('man')}</option>
-                  <option value="I">{t('other')}</option>
+                  <option value="0">{t("gender")}</option>
+                  <option value="F">{t("women")}</option>
+                  <option value="M">{t("man")}</option>
+                  <option value="I">{t("other")}</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -438,7 +468,7 @@ const AddClient = () => {
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="emal">
-                <Form.Label>{t('email')}</Form.Label>
+                <Form.Label>{t("email")}</Form.Label>
                 <Form.Control
                   required
                   type="email"
@@ -450,7 +480,7 @@ const AddClient = () => {
             </Col>
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
-                <Form.Label>{t('phone')}</Form.Label>
+                <Form.Label>{t("phone")}</Form.Label>
                 <PhoneInput
                   country={"ca"}
                   onlyCountries={["us", "ca"]}
@@ -463,7 +493,7 @@ const AddClient = () => {
           <Row>
             <Col sm={6} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>{t('Country')}</Form.Label>
+                <Form.Label>{t("Country")}</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
                   onChange={(val) => handleChange(val.target.value)}
@@ -475,7 +505,7 @@ const AddClient = () => {
               </Form.Group>
             </Col>
             <Col md={6} className="mb-3">
-              <Form.Label>{t('Region')}</Form.Label>
+              <Form.Label>{t("Region")}</Form.Label>
               <Form.Group>
                 <Form.Select
                   onBlur={(region) =>
@@ -497,7 +527,7 @@ const AddClient = () => {
           <Row>
             <Col sm={3} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>{t('City')}</Form.Label>
+                <Form.Label>{t("City")}</Form.Label>
                 <Form.Control
                   onBlur={(ville) =>
                     setFormData({
@@ -514,7 +544,7 @@ const AddClient = () => {
             </Col>
             <Col sm={2} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>{t('Zip Code')}</Form.Label>
+                <Form.Label>{t("Zip Code")}</Form.Label>
                 <Form.Control
                   onBlur={(zipCode) =>
                     setFormData({
@@ -532,7 +562,7 @@ const AddClient = () => {
 
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
-                <Form.Label>{t('image')}</Form.Label>
+                <Form.Label>{t("image")}</Form.Label>
                 <Form.Control
                   type="file"
                   onChange={(e) =>
@@ -543,11 +573,11 @@ const AddClient = () => {
             </Col>
           </Row>
 
-          <h5 className="my-4">{t('Cemetery Information')}</h5>
+          <h5 className="my-4">{t("Cemetery Information")}</h5>
           <Row>
             <Col sm={4} className="mb-3">
               <Form.Group id="address">
-                <Form.Label>{t('cemetery')}</Form.Label>
+                <Form.Label>{t("cemetery")}</Form.Label>
                 <Form.Control
                   disabled
                   type="text"
@@ -557,19 +587,23 @@ const AddClient = () => {
             </Col>
           </Row>
 
-          <h5 className="my-4">{t('Profile Information')} </h5>
+          <h5 className="my-4">{t("Profile Information")} </h5>
 
           {inputList.map((x, i) => {
             return (
               <>
-                <h6 className="my-4"> {t('Profile num')} {i + 1} </h6>
+                <h6 className="my-4">
+                  {" "}
+                  {t("Profile num")} {i + 1}{" "}
+                </h6>
 
                 <Row>
                   <Col md={6} className="mb-3">
                     <Form.Group id="firstName">
-                      <Form.Label>{t('lastname')}</Form.Label>
+                      <Form.Label>{t("lastname")}</Form.Label>
                       <Form.Control
                         required
+                        key={i}
                         type="text"
                         name="profileName"
                         defaultvalue={x.profileName}
@@ -579,9 +613,10 @@ const AddClient = () => {
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="lastName">
-                      <Form.Label>{t('firstname')}</Form.Label>
+                      <Form.Label>{t("firstname")}</Form.Label>
                       <Form.Control
                         required
+                        key={i}
                         type="text"
                         name="profileLastName"
                         defaultvalue={x.profileLastName}
@@ -591,19 +626,23 @@ const AddClient = () => {
                   </Col>
                 </Row>
                 <Row className="align-items-center">
-                  <Col md={6} className="mb-3">
+                  <Col md={5} className="mb-3">
                     <Form.Group id="birthday">
-                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        adapterLocale={locale}
+                      >
                         <Stack spacing={3}>
                           <DatePicker
-                            // inputFormat="dd/MM/yyyy"
+                            //  inputFormat="DD/MM/YYYY"
                             disableFuture
-                            label={t('date_of_birth')}
+                            key={i}
+                            required
+                            value={x.profileDatebirth}
+                            label={t("date_of_birth")}
                             name="profileDatebirth"
-                            open={false}
                             openTo="day"
                             views={["year", "month", "day"]}
-                            value={formData.Datebirth}
                             onChange={(e) => handleInputChange2(e, i)}
                             renderInput={(params) => <TextField {...params} />}
                           />
@@ -611,19 +650,36 @@ const AddClient = () => {
                       </LocalizationProvider>
                     </Form.Group>
                   </Col>
-                  <Col md={6} className="mb-3">
+                  <Col md={2} className="mb-3">
+                    <Form.Group id="checkbox">
+                      <Form.Check
+                        type="checkbox"
+                        key={i}
+                        checked={x.alive}
+                        label={t("Décédé")}
+                        name="alive"
+                        onChange={(e) => {
+                          handleAlive(e, i);
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col hidden={!x.alive} md={5} className="mb-3">
                     <Form.Group id="birthday">
-                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        adapterLocale={locale}
+                      >
                         <Stack spacing={3}>
                           <DatePicker
                             // inputFormat="dd/MM/yyyy"
+                            key={i}
+                            value={x.profileDatedeath}
                             disableFuture
-                            label={t('Date of death')}
+                            label={t("Date of death")}
                             name="profileDatedeath"
-                            open={false}
                             openTo="day"
                             views={["year", "month", "day"]}
-                            value={formData.Datebirth}
                             onChange={(e) => handleInputChange3(e, i)}
                             renderInput={(params) => <TextField {...params} />}
                           />
@@ -634,24 +690,26 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="gender">
-                      <Form.Label>{t('gender')}</Form.Label>
+                      <Form.Label>{t("gender")}</Form.Label>
                       <Form.Select
                         defaultValue="F"
                         name="gender"
+                        key={i}
                         onChange={(e) => handleInputChange(e, i)}
                       >
-                        <option value="F">{t('women')}</option>
-                        <option value="M">{t('man')}</option>
-                        <option value="I">{t('other')}</option>
+                        <option value="F">{t("women")}</option>
+                        <option value="M">{t("man")}</option>
+                        <option value="I">{t("other")}</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="Emplacement du funérailles">
-                      <Form.Label>{t('Location of funeral')}</Form.Label>
+                      <Form.Label>{t("Location of funeral")}</Form.Label>
                       <Form.Control
                         required
                         type="text"
+                        key={i}
                         name="cords"
                         onChange={(e) => handleInputChange(e, i)}
                       />
@@ -660,23 +718,25 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="funérailles">
-                      <Form.Label>{t('Funeral arrangements')}</Form.Label>
+                      <Form.Label>{t("Funeral arrangements")}</Form.Label>
                       <Form.Select
                         defaultValue="I"
+                        key={i}
                         name="modeDeath"
                         onChange={(e) => handleInputChange(e, i)}
                       >
-                        <option value="I">{t('Burial')} </option>
-                        <option value="C">{t('Cremation')}</option>
+                        <option value="I">{t("Burial")} </option>
+                        <option value="C">{t("Cremation")}</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="emal">
-                      <Form.Label>{t('reference_email')}</Form.Label>
+                      <Form.Label>{t("reference_email")}</Form.Label>
                       <Form.Control
                         required
                         name="profileEmail"
+                        key={i}
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange(e, i)}
@@ -685,10 +745,11 @@ const AddClient = () => {
                   </Col>
                   <Col md={6} className="mb-3">
                     <Form.Group id="ville">
-                      <Form.Label>{t('hometown')}</Form.Label>
+                      <Form.Label>{t("hometown")}</Form.Label>
                       <Form.Control
                         required
                         name="hometown"
+                        key={i}
                         type="text"
                         onChange={(e) => handleInputChange(e, i)}
                       />
@@ -697,7 +758,7 @@ const AddClient = () => {
 
                   <Col md={6} className="mb-3">
                     <Form.Group id="ville">
-                      <Form.Label>{t('location')}</Form.Label>
+                      <Form.Label>{t("location")}</Form.Label>
                       {
                         // free solo option with search
                       }
@@ -708,7 +769,7 @@ const AddClient = () => {
                         )}
                         onChange={(e, value) => handlePlace(i, value)}
                         renderInput={(params) => (
-                          <TextField {...params} label={t('location')} />
+                          <TextField {...params} label={t("location")} />
                         )}
                       />
                     </Form.Group>
@@ -720,9 +781,10 @@ const AddClient = () => {
                       style={{ marginBottom: 20, marginLeft: 20 }}
                       className="text-danger ml-50"
                       variant="secondary"
+                      key={i}
                       onClick={() => handleRemoveClick(i)}
                     >
-                      {t('delete')}
+                      {t("delete")}
                     </Button>
                   )}
                   {inputList.length - 1 === i && (
@@ -730,9 +792,10 @@ const AddClient = () => {
                       style={{ marginBottom: 20, marginLeft: 20 }}
                       className="ml-50"
                       variant="secondary"
+                      key={i}
                       onClick={handleAddClick}
                     >
-                      {t('Add another profile')}
+                      {t("Add another profile")}
                     </Button>
                   )}
                 </div>
@@ -742,7 +805,7 @@ const AddClient = () => {
 
           <div className="mt-3">
             <Button variant="primary" type="submit">
-              {t('save')}
+              {t("save")}
             </Button>
           </div>
         </Form>

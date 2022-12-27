@@ -36,9 +36,10 @@ import {
   CDropdownToggle,
 } from "@coreui/bootstrap-react";
 import TextField from "@material-ui/core/TextField";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/en';
-import 'dayjs/locale/fr';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/en";
+import "dayjs/locale/fr";
+import "dayjs/locale/es";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
@@ -48,6 +49,7 @@ import { useReactToPrint } from "react-to-print";
 import { useTranslation } from "react-i18next";
 import cookies from "js-cookie";
 import { Paper, TableContainer } from "@mui/material";
+import { CSVLink } from "react-csv";
 
 const token = JSON.parse(localStorage.getItem("token"));
 let decoded = null;
@@ -60,15 +62,15 @@ export default function AllProfiles() {
   const [locale, setLocale] = React.useState(currentLanguageCode);
 
   useEffect(() => {
-    setLocale(currentLanguageCode)
+    setLocale(currentLanguageCode);
   }, [currentLanguageCode]);
-
 
   const [selectedDate, handleDateChange] = React.useState([null, null]);
   const d = new Date();
   const { t } = useTranslation();
+
   const [formdata, setFormdata] = useState({
-    startDate: moment(d).format("YYYY-MM-DD"),
+    startDate: moment(d).format("YYYY-MM"),
     endDate: moment(d).format("YYYY-MM-DD"),
   });
   async function gofilter() {
@@ -110,7 +112,25 @@ export default function AllProfiles() {
     fetchUser();
     fetchData();
   }, []);
-  const childRef = useRef();
+  const headers = [
+    { label: "_id", key: "_id" },
+    { label: "Name", key: "profileName" },
+    { label: "Last Name", key: "profileLastName" },
+    { label: "Created_At", key: "createdAt" },
+    { label: "Dead_At", key: "profileDatedeath" },
+  ];
+  console.log(user);
+  const csvReport = {
+    data: data,
+    headers: headers,
+    filename:
+      user?.graveyard?.name +
+      " " +
+      formdata.startDate +
+      "-" +
+      formdata.endDate +
+      ".csv",
+  };
   return (
     <>
       <div className="btn-toolbar mb-2 mb-md-2">
@@ -153,11 +173,14 @@ export default function AllProfiles() {
           <Row className="align-items-center">
             <h5>Filter par date</h5>
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale={locale}
+              >
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    label={t('from_date')}
+                    label={t("from_date")}
                     // inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     openTo="day"
@@ -172,12 +195,15 @@ export default function AllProfiles() {
             </Col>
 
             <Col md={3} className="mb-3">
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale={locale}
+              >
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
                     // inputFormat="dd/MM/yyyy"
-                    label={t('until')}
+                    label={t("until")}
                     value={formdata.endDate}
                     openTo="day"
                     views={["year", "month", "day"]}
@@ -190,13 +216,19 @@ export default function AllProfiles() {
               </LocalizationProvider>
             </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Filter</Button>
+              <Button onClick={(e) => gofilter()}> {t("Apply")}</Button>
             </Col>
-            <Col>
+            <Col hidden>
               <Button onClick={handlePrint}>
                 <FontAwesomeIcon icon={faPrint} /> invoice
               </Button>
             </Col>
+            <Col>
+              <Button variant="secondary" size="sm">
+                <CSVLink {...csvReport}>{t("Export to CSV")}</CSVLink>
+              </Button>
+            </Col>
+
             <Col md={3}>
               <CounterWidget
                 category="Nombre de profils"
@@ -286,14 +318,12 @@ export default function AllProfiles() {
         </Card.Body>
       </Card>
       <>
-
         <Card
           hidden
           border="light"
           className="bg-white shadow-sm mb-4 all-center"
-
         >
-          <Card.Body   >
+          <Card.Body>
             <div className="card" ref={componentRef}>
               <div className="card-header bg-black" />
               <div className="card-body">
@@ -306,13 +336,17 @@ export default function AllProfiles() {
                   <div className="row">
                     <div className="col-xl-12">
                       <ul className="list-unstyled float-start">
-                        <li style={{ fontSize: 30, color: "blue" }}>Skiesbook inc.</li>
+                        <li style={{ fontSize: 30, color: "blue" }}>
+                          Skiesbook inc.
+                        </li>
                         <li>123, Elm Street</li>
                         <li>123-456-789</li>
                         <li>mail@mail.com</li>
                       </ul>
                       <ul className="list-unstyled float-end">
-                        <li style={{ fontSize: 30, color: "Black" }}>{user?.graveyard?.name}</li>
+                        <li style={{ fontSize: 30, color: "Black" }}>
+                          {user?.graveyard?.name}
+                        </li>
                         <li>{user?.graveyard?.address}</li>
                         <li>{user?.phone}</li>
                         <li>{user?.email}</li>
@@ -336,7 +370,9 @@ export default function AllProfiles() {
                             <tr>
                               <th className="border-0">#</th>
                               <th className="border-0">Nom Prénom</th>
-                              <th className="border-0">Date de création de profil</th>
+                              <th className="border-0">
+                                Date de création de profil
+                              </th>
                               <th className="border-0">Date de décés</th>
                               <th className="border-0">Email de référence</th>
                               <th className="border-0">prix</th>
@@ -349,17 +385,21 @@ export default function AllProfiles() {
                                 <td className="fw-bold">
                                   {dm?.profileName} {dm?.profileLastName}
                                 </td>
-                                <td>{moment(dm?.createdAt).format("YYYY-MM-DD")}</td>
-                                <td>{moment(dm?.profileDatedeath).format("YYYY-MM-DD")}</td>
+                                <td>
+                                  {moment(dm?.createdAt).format("YYYY-MM-DD")}
+                                </td>
+                                <td>
+                                  {moment(dm?.profileDatedeath).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                </td>
                                 <td>{dm?.profileEmail}</td>
                                 <td> 20 $ </td>
-
                               </tr>
                             ))}
                           </tbody>
                         </Table>
                       </TableContainer>
-
                     </Card.Body>
                   </Card>
                   <div className="row">
@@ -367,9 +407,9 @@ export default function AllProfiles() {
                       <ul className="list-unstyled me-0  float-end">
                         <li>
                           <span className="me-3">Total Amount:</span>
-                          <i className="fas fa-dollar-sign" /> {data?.length * 20} $
+                          <i className="fas fa-dollar-sign" />{" "}
+                          {data?.length * 20} $
                         </li>
-
                       </ul>
                     </div>
                   </div>
@@ -387,14 +427,19 @@ export default function AllProfiles() {
                       >
                         Total:
                         <span>
-                          <i className="fas fa-dollar-sign" /> {data?.length * 20} $
+                          <i className="fas fa-dollar-sign" />{" "}
+                          {data?.length * 20} $
                         </span>
                       </p>
                     </div>
                   </div>
                   <div className="row mt-2 mb-5">
                     <p className="fw-bold">
-                      Date: <span className="text-muted"> {moment(d).format("YYYY/MM/DD")}</span>
+                      Date:{" "}
+                      <span className="text-muted">
+                        {" "}
+                        {moment(d).format("YYYY/MM/DD")}
+                      </span>
                     </p>
                     <p className="fw-bold mt-3">Signature:</p>
                   </div>

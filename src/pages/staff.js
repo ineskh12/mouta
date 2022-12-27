@@ -257,6 +257,7 @@ export default function AllSuperAdmins() {
                             {t("Edit")}{" "}
                           </CDropdownItem>
                           <CDropdownItem
+                          disabled={dm?._id === decoded?.userId ? true : false}
                             onClick={() => {
                               deleteStaff(dm?._id);
                             }}

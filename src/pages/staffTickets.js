@@ -286,7 +286,7 @@ export default function AllProfiles() {
               <tbody>
                 {filtreddata?.map((dm, index) => (
                   <tr>
-                    <td>{index}</td>
+                    <td>{dm?.code}</td>
                     <td>
                       {dm?.prop.name} {""}
                       {dm?.prop?.lastn}

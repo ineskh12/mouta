@@ -49,7 +49,8 @@ const Addadminstaff = () => {
       "Content-Type": "application/json",
     },
   };
-  async function Submit() {
+  async function Submit(e) {
+    e.preventDefault();
     const mydata = new FormData();
     mydata.append("name", formData.name);
     mydata.append("lastn", formData.lastn);
@@ -113,7 +114,7 @@ const Addadminstaff = () => {
           </ButtonGroup>
         </div>
         <h5 className="mb-4">{t('add_a_new_employee')}</h5>
-        <Form>
+        <Form onSubmit={(e)=> Submit(e)}>
           <Row>
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
@@ -233,7 +234,7 @@ const Addadminstaff = () => {
           </Row>
 
           <div className="mt-3">
-            <Button variant="primary" onClick={(e) => Submit()}>
+            <Button variant="primary" type="submit" >
               {t('save')}
             </Button>
           </div>

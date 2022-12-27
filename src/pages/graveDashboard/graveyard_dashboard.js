@@ -30,6 +30,7 @@ import TextField from "@material-ui/core/TextField";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';
+import 'dayjs/locale/es';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
@@ -54,7 +55,7 @@ export default function Dashboard() {
   const d = new Date();
   const { t } = useTranslation();
   const [formdata, setFormdata] = useState({
-    startDate: moment(d).format("YYYY-MM-DD"),
+    startDate: moment(d).format("YYYY-MM"),
     endDate: moment(d).format("YYYY-MM-DD"),
   });
 
@@ -74,7 +75,6 @@ export default function Dashboard() {
         "http://www.skiesbook.com:3000/api/v1/graveyard/graveyardgraphcim/" + decoded.graveyardId,
         formdata
       );
-      console.log(response);
       setData2(response);
     } catch (error) {
       console.error(error.message);
@@ -231,7 +231,7 @@ export default function Dashboard() {
               </LocalizationProvider>
             </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}> Filter</Button>
+              <Button onClick={(e) => gofilter()}> {t('Apply')}</Button>
             </Col>
           </Row>
         </Card>

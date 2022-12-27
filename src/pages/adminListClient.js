@@ -54,6 +54,7 @@ import {
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';
+import 'dayjs/locale/es';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
@@ -61,6 +62,8 @@ import Stack from "@mui/material/Stack";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import cookies from "js-cookie";
+import Autocomplete from "@mui/material/Autocomplete";
+import { positions } from "@mui/system";
 
 const GetClient = () => {
   const { t } = useTranslation();
@@ -124,11 +127,16 @@ const GetClient = () => {
   const [showDefault, setShowDefault] = useState(false);
   const [clientMail, setMail] = useState("");
   const [client, setClient] = useState("");
+  const [alive, setAlive] = useState(false);
+  const [emplacement , setEmplacement] = useState([]);
 
-  function setModal(mail, clientid) {
+ async function setModal(mail, clientid) {
     setShowDefault(true);
     setMail(mail);
     setClient(clientid);
+    axios.get("http://www.skiesbook.com:3000/api/v1/graveyard/getemplacements/" + clientid).then((response) => {
+      setEmplacement(response.data);
+    });
   }
 
   const handleClose = () => setShowDefault(false);
@@ -136,8 +144,8 @@ const GetClient = () => {
   const [inputList, setInputList] = useState({
     profileName: "",
     profileLastName: "",
-    profileDatebirth: new Date(moment().format('YYYY-MM-DD')),
-    profileDatedeath: new Date(moment().format('YYYY-MM-DD')),
+    profileDatebirth: null,
+    profileDatedeath: null,
     gender: "F",
     cords: "",
     modeDeath: "I",
@@ -148,6 +156,8 @@ const GetClient = () => {
     profileImage: "avatar.jpg",
     client: "",
     vendor: "",
+    alive: false,
+    position: {},
   });
 
   async function ajouterProfil(e) {
@@ -158,7 +168,6 @@ const GetClient = () => {
 
     Swal.fire({
       title: t('Add a new profile'),
-
       showCancelButton: true,
       confirmButtonText: `${t('yes')} !`,
       showLoaderOnConfirm: true,
@@ -190,6 +199,17 @@ const GetClient = () => {
   //console.log(currentPosts);
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  async function handlePosition(pos) {
+    const position = emplacement.find((e) => e.code === pos);
+
+    setInputList({
+      ...inputList,
+      position: position,
+    });
+
+  }
+
   return (
     <>
       {/*     <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -208,6 +228,7 @@ const GetClient = () => {
         as={Modal.Dialog}
         className="d-flex justify-content-center"
         show={showDefault}
+        size="lg"
         onHide={handleClose}
       >
         <Modal.Header>
@@ -240,7 +261,6 @@ const GetClient = () => {
                     required
                     type="text"
                     name="profileLastName"
-                    placeholder={t("Enter your first name")}
                     onChange={(e) =>
                       setInputList({
                         ...inputList,
@@ -252,7 +272,7 @@ const GetClient = () => {
               </Col>
             </Row>
             <Row className="align-items-center">
-              <Col md={6} className="mb-3">
+              <Col md={4} className="mb-3">
                 <Form.Group id="birthday">
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                     <Stack spacing={3}>
@@ -260,9 +280,8 @@ const GetClient = () => {
                         // inputFormat="dd/MM/yyyy"
                         disableFuture
                         label={t('date_of_birth')}
-                        open={false}
+                        openTo="year"
                         views={["year", "month", "day"]}
-                        value={inputList.profileDatebirth}
                         onChange={(e) =>
                           setInputList({ ...inputList, profileDatebirth: e })
                         }
@@ -272,17 +291,30 @@ const GetClient = () => {
                   </LocalizationProvider>
                 </Form.Group>
               </Col>
-              <Col md={6} className="mb-3">
-                <Form.Group id="birthday">
+
+              <Col md={2} className="mb-3">
+             
+                <Form.Group id="checkbox">
+                  <Form.Check
+                    type="checkbox"
+                    value={alive}
+                    label={t('Décédé')}
+                    onChange={(e) =>
+                      setAlive(!alive)
+                    }
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={4} className="mb-3">
+                <Form.Group hidden={alive} id="birthday">
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
                     <Stack spacing={3}>
                       <DatePicker
                         // inputFormat="dd/MM/yyyy"
                         disableFuture
-                        label={t("Date of death")}
-                        open={false}
+                        openTo="year"
                         views={["year", "month", "day"]}
-                        value={inputList.profileDatedeath}
                         onChange={(e) =>
                           setInputList({ ...inputList, profileDatedeath: e })
                         }
@@ -292,6 +324,27 @@ const GetClient = () => {
                   </LocalizationProvider>
                 </Form.Group>
               </Col>
+
+              <Col md={6} className="mb-3">
+                    <Form.Group id="ville">
+                      <Form.Label>{t("location")}</Form.Label>
+                      <Autocomplete
+                        id="position"
+                        options={emplacement.map(
+                          (option) => option?.code
+                        )}
+                        onChange={(e, value) =>
+                          {
+                         handlePosition (value)
+                        }
+                        
+                        }
+                        renderInput={(params) => (
+                          <TextField {...params} label={t("location")} />
+                        )}
+                      />
+                    </Form.Group>
+                  </Col>
 
               <Col md={6} className="mb-3">
                 <Form.Group id="gender">
@@ -654,31 +707,7 @@ const GetClient = () => {
     );
   }
 
-  Row.propTypes = {
-    row: PropTypes.shape({
-      calories: PropTypes.number.isRequired,
-      carbs: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      history: PropTypes.arrayOf(
-        PropTypes.shape({
-          amount: PropTypes.number.isRequired,
-          customerId: PropTypes.string.isRequired,
-          date: PropTypes.string.isRequired,
-        })
-      ).isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      protein: PropTypes.number.isRequired,
-    }).isRequired,
-  };
 
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 3.99),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 4.99),
-    createData("Eclair", 262, 16.0, 24, 6.0, 3.79),
-    createData("Cupcake", 305, 3.7, 67, 4.3, 2.5),
-    createData("Gingerbread", 356, 16.0, 49, 3.9, 1.5),
-  ];
 
   function CollapsibleTable() {
     return (

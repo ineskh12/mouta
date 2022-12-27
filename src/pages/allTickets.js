@@ -48,6 +48,7 @@ export default function AllProfiles() {
         (item) =>
           item?.prop?.graveyard?.name.includes(word) ||
           item._id.includes(word) ||
+          item?.code.includes(word) ||
           (item?.prop?.name + " " + item?.prop?.lastn + " ").includes(word) ||
           (item?.prop?.graveyard?.name).includes(word) ||
           (item?.assigne?.name + " " + item?.assigne?.lastn + " ").includes(
@@ -258,7 +259,7 @@ export default function AllProfiles() {
               <tbody>
                 {currentPosts?.map((dm, index) => (
                   <tr>
-                    <td>{index}</td>
+                    <td>{dm?.code}</td>
                     <td className="fw-bold">{dm?.prop?.graveyard?.name}</td>
 
                     <td className="fw-bold">{dm?.subject}</td>

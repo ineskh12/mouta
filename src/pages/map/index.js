@@ -5,6 +5,8 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import AddEmp from "./profiling";
+import Emplacement from "./myEmplacement"
+import AllEmplacments from "./allEmplacements"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,13 +62,13 @@ export default function MapTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Item One
+        <Emplacement></Emplacement>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <AddEmp/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+       <AllEmplacments/>
       </TabPanel>
     </Box>
   );

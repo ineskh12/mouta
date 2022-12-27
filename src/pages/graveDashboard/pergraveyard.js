@@ -39,6 +39,7 @@ import TextField from "@material-ui/core/TextField";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';
+import 'dayjs/locale/es';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
@@ -68,7 +69,7 @@ export default function AllProfiles() {
   const d = new Date();
 
   const [formdata, setFormdata] = useState({
-    startDate: moment(d).format("YYYY-MM-DD"),
+    startDate: moment(d).format("YYYY-MM"),
     endDate: moment(d).format("YYYY-MM-DD"),
   });
   async function gofilter() {
@@ -158,7 +159,7 @@ export default function AllProfiles() {
                   <DatePicker
                     disableFuture
                     label={t("from_date")}
-                    inputFormat="dd/MM/yyyy"
+                   // inputFormat="dd/MM/yyyy"
                     value={formdata.startDate}
                     openTo="day"
                     views={["year", "month", "day"]}
@@ -176,7 +177,7 @@ export default function AllProfiles() {
                 <Stack spacing={3}>
                   <DatePicker
                     disableFuture
-                    inputFormat="dd/MM/yyyy"
+                  //  inputFormat="dd/MM/yyyy"
                     label={t("until")}
                     value={formdata.endDate}
                     openTo="day"
@@ -190,7 +191,7 @@ export default function AllProfiles() {
               </LocalizationProvider>
             </Col>
             <Col>
-              <Button onClick={(e) => gofilter()}>{t("filter")}</Button>
+              <Button onClick={(e) => gofilter()}>{t("Apply")}</Button>
             </Col>
             <Col hidden >
               <Button onClick={handlePrint}>

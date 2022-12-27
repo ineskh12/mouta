@@ -2,6 +2,7 @@
 import React from "react";
 import moment from "moment-timezone";
 import { Row, Col, Card, OverlayTrigger, Tooltip, Image, Button } from '@themesberg/react-bootstrap';
+import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCogs, faDownload, faRocket } from "@fortawesome/free-solid-svg-icons";
 import BS5Logo from "../assets/img/technologies/bootstrap-5-logo.svg";
@@ -11,8 +12,9 @@ import GitHubButton from 'react-github-btn';
 import { Link } from 'react-router-dom';
 import { Routes } from "../routes";
 
-export default function footer (props) {
+ function Footer (props) {
   const currentYear = moment().get("year");
+  const { t } = useTranslation();
   return (
     <div>
     {/*  {showSettings ? (
@@ -68,7 +70,7 @@ export default function footer (props) {
             <ul className="list-inline list-group-flush list-group-borderless text-center text-xl-right mb-0">
               <li className="list-inline-item px-0 px-sm-2">
                 <Card.Link href="http://skiesbook.com:3000/uploads/terms.pdf" target="_blank">
-                  Terms and Conditions
+                  {t("Terms and Conditions")}
                 </Card.Link>
              </li>
             </ul>
@@ -79,3 +81,5 @@ export default function footer (props) {
     </div>
   );
 };
+
+  export default Footer;

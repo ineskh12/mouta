@@ -229,7 +229,7 @@ export default function AllProfiles() {
               <tbody>
                 {data?.map((dm, index) => (
                   <tr>
-                    <td className="fw-bold">{index}</td>
+                    <td className="fw-bold">{dm?.code}</td>
                     <td className="fw-bold">{dm.subject}</td>
                     <td>
                       <>

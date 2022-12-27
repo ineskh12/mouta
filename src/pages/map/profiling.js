@@ -45,26 +45,41 @@ const Addadmin = () => {
   if (token !== null) decoded = jwt_decode(token);
   const [alert, setAlert] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: response } = await axios.get(
-          "http://skiesbook.com:3000/api/v1/users/getAdmin/" + decoded.userId
-        );
-        setData(response);
-        setCenter({
-          lat: parseFloat(response.graveyard.Lat),
-          lng: parseFloat(response.graveyard.Lng),
-        });
-        setMarker({
-          lat: parseFloat(response.graveyard.Lat),
-          lng: parseFloat(response.graveyard.Lng),
-        });
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
+  const [emplacements, setEmplacements] = useState([]);
 
+  const getPositions = async () => {
+    try {
+      const { data: response } = await axios.get(
+        "http://skiesbook.com:3000/api/v1/graveyard/positions/" + decoded.userId
+      );
+      setEmplacements(response);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const { data: response } = await axios.get(
+        "http://skiesbook.com:3000/api/v1/users/getAdmin/" + decoded.userId
+      );
+      setData(response);
+      setCenter({
+        lat: parseFloat(response.graveyard.Lat),
+        lng: parseFloat(response.graveyard.Lng),
+      });
+      setMarker({
+        lat: parseFloat(response.graveyard.Lat),
+        lng: parseFloat(response.graveyard.Lng),
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getPositions();
+    console.log(emplacements);
     fetchData();
   }, []);
 
@@ -77,26 +92,46 @@ const Addadmin = () => {
 
   async function submit(e) {
     e.preventDefault();
+      axios
+        .post(
+          "http://skiesbook.com:3000/api/v1/graveyard/addposition/" +
+            data.graveyard._id,
+          {
+            lat: marker.lat,
+            lng: marker.lng,
+            code: code,
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          if (res) {
+            setAlert(true);
+            setMarker({
+              lat : marker.lat + 0.00001,
+              lng : marker.lng + 0.00001
+            })
+            setCode("");
+            getPositions();
+          console.log(res);
 
-    axios
-      .post(
-        "http://skiesbook.com:3000/api/v1/graveyard/addposition/" +
-          data.graveyard._id,
-        {
-          lat: marker.lat,
-          lng: marker.lng,
-          code: code,
-        }
-      )
-      .then((res) => {
-        if (res) {
-          setAlert(true);
-          setCode("");
-        }
-      });
-    setTimeout(() => {
-      setAlert(false);
-    }, 2500);
+          } else{
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "pas de position",
+            });
+          }
+        }).catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Position code already exist!",
+
+          });
+        });
+      setTimeout(() => {
+        setAlert(false);
+      }, 2500);
   }
 
   // mouse zoom in on pointer on hover over image
@@ -127,7 +162,7 @@ const Addadmin = () => {
           <></>
         )}
         <Card.Body>
-          <h5 className="my-4">Emplacements </h5>
+          <h5 className="my-4">Emplacements</h5>
           <Form onSubmit={submit}>
             <Row>
               <Col md={4} className="mb-3">
@@ -183,8 +218,7 @@ const Addadmin = () => {
               <Col sm={6} className="mb-3">
                 <img
                   // zoom in image on mouse pointer
-                 
-                  
+
                   alt="plan"
                   src={"http://skiesbook.com:3000/uploads/" + data?.graveyard?.plan}
                 />
@@ -194,13 +228,31 @@ const Addadmin = () => {
                   <GoogleMap
                     mapContainerStyle={containerStyle}
                     center={center}
-                    zoom={20}
+                    zoom={19}
                     // satellite map with labels
                     mapTypeId="hybrid"
                   >
+                    {emplacements.map((empl) => (
+                      <Marker
+                        key={empl._id}
+                        position={{
+                          lat: parseFloat(empl.lat),
+                          lng: parseFloat(empl.lng),
+                        }}
+                        icon={{
+                          url: "https://cdn-icons-png.flaticon.com/512/149/149059.png",
+                          scaledSize: new window.google.maps.Size(30, 30),
+                        }}
+                      />
+                    ))}
+
                     <Marker
                       position={marker}
                       draggable={true}
+                      setZIndex={100}
+                      // this marker above all markers
+                      zIndex={100}
+
                       onDragEnd={(e) => {
                         settingCord(e);
                       }}
